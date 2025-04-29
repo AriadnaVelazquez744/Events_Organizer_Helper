@@ -1,0 +1,12 @@
+[project]
+name = "joint-system"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "gensim>=4.3.2",
+    "numpy>=2.2.5",
+    "spacy>=3.8.5",
+    "sympy>=1.14.0",
+]
