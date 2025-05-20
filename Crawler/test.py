@@ -1,6 +1,6 @@
 
 # test/test_real_crawler.py
-from core import CrawlerAgent
+from core import AdvancedCrawlerAgent
 from graph import KnowledgeGraphInterface
 from expert import ExpertSystemInterface
 import time
@@ -14,7 +14,7 @@ def run_real_test():
     expert = ExpertSystemInterface()
     expert.add_rule(rule_detect_example_domain)
 
-    agent = CrawlerAgent("RealAgent", graph_interface=graph, expert_system=expert)
+    agent = AdvancedCrawlerAgent("RealAgent", graph_interface=graph, expert_system=expert)
 
     urls = [
         "http://example.com",
