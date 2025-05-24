@@ -2,6 +2,7 @@
 # test/test_venue_agent_real.py
 import sys
 import os
+import requests
 
 # Añade la carpeta base del proyecto al path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -33,22 +34,55 @@ agent = VenueAgent(
 
 # 2. Criterios y URL de prueba
 criteria = {
-    "capacidad": 70,
-    "presupuesto": 10000,
+    "capacidad": 30,
+    "presupuesto": 100000,
     "ciudad": "London"
 }
 
 urls = [
-    "https://www.tagvenue.com/rooms/london/17182/the-penthouse-at-no-4-hamilton-place",
-    "https://www.tagvenue.com/rooms/london/2013/the-long-room-at-the-anthologist",
-    "https://www.tagvenue.com/rooms/london/12652/the-rooftop-at-big-easy-canary-wharf"
+    "https://www.zola.com/wedding-vendors/wedding-venues/lake-house-reception-center"
 ]
 
 
 # 3. Ejecutar búsqueda
 venues = agent.find_venues(criteria, urls)
+graph.save_to_file("venues_graph.json") 
 
 # 4. Ver resultados
 print("\n✅ Venues encontrados:")
 for v in venues:
     print(f"- {v.get('title')} | Capacidad: {v.get('capacidad')} | Ciudad: {v.get('ciudad')} | Precio: {v.get('precio')}")
+
+
+# def obtener_venues_desde_api(ciudad="Seattle", capacidad=60, tipo_evento="wedding"):
+#     url = "https://www.tagvenue.com/us/"
+#     payload = {
+#         "city": ciudad,
+#         "people": capacidad,
+#         "tags": [tipo_evento],
+#         "iso_country_code": "US",  # o US si usas Seattle
+#         "page": 1,
+#         "items_per_page": 50
+#     }
+#     headers = {
+#         "Content-Type": "application/json",
+#         "Accept": "application/json",
+#         "User-Agent": "Mozilla/5.0"
+#     }
+
+#     response = requests.post(url, json=payload, headers=headers)
+#     if response.status_code == 200:
+#         data = response.json()
+#         venues = []
+#         for item in data.get("rooms", []):
+#             full_url = f"https://www.tagvenue.com{item.get('url')}"
+#             venues.append(full_url)
+#         return venues
+#     else:
+#         print("⚠️ Error al consultar la API:", response.status_code)
+#         return []
+
+# urls = obtener_venues_desde_api(ciudad="London", capacidad=50, tipo_evento="conference")
+# print("🔗 URLs encontradas:")
+# for u in urls:
+#     print("-", u)

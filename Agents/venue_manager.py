@@ -56,10 +56,10 @@ class VenueAgent:
 
 
     def find_venues(self, criteria, urls):
+        print(1)
         self.setup_rules(criteria)
         for url in urls:
-            self.crawler.crawl(url, context=criteria)
+            self.crawler.crawl(url, context=criteria, depth=1)  # profundidad de expansión
         return self.graph.query("venue")
-        return results
 
     

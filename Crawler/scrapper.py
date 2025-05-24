@@ -3,57 +3,44 @@
 import re
 from bs4 import BeautifulSoup
 import requests
+import time
+from Crawler.llm_extract_openrouter import llm_extract_openrouter
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
-def extract_number(text):
-    match = re.search(r'\d+', text.replace(',', ''))
-    return int(match.group()) if match else None
-
-def extract_price(text):
-    match = re.search(r'[\$€£]\s?(\d+[,\d]*)', text)
-    return float(match.group(1).replace(',', '')) if match else None
+def setup_driver():
+    options = Options()
+    options.add_argument("--headless")
+    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 def scrape_page(url: str, context: dict = None) -> dict:
-    response = requests.get(url)
-    if response.status_code != 200:
-        print(f"[SCRAPER] Página no encontrada (status: {response.status_code})")
-        return {
-            "title": f"{response.status_code} - {url}",
-            "url": url,
-            "entities": [],
-            "timestamp": response.headers.get("Date"),
-            "capacidad": None,
-            "precio": None,
-            "ciudad": None,
-            "tipo_evento": "otro"
-        }
+    html = None
+    print(f"[SCRAPER] Intentando requests: {url}")
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            html = response.text
+        else:
+            print(f"[SCRAPER] Código no 200: {response.status_code}")
+    except Exception as e:
+        print(f"[SCRAPER] Requests falló: {e}")
 
-    soup = BeautifulSoup(response.text, 'html.parser')
-    title = soup.title.string.strip() if soup.title else ""
-    text = soup.get_text(separator=' ', strip=True)
+    if not html or len(html.strip()) < 1000:
+        print("[SCRAPER] Usando Selenium...")
+        try:
+            driver = setup_driver()
+            driver.get(url)
+        #    time.sleep(3)
+            html = driver.page_source
+            driver.quit()
+        except Exception as e:
+            print(f"[SCRAPER] Selenium falló: {e}")
+            return {"url": url, "title": "ERROR", "outlinks": []}
 
-    # Buscar capacidad estimada por keywords típicas
-    capacidad = None
-    capacity_match = re.search(r"up to (\d+)\s*(seats|standing|people)?", text, re.IGNORECASE)
-    if capacity_match:
-        capacidad = int(capacity_match.group(1))
-
-    # Intentar inferir ciudad del texto o URL (fallback simple)
-    ciudad = None
-    if "London" in text:
-        ciudad = "London"
-    elif "london" in url.lower():
-        ciudad = "London"
-
-    # Inferir tipo de evento por palabras clave
-    tipo_evento = "bar" if "bar" in text.lower() else "evento"
-
-    return {
-        "url": url,
-        "title": title,
-        "entities": [a.text for a in soup.find_all('a')][:5],
-        "timestamp": response.headers.get("Date"),
-        "capacidad": capacidad,
-        "precio": extract_price(text),
-        "ciudad": ciudad,
-        "tipo_evento": tipo_evento
-    }
+    structured = llm_extract_openrouter(html, url=url)
+    print(structured)
+    structured["url"] = url
+    structured["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    return structured

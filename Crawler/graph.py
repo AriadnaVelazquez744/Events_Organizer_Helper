@@ -9,36 +9,85 @@ class KnowledgeGraphInterface:
         self.edges = []  # tuplas (from_id, relation, to_id)
 
     def insert_knowledge(self, knowledge: Dict[str, Any]):
-        node_id = knowledge.get("url") or f"node_{len(self.nodes)}"
-        
-        if node_id in self.nodes:
-            print(f"[GRAPH] Actualizando nodo existente: {node_id}")
-            self.nodes[node_id].update(knowledge)
-        else:
-            print(f"[GRAPH] Insertando nuevo nodo: {node_id}")
-            self.nodes[node_id] = knowledge
+        venue_id = knowledge.get("url")
+        title = knowledge.get("title", "Sin Título")
 
-        # Crear relaciones semánticas seguras
-        ciudad = knowledge.get("ciudad")
-        if ciudad:
-            city_id = f"city::{ciudad.lower().strip()}"
-            if city_id not in self.nodes:
-                self.nodes[city_id] = {"tipo": "ciudad", "nombre": ciudad}
-            self.edges.append((node_id, "ubicado_en", city_id))
+        # Nodo principal del venue
+        self.nodes[venue_id] = {
+            "tipo": "venue",
+            "nombre": title,
+            "original_data": knowledge,
+            "completitud": "parcial"  # esto se puede actualizar más abajo
+        }
 
-        tipo_evento = knowledge.get("tipo_evento")
-        if tipo_evento:
-            tipo_id = f"tipo::{tipo_evento.lower().strip()}"
-            if tipo_id not in self.nodes:
-                self.nodes[tipo_id] = {"tipo": "tipo_evento", "nombre": tipo_evento}
-            self.edges.append((node_id, "apto_para", tipo_id))
+        # Capacidad (valor numérico)
+        capacidad = knowledge.get("capacidad")
+        if isinstance(capacidad, int):
+            cap_id = f"capacidad::{capacidad}"
+            self.nodes[cap_id] = {"tipo": "capacidad", "valor": capacidad}
+            self.edges.append((venue_id, "capacidad", cap_id))
 
-        # Marcar completitud del nodo
-        knowledge["completitud"] = "completa" if all([
-            knowledge.get("capacidad"),
-            knowledge.get("precio"),
+        # Precio (subvalores si es un dict)
+        precio = knowledge.get("precio")
+        if isinstance(precio, dict):
+            for subkey, val in precio.items():
+                if val:
+                    pid = f"precio:{subkey}::{val}"
+                    self.nodes[pid] = {"tipo": f"precio_{subkey}", "valor": val}
+                    self.edges.append((venue_id, f"precio_{subkey}", pid))
+
+        # Ambiente
+        for ambiente in knowledge.get("ambiente", []):
+            amb_id = f"ambiente::{ambiente.lower().strip()}"
+            self.nodes[amb_id] = {"tipo": "ambiente", "valor": ambiente}
+            self.edges.append((venue_id, "ambiente", amb_id))
+
+        # Tipo local
+        tipo_local = knowledge.get("tipo_local")
+        if tipo_local:
+            tid = f"tipo_local::{tipo_local.lower().strip()}"
+            self.nodes[tid] = {"tipo": "tipo_local", "valor": tipo_local}
+            self.edges.append((venue_id, "tipo_local", tid))
+
+        # Servicios
+        for servicio in knowledge.get("servicios", []):
+            sid = f"servicio::{servicio.lower().strip()}"
+            self.nodes[sid] = {"tipo": "servicio", "valor": servicio}
+            self.edges.append((venue_id, "servicio", sid))
+
+        # Restricciones
+        restricciones = knowledge.get("restricciones")
+        if isinstance(restricciones, str):
+            restricciones = [restricciones]
+
+        for restric in restricciones or []:
+            rid = f"restriccion::{restric.lower().strip()}"
+            self.nodes[rid] = {"tipo": "restriccion", "valor": restric}
+            self.edges.append((venue_id, "restriccion", rid))
+
+        # Eventos compatibles
+        for evento in knowledge.get("eventos_compatibles", []):
+            eid = f"evento::{evento.lower().strip()}"
+            self.nodes[eid] = {"tipo": "evento", "valor": evento}
+            self.edges.append((venue_id, "evento_compatible", eid))
+
+        # Outlinks
+        for link in knowledge.get("outlinks", []):
+            if not link.startswith("http"):
+                continue
+            lid = f"outlink::{link}"
+            self.nodes[lid] = {"tipo": "outlink", "valor": link}
+            self.edges.append((venue_id, "referencia", lid))
+
+        # Completitud mínima (capacidad, precio y ciudad)
+        has_essential = all([
+            isinstance(knowledge.get("capacidad"), int),
+            isinstance(knowledge.get("precio"), dict),
             knowledge.get("ciudad")
-        ]) else "parcial"
+        ])
+        self.nodes[venue_id]["completitud"] = "completa" if has_essential else "parcial"
+
+
 
     def query(self, entity_type: Optional[str] = None) -> List[Dict[str, Any]]:
         if entity_type:
