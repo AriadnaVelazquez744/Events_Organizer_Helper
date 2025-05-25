@@ -1,4 +1,5 @@
 # crawler/core.py (actualizado)
+from urllib.parse import urlparse
 from typing import Callable, List, Dict, Any
 from Crawler.scrapper import scrape_page
 from Crawler.policy import CrawlPolicy
@@ -50,10 +51,14 @@ class AdvancedCrawlerAgent:
 
             self._log("SUCCESS", f"Procesado: {url}")
 
-            # Expansión
             if depth > 0:
-                for next_url in content.get("outlinks", []):
-                    self.crawl(next_url, context=context, depth=depth - 1)
+                base_domain = urlparse(url).netloc
+                outlinks = content.get("outbound_links") or content.get("outlinks") or []
+                for next_url in outlinks:
+                    if isinstance(next_url, str) and next_url.startswith("http"):
+                        # opcional: limitar al mismo dominio
+                        if urlparse(next_url).netloc == base_domain:
+                            self.crawl(next_url, context=context, depth=depth - 1)
 
         except Exception as e:
             self._log("ERROR", f"{url} falló: {str(e)}")

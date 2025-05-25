@@ -5,7 +5,7 @@ import json
 from bs4 import BeautifulSoup
 
 client = openai.OpenAI(
-   api_key = "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",
+   api_key = "sk-or-v1-ef70c8ca5b580041436df3c23ebd086",
    base_url = "https://openrouter.ai/api/v1"
 )
 
@@ -38,6 +38,7 @@ Extrae del siguiente texto los datos de un lugar para eventos si el texto solo m
 
 - Nombre del lugar
 - Capacidad (número de personas)
+- Ubicación
 - Extrae la información de precios dividiendo en:
 
 - "alquiler_espacio": precio fijo por alquilar el lugar (por evento o por día), cualquier cosa que empiece por "starting at ..."
@@ -65,7 +66,7 @@ Devuelve un subJSON con esta estructura:
 Si el texto menciona varios lugares solo busca y extrae URLs en todo el texto aunque no aparezcan donde se menciona un lugar
 
 Devuelve un JSON con estas claves exactas:
-"title", "capacidad", "precio", "ambiente", "tipo_local", "servicios", "restricciones", "eventos_compatibles", "outlinks"
+"title", "capacidad", "ubicación", "precio", "ambiente", "tipo_local", "servicios", "restricciones", "eventos_compatibles", "outlinks"
 
 
 Texto:

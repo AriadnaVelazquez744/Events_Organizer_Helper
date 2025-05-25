@@ -36,7 +36,7 @@ agent = VenueAgent(
 criteria = {
     "capacidad": 30,
     "presupuesto": 100000,
-    "ciudad": "London"
+    
 }
 
 urls = [

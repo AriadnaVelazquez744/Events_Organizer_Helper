@@ -3,6 +3,7 @@
 import json
 from typing import List, Dict, Any, Optional
 
+
 class KnowledgeGraphInterface:
     def __init__(self):
         self.nodes = {}  # clave: id o url

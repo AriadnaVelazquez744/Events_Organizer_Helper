@@ -23,36 +23,56 @@ class VenueAgent:
             if capacidad is None:
                 print(f"[RULE] Descarta {knowledge.get('title')} por capacidad ausente")
                 return False
-            if min_capacidad is not None and capacidad < min_capacidad:
+            if isinstance(capacidad, dict):  # en caso de estructura avanzada
+                capacidad_val = capacidad.get("sentados") or capacidad.get("de_pie")
+            else:
+                capacidad_val = capacidad
+
+            if min_capacidad is not None and capacidad_val < min_capacidad:
                 print(f"[RULE] Descarta {knowledge.get('title')} por baja capacidad")
                 return False
             return True
 
         def rule_presupuesto(knowledge):
             precio = knowledge.get("precio")
-            max_precio = criteria.get("presupuesto")
-            if precio is None:
-                print(f"[RULE] Descarta {knowledge.get('title')} por precio ausente")
+            max_presupuesto = criteria.get("presupuesto")
+            if precio is None or max_presupuesto is None:
+                print(f"[RULE] Descarta {knowledge.get('title')} por precio ausente o sin criterio")
                 return False
-            if max_precio is not None and precio > max_precio:
-                print(f"[RULE] Descarta {knowledge.get('title')} por sobrepresupuesto")
+
+            if isinstance(precio, dict):
+                precios_numericos = [v for k, v in precio.items() if isinstance(v, (int, float))]
+                if not precios_numericos:
+                    print(f"[RULE] {knowledge.get('title')} sin precios comparables")
+                    return False
+                if all(p > max_presupuesto for p in precios_numericos):
+                    print(f"[RULE] Descarta {knowledge.get('title')} por sobrepresupuesto")
+                    return False
+            elif isinstance(precio, (int, float)):
+                if precio > max_presupuesto:
+                    print(f"[RULE] Descarta {knowledge.get('title')} por sobrepresupuesto")
+                    return False
+            else:
+                print(f"[RULE] {knowledge.get('title')} con precio no procesable")
                 return False
             return True
 
-        def rule_ciudad(knowledge):
-            ciudad = knowledge.get("ciudad")
-            criterio_ciudad = criteria.get("ciudad")
-            if ciudad is None:
-                print(f"[RULE] Descarta {knowledge.get('title')} por ciudad ausente")
-                return False
-            if criterio_ciudad and criterio_ciudad.lower() not in ciudad.lower():
-                print(f"[RULE] Descarta {knowledge.get('title')} por ciudad no coincidente")
-                return False
-            return True
+        # def rule_ciudad(knowledge):
+        #     ciudad = knowledge.get("ciudad")
+        #     criterio_ciudad = criteria.get("ciudad")
+        #     if ciudad is None:
+        #         print(f"[RULE] Descarta {knowledge.get('title')} por ciudad ausente")
+        #         return False
+        #     if criterio_ciudad and criterio_ciudad.lower() not in ciudad.lower():
+        #         print(f"[RULE] Descarta {knowledge.get('title')} por ciudad no coincidente")
+        #         return False
+        #     return True
 
+        self.expert.clear_rules()
         self.expert.add_rule(rule_capacity)
         self.expert.add_rule(rule_presupuesto)
-        self.expert.add_rule(rule_ciudad)
+        # self.expert.add_rule(rule_ciudad)
+
 
 
     def find_venues(self, criteria, urls):
