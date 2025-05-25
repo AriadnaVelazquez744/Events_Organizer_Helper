@@ -16,7 +16,6 @@ class KnowledgeGraphInterface:
         self.nodes[venue_id] = {
             "tipo": "venue",
             "nombre": title,
-            "original_data": knowledge,
             "completitud": "parcial"  # esto se puede actualizar más abajo
         }
 
@@ -36,30 +35,39 @@ class KnowledgeGraphInterface:
                     self.nodes[pid] = {"tipo": f"precio_{subkey}", "valor": val}
                     self.edges.append((venue_id, f"precio_{subkey}", pid))
 
-        # Ambiente
-        for ambiente in knowledge.get("ambiente", []):
-            amb_id = f"ambiente::{ambiente.lower().strip()}"
-            self.nodes[amb_id] = {"tipo": "ambiente", "valor": ambiente}
+       # Ambiente
+        ambiente = knowledge.get("ambiente")
+        print (ambiente)
+        if isinstance(ambiente, str):
+            ambiente = [x.strip() for x in ambiente.split(",")]
+        for amb in ambiente or []:
+            amb_id = f"ambiente::{amb.lower()}"
+            self.nodes[amb_id] = {"tipo": "ambiente", "valor": amb}
             self.edges.append((venue_id, "ambiente", amb_id))
 
-        # Tipo local
+        # Tipo de local
         tipo_local = knowledge.get("tipo_local")
-        if tipo_local:
-            tid = f"tipo_local::{tipo_local.lower().strip()}"
-            self.nodes[tid] = {"tipo": "tipo_local", "valor": tipo_local}
+        print (tipo_local)
+        if isinstance(tipo_local, str):
+            tipo_local = [x.strip() for x in tipo_local.split(",")]
+        for tipo in tipo_local or []:
+            tid = f"tipo_local::{tipo.lower()}"
+            self.nodes[tid] = {"tipo": "tipo_local", "valor": tipo}
             self.edges.append((venue_id, "tipo_local", tid))
 
         # Servicios
+        # print(servicio)
         for servicio in knowledge.get("servicios", []):
             sid = f"servicio::{servicio.lower().strip()}"
             self.nodes[sid] = {"tipo": "servicio", "valor": servicio}
             self.edges.append((venue_id, "servicio", sid))
 
         # Restricciones
+        
         restricciones = knowledge.get("restricciones")
+        print(restricciones)
         if isinstance(restricciones, str):
             restricciones = [restricciones]
-
         for restric in restricciones or []:
             rid = f"restriccion::{restric.lower().strip()}"
             self.nodes[rid] = {"tipo": "restriccion", "valor": restric}
@@ -73,17 +81,17 @@ class KnowledgeGraphInterface:
 
         # Outlinks
         for link in knowledge.get("outlinks", []):
-            if not link.startswith("http"):
+            if not isinstance(link, str) or not link.startswith("http"):
                 continue
             lid = f"outlink::{link}"
             self.nodes[lid] = {"tipo": "outlink", "valor": link}
             self.edges.append((venue_id, "referencia", lid))
 
-        # Completitud mínima (capacidad, precio y ciudad)
+        # Completitud mínima
         has_essential = all([
             isinstance(knowledge.get("capacidad"), int),
             isinstance(knowledge.get("precio"), dict),
-            knowledge.get("ciudad")
+            knowledge.get("title")
         ])
         self.nodes[venue_id]["completitud"] = "completa" if has_essential else "parcial"
 

@@ -38,7 +38,10 @@ class AdvancedCrawlerAgent:
             content = scrape_page(url, context)
             print(f"[CRAWLER] Contenido scrapeado: {bool(content)}")
 
-            knowledge = self.extract_knowledge(content, url, context)
+            content.setdefault("url", url)
+            content.setdefault("tipo", "venue")
+            content.setdefault("timestamp", datetime.utcnow().isoformat())
+            knowledge = content
             print(f"[CRAWLER] Extrajo conocimiento: {knowledge}")
             self.graph_interface.insert_knowledge(knowledge)
 
@@ -56,18 +59,6 @@ class AdvancedCrawlerAgent:
             self._log("ERROR", f"{url} falló: {str(e)}")
 
 
-    def extract_knowledge(self, content: Dict[str, Any], url: str, context: Dict[str, Any]) -> Dict[str, Any]:
-        return {
-            "url": url,
-            "title": content.get("title", "").strip(),
-            "entities": content.get("entities", []),
-            "capacidad": content.get("capacidad"),
-            "tipo": "venue",
-            "precio": content.get("precio"),
-            "ciudad": content.get("ciudad"),
-            "tipo_evento": content.get("tipo_evento"),
-            "timestamp": content.get("timestamp", datetime.utcnow().isoformat())
-        }
 
     def _log(self, level: str, message: str):
         log_entry = f"[{self.name}] [{level}] {datetime.utcnow().isoformat()} - {message}"

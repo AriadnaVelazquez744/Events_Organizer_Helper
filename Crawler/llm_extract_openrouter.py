@@ -5,7 +5,7 @@ import json
 from bs4 import BeautifulSoup
 
 client = openai.OpenAI(
-   api_key = "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",
+   api_key = "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",
    base_url = "https://openrouter.ai/api/v1"
 )
 
@@ -66,6 +66,7 @@ Si el texto menciona varios lugares solo busca y extrae URLs en todo el texto au
 
 Devuelve un JSON con estas claves exactas:
 "title", "capacidad", "precio", "ambiente", "tipo_local", "servicios", "restricciones", "eventos_compatibles", "outlinks"
+
 
 Texto:
 {relevant_text}
