@@ -10,7 +10,10 @@ dependencies = [
     "gensim>=4.3.2",
     "matplotlib>=3.10.3",
     "numpy>=2.2.5",
+    "openai>=1.82.0",
+    "selenium>=4.33.0",
     "spacy>=3.8.5",
     "streamlit>=1.45.1",
     "sympy>=1.14.0",
+    "webdriver-manager>=4.0.2",
 ]
