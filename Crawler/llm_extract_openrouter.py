@@ -3,9 +3,13 @@
 import openai
 import json
 from bs4 import BeautifulSoup
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 client = openai.OpenAI(
-   api_key = "sk-or-v1-ef70c8ca5b580041436df3c23ebd086",
+   api_key = os.getenv("OPENROUTER_API_KEY"),
    base_url = "https://openrouter.ai/api/v1"
 )
 

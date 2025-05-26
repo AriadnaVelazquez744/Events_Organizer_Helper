@@ -3,7 +3,14 @@
     "ignorePaths": [],
     "dictionaryDefinitions": [],
     "dictionaries": [],
-    "words": [],
+    "words": [
+        "deepseek",
+        "dotenv",
+        "noscript",
+        "openrouter",
+        "OPENROUTER",
+        "outlinks"
+    ],
     "ignoreWords": [],
     "import": [],
     "language": "en, es"
