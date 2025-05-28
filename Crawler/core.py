@@ -1,5 +1,6 @@
 # crawler/core.py (actualizado)
-from urllib.parse import urlparse
+import re
+from urllib.parse import urlparse, urljoin
 from typing import Callable, List, Dict, Any
 from Crawler.scrapper import scrape_page
 from Crawler.policy import CrawlPolicy
@@ -15,15 +16,21 @@ class AdvancedCrawlerAgent:
         self.mission_profile = mission_profile or {}
         self.log = []
         self.visited = set()
-        self.max_visits = 50
+        self.max_visits = 8
+        self.to_visit = []  # nueva pila FIFO
 
-    def crawl(self, url: str, context: Dict[str, Any] = None, depth: int = 1):
-        print(2)
+    def enqueue_url(self, url):
+        if url not in self.visited and url not in self.to_visit:
+            self.to_visit.append(url)
+
+
+    def crawl(self, url: str, context: Dict[str, Any] = None, depth: int = 0):
+        print("[CRAWLER] Iniciando scrape de:", url)
+
         if url in self.visited:
             print(f"[CRAWLER] Ya visitado: {url}")
             return
 
-        # Solo registrar el bloqueo, pero no abortar
         if not self.policy.can_fetch(url):
             print(f"[CRAWLER] Robots.txt bloquea: {url} (continuando con Selenium si es necesario)")
 
@@ -35,30 +42,43 @@ class AdvancedCrawlerAgent:
         self.visited.add(url)
 
         try:
-            print(f"[CRAWLER] Scrapeando: {url}")
             content = scrape_page(url, context)
             print(f"[CRAWLER] Contenido scrapeado: {bool(content)}")
 
+            # Asegura campos mínimos
             content.setdefault("url", url)
             content.setdefault("tipo", "venue")
             content.setdefault("timestamp", datetime.utcnow().isoformat())
             knowledge = content
-            print(f"[CRAWLER] Extrajo conocimiento: {knowledge}")
+
+            # Insertar en el grafo
             self.graph_interface.insert_knowledge(knowledge)
 
+            # Evaluar con el sistema experto
             if self.expert_system:
                 self.expert_system.process_knowledge(knowledge)
 
             self._log("SUCCESS", f"Procesado: {url}")
 
-            if depth > 0:
-                base_domain = urlparse(url).netloc
-                outlinks = content.get("outbound_links") or content.get("outlinks") or []
-                for next_url in outlinks:
-                    if isinstance(next_url, str) and next_url.startswith("http"):
-                        # opcional: limitar al mismo dominio
-                        if urlparse(next_url).netloc == base_domain:
-                            self.crawl(next_url, context=context, depth=depth - 1)
+            # === EXPANSIÓN DE URLS ===
+            outlinks = content.get("outbound_links") or content.get("outlinks") or []
+            base_domain = urlparse(url).netloc
+
+            # 1. Agregar outlinks relevantes
+            for next_url in outlinks:
+                if isinstance(next_url, str) and next_url.startswith("http"):
+                    if urlparse(next_url).netloc == base_domain:
+                        self.enqueue_url(next_url)
+
+            # 2. Si es página de búsqueda, intentar paginar
+            if "search" in url and "?page=" in url:
+                match = re.search(r"\?page=(\d+)", url)
+                if match:
+                    current_page = int(match.group(1))
+                    next_page_url = re.sub(r"\?page=\d+", f"?page={current_page + 1}", url)
+                    self.enqueue_url(next_page_url)
+            elif "search" in url and "?page=" not in url:
+                self.enqueue_url(url + "?page=2")
 
         except Exception as e:
             self._log("ERROR", f"{url} falló: {str(e)}")

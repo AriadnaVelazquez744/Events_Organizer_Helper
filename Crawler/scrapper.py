@@ -38,9 +38,38 @@ def scrape_page(url: str, context: dict = None) -> dict:
         except Exception as e:
             print(f"[SCRAPER] Selenium falló: {e}")
             return {"url": url, "title": "ERROR", "outlinks": []}
-
+        
+    if "/search/" in url:
+        outlinks = extract_zola_venue_links(html)
+        print("[SCRAPER] Links extraídos:", outlinks)
+        return {
+            "url": url,
+            "title": "Search Page",
+            "outlinks": outlinks,
+            "tipo": "search"
+        }
+        
     structured = llm_extract_openrouter(html, url=url)
-    print(structured)
     structured["url"] = url
+    structured["tipo"] = "venue"
+    structured["outlinks"] = extract_zola_venue_links(html)  # por si hay más venues referenciados
     structured["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     return structured
+    
+
+def extract_zola_venue_links(html: str) -> list:
+    soup = BeautifulSoup(html, "html.parser")
+    venue_links = set()
+
+    # Patrón para URLs válidas de venues en Zola
+    pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-venues/[a-z0-9\-]+/?$")
+
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        # Normalizar a URL absoluta si es relativa
+        if href.startswith("/wedding-vendors/wedding-venues/"):
+            href = "https://www.zola.com" + href
+        if pattern.match(href):
+            venue_links.add(href)
+
+    return list(venue_links)

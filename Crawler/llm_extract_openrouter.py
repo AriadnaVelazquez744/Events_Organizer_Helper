@@ -34,8 +34,10 @@ def extract_relevant_text(soup: BeautifulSoup):
     return "\n".join(parts)
 
 def llm_extract_openrouter(html: str, url: str = "") -> dict:
+    print(3)
     soup = clean_html_soup(html)
-    relevant_text = soup.get_text
+    print(4)
+    relevant_text = soup.get_text(separator=" ", strip=True)
 
     prompt = f"""
 Extrae del siguiente texto los datos de un lugar para eventos si el texto solo menciona un lugar:

@@ -1,94 +1,98 @@
 
 # crawler/graph.py
 import json
+import os
 from typing import List, Dict, Any, Optional
 
 
 class KnowledgeGraphInterface:
-    def __init__(self):
-        self.nodes = {}  # clave: id o url
-        self.edges = []  # tuplas (from_id, relation, to_id)
+    def __init__(self, filename: str = "graph.json"):
+        self.nodes = {}  
+        self.edges = []  
+        self.filename = filename
+        
+        if os.path.exists(self.filename):
+            self.load_from_file(self.filename)
+            print(f"[GRAPH] Grafo cargado desde {self.filename}")
+        else:
+            print(f"[GRAPH] No existe {self.filename}, creando nuevo grafo.")
 
     def insert_knowledge(self, knowledge: Dict[str, Any]):
         venue_id = knowledge.get("url")
         title = knowledge.get("title", "Sin Título")
 
         # Nodo principal del venue
-        self.nodes[venue_id] = {
-            "tipo": "venue",
-            "nombre": title,
-            "completitud": "parcial"  # esto se puede actualizar más abajo
-        }
+        if venue_id not in self.nodes:
+            self.nodes[venue_id] = {
+                "tipo": "venue",
+                "nombre": title,
+                "completitud": "parcial"  # esto se puede actualizar más abajo
+            }
+            
+        def safe_add_node(nid, tipo, valor):
+            if nid not in self.nodes:
+                self.nodes[nid] = {"tipo": tipo, "valor": valor}
+            return nid
 
-        # Capacidad (valor numérico)
+        def safe_add_edge(from_id, rel, to_id):
+            if (from_id, rel, to_id) not in self.edges:
+                self.edges.append((from_id, rel, to_id))
+
+        # Capacidad
         capacidad = knowledge.get("capacidad")
         if isinstance(capacidad, int):
-            cap_id = f"capacidad::{capacidad}"
-            self.nodes[cap_id] = {"tipo": "capacidad", "valor": capacidad}
-            self.edges.append((venue_id, "capacidad", cap_id))
+            nid = safe_add_node(f"capacidad::{capacidad}", "capacidad", capacidad)
+            safe_add_edge(venue_id, "capacidad", nid)
 
-        # Precio (subvalores si es un dict)
+        # Precio
         precio = knowledge.get("precio")
         if isinstance(precio, dict):
             for subkey, val in precio.items():
                 if val:
-                    pid = f"precio:{subkey}::{val}"
-                    self.nodes[pid] = {"tipo": f"precio_{subkey}", "valor": val}
-                    self.edges.append((venue_id, f"precio_{subkey}", pid))
+                    pid = safe_add_node(f"precio:{subkey}::{val}", f"precio_{subkey}", val)
+                    safe_add_edge(venue_id, f"precio_{subkey}", pid)
 
-       # Ambiente
+        # Ambiente
         ambiente = knowledge.get("ambiente")
-        print (ambiente)
         if isinstance(ambiente, str):
             ambiente = [x.strip() for x in ambiente.split(",")]
         for amb in ambiente or []:
-            amb_id = f"ambiente::{amb.lower()}"
-            self.nodes[amb_id] = {"tipo": "ambiente", "valor": amb}
-            self.edges.append((venue_id, "ambiente", amb_id))
+            nid = safe_add_node(f"ambiente::{amb.lower()}", "ambiente", amb)
+            safe_add_edge(venue_id, "ambiente", nid)
 
-        # Tipo de local
+        # Tipo local
         tipo_local = knowledge.get("tipo_local")
-        print (tipo_local)
         if isinstance(tipo_local, str):
             tipo_local = [x.strip() for x in tipo_local.split(",")]
         for tipo in tipo_local or []:
-            tid = f"tipo_local::{tipo.lower()}"
-            self.nodes[tid] = {"tipo": "tipo_local", "valor": tipo}
-            self.edges.append((venue_id, "tipo_local", tid))
+            nid = safe_add_node(f"tipo_local::{tipo.lower()}", "tipo_local", tipo)
+            safe_add_edge(venue_id, "tipo_local", nid)
 
         # Servicios
-        # print(servicio)
-        for servicio in knowledge.get("servicios", []):
-            sid = f"servicio::{servicio.lower().strip()}"
-            self.nodes[sid] = {"tipo": "servicio", "valor": servicio}
-            self.edges.append((venue_id, "servicio", sid))
+        for s in knowledge.get("servicios", []):
+            nid = safe_add_node(f"servicio::{s.lower().strip()}", "servicio", s)
+            safe_add_edge(venue_id, "servicio", nid)
 
         # Restricciones
-        
         restricciones = knowledge.get("restricciones")
-        print(restricciones)
         if isinstance(restricciones, str):
             restricciones = [restricciones]
-        for restric in restricciones or []:
-            rid = f"restriccion::{restric.lower().strip()}"
-            self.nodes[rid] = {"tipo": "restriccion", "valor": restric}
-            self.edges.append((venue_id, "restriccion", rid))
+        for r in restricciones or []:
+            nid = safe_add_node(f"restriccion::{r.lower().strip()}", "restriccion", r)
+            safe_add_edge(venue_id, "restriccion", nid)
 
-        # Eventos compatibles
-        for evento in knowledge.get("eventos_compatibles", []):
-            eid = f"evento::{evento.lower().strip()}"
-            self.nodes[eid] = {"tipo": "evento", "valor": evento}
-            self.edges.append((venue_id, "evento_compatible", eid))
+        # Eventos
+        for e in knowledge.get("eventos_compatibles", []):
+            nid = safe_add_node(f"evento::{e.lower().strip()}", "evento", e)
+            safe_add_edge(venue_id, "evento_compatible", nid)
 
         # Outlinks
         for link in knowledge.get("outlinks", []):
-            if not isinstance(link, str) or not link.startswith("http"):
-                continue
-            lid = f"outlink::{link}"
-            self.nodes[lid] = {"tipo": "outlink", "valor": link}
-            self.edges.append((venue_id, "referencia", lid))
+            if isinstance(link, str) and link.startswith("http"):
+                nid = safe_add_node(f"outlink::{link}", "outlink", link)
+                safe_add_edge(venue_id, "referencia", nid)
 
-        # Completitud mínima
+        # Completitud
         has_essential = all([
             isinstance(knowledge.get("capacidad"), int),
             isinstance(knowledge.get("precio"), dict),

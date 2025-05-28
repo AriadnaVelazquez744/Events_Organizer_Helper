@@ -14,7 +14,7 @@ from venue_manager import VenueAgent
 from Crawler.policy import CrawlPolicy
 
 # 1. Inicialización de componentes
-graph = KnowledgeGraphInterface()
+graph = KnowledgeGraphInterface("venues_graph.json")
 expert = ExpertSystemInterface()
 policy = CrawlPolicy()
 
@@ -34,13 +34,12 @@ agent = VenueAgent(
 
 # 2. Criterios y URL de prueba
 criteria = {
-    "capacidad": 30,
-    "presupuesto": 100000,
-    
+    "capacidad": 200,
+    "presupuesto": 4000,
 }
 
 urls = [
-    "https://www.zola.com/wedding-vendors/wedding-venues/lake-house-reception-center"
+    "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1"
 ]
 
 
