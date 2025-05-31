@@ -34,8 +34,12 @@ agent = VenueAgent(
 
 # 2. Criterios y URL de prueba
 criteria = {
-    "capacidad": 200,
+    "obligatorios": ["capacidad", "precio"],
+    "precio": 60,
     "presupuesto": 4000,
+    "opcionales": ["tipo_local", "ambiente"],
+    "tipo_local": ["mansión", "country club"],
+    "ambiente": ["interior"]
 }
 
 urls = [

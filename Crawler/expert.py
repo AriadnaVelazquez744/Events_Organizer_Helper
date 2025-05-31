@@ -14,13 +14,21 @@ class ExpertSystemInterface:
         self.context = context
 
     def process_knowledge(self, knowledge: Dict[str, Any]) -> bool:
-        for rule in self.rules:
-            passed = rule(knowledge)
-            if not passed:
-                print(f"[RULE FAILED] {knowledge.get('title', 'n/a')}")
+        for idx, rule in enumerate(self.rules):
+            try:
+                passed = rule(knowledge)
+            except Exception as e:
+                print(f"[RULE ERROR] Excepción en regla {idx}: {e}")
                 return False
-        print(f"[RULE PASSED] {knowledge.get('title', 'n/a')}")
+
+            if not passed:
+                title = knowledge.get("title") or knowledge.get("nombre") or "n/a"
+                print(f"[RULE FAILED] {title} en regla {idx}")
+                return False
+        title = knowledge.get("title") or knowledge.get("nombre") or "n/a"
+        print(f"[RULE PASSED] {title}")
         return True
+
 
     def clear_rules(self):
         self.rules = []

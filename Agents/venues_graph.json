@@ -1,0 +1,1891 @@
+{
+  "nodes": {
+    "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1": {
+      "tipo": "venue",
+      "nombre": "Search Page",
+      "original_data": {
+        "url": "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+        "title": "Search Page",
+        "outlinks": [
+          "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+          "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+          "https://www.zola.com/wedding-vendors/wedding-venues/summit-farm-weddings",
+          "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+          "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+          "https://www.zola.com/wedding-vendors/wedding-venues/fruitcraft-fermentery-distillery",
+          "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+          "https://www.zola.com/wedding-vendors/wedding-venues/stroudsmoor-country-inn",
+          "https://www.zola.com/wedding-vendors/wedding-venues/donauschwaben-s-german-american-cultural-center",
+          "https://www.zola.com/wedding-vendors/wedding-venues/ashton-gardens-corinth",
+          "https://www.zola.com/wedding-vendors/wedding-venues/the-boylston-rooms",
+          "https://www.zola.com/wedding-vendors/wedding-venues/bakers-ranch-florida-s-premier-all-inclusive-venue",
+          "https://www.zola.com/wedding-vendors/wedding-venues/the-red-barn-at-outlook-farm",
+          "https://www.zola.com/wedding-vendors/wedding-venues/venue-at-the-grove",
+          "https://www.zola.com/wedding-vendors/wedding-venues/nazareth-hall",
+          "https://www.zola.com/wedding-vendors/wedding-venues/the-oviatt-penthouse-event-deck",
+          "https://www.zola.com/wedding-vendors/wedding-venues/brooklyn-winery",
+          "https://www.zola.com/wedding-vendors/wedding-venues/spruce-mountain-ranch",
+          "https://www.zola.com/wedding-vendors/wedding-venues/flagstaff-house-restaurant",
+          "https://www.zola.com/wedding-vendors/wedding-venues/a-simple-affair",
+          "https://www.zola.com/wedding-vendors/wedding-venues/green-acres-event-center",
+          "https://www.zola.com/wedding-vendors/wedding-venues/the-gallagher",
+          "https://www.zola.com/wedding-vendors/wedding-venues/itasca-country-club",
+          "https://www.zola.com/wedding-vendors/wedding-venues/blue-dress-barn",
+          "https://www.zola.com/wedding-vendors/wedding-venues/chicago-winery",
+          "https://www.zola.com/wedding-vendors/wedding-venues/willowdale-estate",
+          "https://www.zola.com/wedding-vendors/wedding-venues/walden",
+          "https://www.zola.com/wedding-vendors/wedding-venues/the-milestone-mansion-denton",
+          "https://www.zola.com/wedding-vendors/wedding-venues/deity--2",
+          "https://www.zola.com/wedding-vendors/wedding-venues/bay-13-brewery-and-kitchen"
+        ],
+        "tipo": "search",
+        "timestamp": "2025-05-31T09:16:48.686796"
+      },
+      "completitud": "parcial"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/summit-farm-weddings": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/summit-farm-weddings"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/watson-block": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/watson-block"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/fruitcraft-fermentery-distillery": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/fruitcraft-fermentery-distillery"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/stroudsmoor-country-inn": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/stroudsmoor-country-inn"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/donauschwaben-s-german-american-cultural-center": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/donauschwaben-s-german-american-cultural-center"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/ashton-gardens-corinth": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/ashton-gardens-corinth"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-boylston-rooms": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/the-boylston-rooms"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/bakers-ranch-florida-s-premier-all-inclusive-venue": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/bakers-ranch-florida-s-premier-all-inclusive-venue"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-red-barn-at-outlook-farm": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/the-red-barn-at-outlook-farm"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/venue-at-the-grove": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/venue-at-the-grove"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/nazareth-hall": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/nazareth-hall"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-oviatt-penthouse-event-deck": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/the-oviatt-penthouse-event-deck"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/brooklyn-winery": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/brooklyn-winery"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/spruce-mountain-ranch": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/spruce-mountain-ranch"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/flagstaff-house-restaurant": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/flagstaff-house-restaurant"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/a-simple-affair": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/a-simple-affair"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/green-acres-event-center": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/green-acres-event-center"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-gallagher": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/the-gallagher"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/itasca-country-club": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/itasca-country-club"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/blue-dress-barn": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/blue-dress-barn"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/chicago-winery": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/chicago-winery"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/willowdale-estate": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/willowdale-estate"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/walden": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/walden"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-milestone-mansion-denton": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/the-milestone-mansion-denton"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/deity--2": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/deity--2"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/bay-13-brewery-and-kitchen": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/bay-13-brewery-and-kitchen"
+    },
+    "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space": {
+      "tipo": "venue",
+      "nombre": "Olio: Modern / Industrial Event Space",
+      "original_data": {
+        "title": "Olio: Modern / Industrial Event Space",
+        "capacidad": 250,
+        "ubicacion": "43 Main St, Peabody, MA 01960",
+        "precio": {
+          "alquiler_espacio": 3000,
+          "por_persona": 0,
+          "otros": [],
+          "notas": "Starting at $3,000 for full wedding packages. Additional packages start at $6,000. Exclusive access to the venue (one event per day). No hidden fees. Updated pricing on their website."
+        },
+        "ambiente": "Interior",
+        "tipo_local": "Industrial Space",
+        "servicios": [
+          "Event rentals",
+          "Lighting/Sound",
+          "Pet friendly",
+          "Wheelchair accessible",
+          "Wifi",
+          "Self parking - free",
+          "Self parking - paid",
+          "Shuttle",
+          "Valet - paid",
+          "Rentals lighting",
+          "Standard Chairs"
+        ],
+        "restricciones": "No specific restrictions mentioned.",
+        "eventos_compatibles": [
+          "Wedding ceremony",
+          "Wedding reception",
+          "Rehearsal dinner",
+          "Wedding shower",
+          "Welcome party",
+          "Farewell brunch",
+          "Couples luncheon",
+          "Baraat",
+          "Cocktail hour",
+          "Engagement party",
+          "After party",
+          "Elopement"
+        ],
+        "outlinks": [],
+        "url": "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+        "tipo": "venue",
+        "timestamp": "2025-05-31T09:17:37Z"
+      },
+      "completitud": "completa"
+    },
+    "capacidad::250": {
+      "tipo": "capacidad",
+      "valor": 250
+    },
+    "precio:alquiler_espacio::3000": {
+      "tipo": "precio_alquiler_espacio",
+      "valor": 3000
+    },
+    "precio:notas::Starting at $3,000 for full wedding packages. Additional packages start at $6,000. Exclusive access to the venue (one event per day). No hidden fees. Updated pricing on their website.": {
+      "tipo": "precio_notas",
+      "valor": "Starting at $3,000 for full wedding packages. Additional packages start at $6,000. Exclusive access to the venue (one event per day). No hidden fees. Updated pricing on their website."
+    },
+    "ambiente::interior": {
+      "tipo": "ambiente",
+      "valor": "Interior"
+    },
+    "tipo_local::industrial space": {
+      "tipo": "tipo_local",
+      "valor": "Industrial Space"
+    },
+    "servicio::event rentals": {
+      "tipo": "servicio",
+      "valor": "Event rentals"
+    },
+    "servicio::lighting/sound": {
+      "tipo": "servicio",
+      "valor": "Lighting/Sound"
+    },
+    "servicio::pet friendly": {
+      "tipo": "servicio",
+      "valor": "Pet friendly"
+    },
+    "servicio::wheelchair accessible": {
+      "tipo": "servicio",
+      "valor": "Wheelchair accessible"
+    },
+    "servicio::wifi": {
+      "tipo": "servicio",
+      "valor": "Wifi"
+    },
+    "servicio::self parking - free": {
+      "tipo": "servicio",
+      "valor": "Self parking - free"
+    },
+    "servicio::self parking - paid": {
+      "tipo": "servicio",
+      "valor": "Self parking - paid"
+    },
+    "servicio::shuttle": {
+      "tipo": "servicio",
+      "valor": "Shuttle"
+    },
+    "servicio::valet - paid": {
+      "tipo": "servicio",
+      "valor": "Valet - paid"
+    },
+    "servicio::rentals lighting": {
+      "tipo": "servicio",
+      "valor": "Rentals lighting"
+    },
+    "servicio::standard chairs": {
+      "tipo": "servicio",
+      "valor": "Standard Chairs"
+    },
+    "restriccion::no specific restrictions mentioned.": {
+      "tipo": "restriccion",
+      "valor": "No specific restrictions mentioned."
+    },
+    "evento::wedding ceremony": {
+      "tipo": "evento",
+      "valor": "Wedding ceremony"
+    },
+    "evento::wedding reception": {
+      "tipo": "evento",
+      "valor": "Wedding reception"
+    },
+    "evento::rehearsal dinner": {
+      "tipo": "evento",
+      "valor": "Rehearsal dinner"
+    },
+    "evento::wedding shower": {
+      "tipo": "evento",
+      "valor": "Wedding shower"
+    },
+    "evento::welcome party": {
+      "tipo": "evento",
+      "valor": "Welcome party"
+    },
+    "evento::farewell brunch": {
+      "tipo": "evento",
+      "valor": "Farewell brunch"
+    },
+    "evento::couples luncheon": {
+      "tipo": "evento",
+      "valor": "Couples luncheon"
+    },
+    "evento::baraat": {
+      "tipo": "evento",
+      "valor": "Baraat"
+    },
+    "evento::cocktail hour": {
+      "tipo": "evento",
+      "valor": "Cocktail hour"
+    },
+    "evento::engagement party": {
+      "tipo": "evento",
+      "valor": "Engagement party"
+    },
+    "evento::after party": {
+      "tipo": "evento",
+      "valor": "After party"
+    },
+    "evento::elopement": {
+      "tipo": "evento",
+      "valor": "Elopement"
+    },
+    "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates": {
+      "tipo": "venue",
+      "nombre": "Iron Manor by Walters Wedding Estates",
+      "original_data": {
+        "title": "Iron Manor by Walters Wedding Estates",
+        "capacidad": 350,
+        "ubicación": "13570 Forest Ln, Montgomery, TX 77356",
+        "precio": {
+          "alquiler_espacio": 5000,
+          "por_persona": 32,
+          "otros": [
+            23,
+            40,
+            21,
+            62
+          ],
+          "notas": "Peak pricing: $5,000-14,000 for venue rental, $32-65 for catering, $23-40 for beverages. Prices vary based on season and package."
+        },
+        "ambiente": [
+          "Indoor",
+          "Outdoor"
+        ],
+        "tipo_local": "Ballrooms, Banquet Halls, Industrial Spaces",
+        "servicios": [
+          "Bar services",
+          "Catering services",
+          "Clean up",
+          "Dance floor",
+          "Dressing room / Bridal Suite",
+          "Event coordinator",
+          "Event rentals",
+          "Event staff",
+          "Lighting/Sound",
+          "Pet friendly",
+          "Service staff",
+          "Set up",
+          "Transportation",
+          "Wedding cake services",
+          "Wheelchair accessible",
+          "Wifi"
+        ],
+        "restricciones": [
+          "No outside alcohol allowed",
+          "Peak season: March-June and September-December",
+          "Off-peak season: January-February and July-August"
+        ],
+        "eventos_compatibles": [
+          "Wedding ceremony",
+          "Wedding reception",
+          "Cocktail hour"
+        ],
+        "outlinks": [
+          "https://www.zola.com/wedding-vendors/wedding-venues/firefly-gardens",
+          "https://www.zola.com/wedding-vendors/wedding-venues/ashton-gardens-north-houston-by-walters-wedding-estates",
+          "https://www.zola.com/wedding-vendors/wedding-venues/big-sky-by-walters-wedding-estates",
+          "https://www.zola.com/wedding-vendors/wedding-venues/hidden-pines-lake-houston"
+        ],
+        "url": "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+        "tipo": "venue",
+        "timestamp": "2025-05-31T09:17:57Z"
+      },
+      "completitud": "completa"
+    },
+    "capacidad::350": {
+      "tipo": "capacidad",
+      "valor": 350
+    },
+    "precio:alquiler_espacio::5000": {
+      "tipo": "precio_alquiler_espacio",
+      "valor": 5000
+    },
+    "precio:por_persona::32": {
+      "tipo": "precio_por_persona",
+      "valor": 32
+    },
+    "precio:otros::[23, 40, 21, 62]": {
+      "tipo": "precio_otros",
+      "valor": [
+        23,
+        40,
+        21,
+        62
+      ]
+    },
+    "precio:notas::Peak pricing: $5,000-14,000 for venue rental, $32-65 for catering, $23-40 for beverages. Prices vary based on season and package.": {
+      "tipo": "precio_notas",
+      "valor": "Peak pricing: $5,000-14,000 for venue rental, $32-65 for catering, $23-40 for beverages. Prices vary based on season and package."
+    },
+    "ambiente::indoor": {
+      "tipo": "ambiente",
+      "valor": "Indoor"
+    },
+    "ambiente::outdoor": {
+      "tipo": "ambiente",
+      "valor": "Outdoor"
+    },
+    "tipo_local::ballrooms": {
+      "tipo": "tipo_local",
+      "valor": "Ballrooms"
+    },
+    "tipo_local::banquet halls": {
+      "tipo": "tipo_local",
+      "valor": "Banquet Halls"
+    },
+    "tipo_local::industrial spaces": {
+      "tipo": "tipo_local",
+      "valor": "Industrial Spaces"
+    },
+    "servicio::bar services": {
+      "tipo": "servicio",
+      "valor": "Bar services"
+    },
+    "servicio::catering services": {
+      "tipo": "servicio",
+      "valor": "Catering services"
+    },
+    "servicio::clean up": {
+      "tipo": "servicio",
+      "valor": "Clean up"
+    },
+    "servicio::dance floor": {
+      "tipo": "servicio",
+      "valor": "Dance floor"
+    },
+    "servicio::dressing room / bridal suite": {
+      "tipo": "servicio",
+      "valor": "Dressing room / Bridal Suite"
+    },
+    "servicio::event coordinator": {
+      "tipo": "servicio",
+      "valor": "Event coordinator"
+    },
+    "servicio::event staff": {
+      "tipo": "servicio",
+      "valor": "Event staff"
+    },
+    "servicio::service staff": {
+      "tipo": "servicio",
+      "valor": "Service staff"
+    },
+    "servicio::set up": {
+      "tipo": "servicio",
+      "valor": "Set up"
+    },
+    "servicio::transportation": {
+      "tipo": "servicio",
+      "valor": "Transportation"
+    },
+    "servicio::wedding cake services": {
+      "tipo": "servicio",
+      "valor": "Wedding cake services"
+    },
+    "restriccion::no outside alcohol allowed": {
+      "tipo": "restriccion",
+      "valor": "No outside alcohol allowed"
+    },
+    "restriccion::peak season: march-june and september-december": {
+      "tipo": "restriccion",
+      "valor": "Peak season: March-June and September-December"
+    },
+    "restriccion::off-peak season: january-february and july-august": {
+      "tipo": "restriccion",
+      "valor": "Off-peak season: January-February and July-August"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/firefly-gardens": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/firefly-gardens"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/ashton-gardens-north-houston-by-walters-wedding-estates": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/ashton-gardens-north-houston-by-walters-wedding-estates"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/big-sky-by-walters-wedding-estates": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/big-sky-by-walters-wedding-estates"
+    },
+    "outlink::https://www.zola.com/wedding-vendors/wedding-venues/hidden-pines-lake-houston": {
+      "tipo": "outlink",
+      "valor": "https://www.zola.com/wedding-vendors/wedding-venues/hidden-pines-lake-houston"
+    },
+    "https://www.zola.com/wedding-vendors/wedding-venues/summit-farm-weddings": {
+      "tipo": "venue",
+      "nombre": "ERROR",
+      "original_data": {
+        "title": "ERROR",
+        "capacidad": null,
+        "precio": null,
+        "ambiente": null,
+        "tipo_local": null,
+        "servicios": [],
+        "restricciones": [],
+        "eventos_compatibles": [],
+        "outlinks": [],
+        "url": "https://www.zola.com/wedding-vendors/wedding-venues/summit-farm-weddings",
+        "tipo": "venue",
+        "timestamp": "2025-05-31T09:18:37Z"
+      },
+      "completitud": "parcial"
+    },
+    "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri": {
+      "tipo": "venue",
+      "nombre": "The Sanctuary RI",
+      "original_data": {
+        "title": "The Sanctuary RI",
+        "capacidad": {
+          "seated": 300,
+          "standing": 600
+        },
+        "ubicación": "851 Main St, New York, NY 10044",
+        "precio": {
+          "alquiler_espacio": {
+            "off-peak": 15000,
+            "peak": 20000
+          },
+          "por_persona": null,
+          "otros": [],
+          "notas": "Precios varían según temporada (off-peak: enero-abril, diciembre; peak: mayo-noviembre). Incluye servicios como catering, bebidas, alquileres y más."
+        },
+        "ambiente": [
+          "indoor",
+          "outdoor"
+        ],
+        "tipo_local": "Historic Estates, Mansions",
+        "servicios": [
+          "Bar services",
+          "Catering services",
+          "Clean up",
+          "Dance floor",
+          "Dressing room / Bridal Suite",
+          "Event coordinator",
+          "Event rentals",
+          "Event staff",
+          "Liability insurance",
+          "Lighting/Sound",
+          "On-site accommodations",
+          "Pet friendly",
+          "Service staff",
+          "Set up",
+          "Transportation",
+          "Wedding cake services",
+          "Wheelchair accessible",
+          "Wifi"
+        ],
+        "restricciones": [
+          "No se permite almacenamiento antes/después del evento",
+          "No WiFi (solo recepción móvil)",
+          "Alcohol debe ser proporcionado por el lugar (requisito NY SLA)"
+        ],
+        "eventos_compatibles": [
+          "Wedding ceremony",
+          "Wedding reception",
+          "Rehearsal dinner",
+          "Wedding shower",
+          "Engagement party",
+          "Welcome party",
+          "After party",
+          "Farewell brunch",
+          "Cocktail hour",
+          "Other"
+        ],
+        "outlinks": [],
+        "url": "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+        "tipo": "venue",
+        "timestamp": "2025-05-31T09:19:05Z"
+      },
+      "completitud": "parcial"
+    },
+    "precio:alquiler_espacio::{'off-peak': 15000, 'peak': 20000}": {
+      "tipo": "precio_alquiler_espacio",
+      "valor": {
+        "off-peak": 15000,
+        "peak": 20000
+      }
+    },
+    "precio:notas::Precios varían según temporada (off-peak: enero-abril, diciembre; peak: mayo-noviembre). Incluye servicios como catering, bebidas, alquileres y más.": {
+      "tipo": "precio_notas",
+      "valor": "Precios varían según temporada (off-peak: enero-abril, diciembre; peak: mayo-noviembre). Incluye servicios como catering, bebidas, alquileres y más."
+    },
+    "tipo_local::historic estates": {
+      "tipo": "tipo_local",
+      "valor": "Historic Estates"
+    },
+    "tipo_local::mansions": {
+      "tipo": "tipo_local",
+      "valor": "Mansions"
+    },
+    "servicio::liability insurance": {
+      "tipo": "servicio",
+      "valor": "Liability insurance"
+    },
+    "servicio::on-site accommodations": {
+      "tipo": "servicio",
+      "valor": "On-site accommodations"
+    },
+    "restriccion::no se permite almacenamiento antes/después del evento": {
+      "tipo": "restriccion",
+      "valor": "No se permite almacenamiento antes/después del evento"
+    },
+    "restriccion::no wifi (solo recepción móvil)": {
+      "tipo": "restriccion",
+      "valor": "No WiFi (solo recepción móvil)"
+    },
+    "restriccion::alcohol debe ser proporcionado por el lugar (requisito ny sla)": {
+      "tipo": "restriccion",
+      "valor": "Alcohol debe ser proporcionado por el lugar (requisito NY SLA)"
+    },
+    "evento::other": {
+      "tipo": "evento",
+      "valor": "Other"
+    },
+    "https://www.zola.com/wedding-vendors/wedding-venues/watson-block": {
+      "tipo": "venue",
+      "nombre": "Watson Block",
+      "original_data": {
+        "title": "Watson Block",
+        "capacidad": {
+          "seated": 120,
+          "standing": 150
+        },
+        "ubicacion": "256 1st Ave N, Minneapolis, MN 55401",
+        "precio": {
+          "alquiler_espacio": 3500,
+          "por_persona": 41,
+          "otros": [
+            250,
+            2800,
+            3600,
+            2500
+          ],
+          "notas": "Precios varían por día: Lunes-Jueves $250/hora (mínimo 4 horas), Viernes $2,800, Sábado $3,600, Domingo $2,500"
+        },
+        "ambiente": "interior",
+        "tipo_local": "banquete, histórico, industrial",
+        "servicios": [
+          "mesas y sillas de madera",
+          "WiFi de alta velocidad",
+          "acceso a ascensor",
+          "limpieza post-evento",
+          "acceso de 12 horas",
+          "mobiliario de salón",
+          "sistema de sonido",
+          "gestor de lugar en sitio"
+        ],
+        "restricciones": [
+          "Proveedores deben presentar seguro de responsabilidad",
+          "Acceso limitado a 12 horas",
+          "No se permite alcohol externo",
+          "Cancelaciones no reembolsables"
+        ],
+        "eventos_compatibles": [
+          "bodas",
+          "recepciones",
+          "ensayos",
+          "brunch",
+          "cocktail",
+          "compromisos",
+          "despedidas"
+        ],
+        "outlinks": [],
+        "url": "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+        "tipo": "venue",
+        "timestamp": "2025-05-31T09:19:26Z"
+      },
+      "completitud": "parcial"
+    },
+    "precio:alquiler_espacio::3500": {
+      "tipo": "precio_alquiler_espacio",
+      "valor": 3500
+    },
+    "precio:por_persona::41": {
+      "tipo": "precio_por_persona",
+      "valor": 41
+    },
+    "precio:otros::[250, 2800, 3600, 2500]": {
+      "tipo": "precio_otros",
+      "valor": [
+        250,
+        2800,
+        3600,
+        2500
+      ]
+    },
+    "precio:notas::Precios varían por día: Lunes-Jueves $250/hora (mínimo 4 horas), Viernes $2,800, Sábado $3,600, Domingo $2,500": {
+      "tipo": "precio_notas",
+      "valor": "Precios varían por día: Lunes-Jueves $250/hora (mínimo 4 horas), Viernes $2,800, Sábado $3,600, Domingo $2,500"
+    },
+    "tipo_local::banquete": {
+      "tipo": "tipo_local",
+      "valor": "banquete"
+    },
+    "tipo_local::histórico": {
+      "tipo": "tipo_local",
+      "valor": "histórico"
+    },
+    "tipo_local::industrial": {
+      "tipo": "tipo_local",
+      "valor": "industrial"
+    },
+    "servicio::mesas y sillas de madera": {
+      "tipo": "servicio",
+      "valor": "mesas y sillas de madera"
+    },
+    "servicio::wifi de alta velocidad": {
+      "tipo": "servicio",
+      "valor": "WiFi de alta velocidad"
+    },
+    "servicio::acceso a ascensor": {
+      "tipo": "servicio",
+      "valor": "acceso a ascensor"
+    },
+    "servicio::limpieza post-evento": {
+      "tipo": "servicio",
+      "valor": "limpieza post-evento"
+    },
+    "servicio::acceso de 12 horas": {
+      "tipo": "servicio",
+      "valor": "acceso de 12 horas"
+    },
+    "servicio::mobiliario de salón": {
+      "tipo": "servicio",
+      "valor": "mobiliario de salón"
+    },
+    "servicio::sistema de sonido": {
+      "tipo": "servicio",
+      "valor": "sistema de sonido"
+    },
+    "servicio::gestor de lugar en sitio": {
+      "tipo": "servicio",
+      "valor": "gestor de lugar en sitio"
+    },
+    "restriccion::proveedores deben presentar seguro de responsabilidad": {
+      "tipo": "restriccion",
+      "valor": "Proveedores deben presentar seguro de responsabilidad"
+    },
+    "restriccion::acceso limitado a 12 horas": {
+      "tipo": "restriccion",
+      "valor": "Acceso limitado a 12 horas"
+    },
+    "restriccion::no se permite alcohol externo": {
+      "tipo": "restriccion",
+      "valor": "No se permite alcohol externo"
+    },
+    "restriccion::cancelaciones no reembolsables": {
+      "tipo": "restriccion",
+      "valor": "Cancelaciones no reembolsables"
+    },
+    "evento::bodas": {
+      "tipo": "evento",
+      "valor": "bodas"
+    },
+    "evento::recepciones": {
+      "tipo": "evento",
+      "valor": "recepciones"
+    },
+    "evento::ensayos": {
+      "tipo": "evento",
+      "valor": "ensayos"
+    },
+    "evento::brunch": {
+      "tipo": "evento",
+      "valor": "brunch"
+    },
+    "evento::cocktail": {
+      "tipo": "evento",
+      "valor": "cocktail"
+    },
+    "evento::compromisos": {
+      "tipo": "evento",
+      "valor": "compromisos"
+    },
+    "evento::despedidas": {
+      "tipo": "evento",
+      "valor": "despedidas"
+    },
+    "https://www.zola.com/wedding-vendors/wedding-venues/fruitcraft-fermentery-distillery": {
+      "tipo": "venue",
+      "nombre": "ERROR",
+      "original_data": {
+        "title": "ERROR",
+        "capacidad": null,
+        "precio": null,
+        "ambiente": null,
+        "tipo_local": null,
+        "servicios": [],
+        "restricciones": [],
+        "eventos_compatibles": [],
+        "outlinks": [],
+        "url": "https://www.zola.com/wedding-vendors/wedding-venues/fruitcraft-fermentery-distillery",
+        "tipo": "venue",
+        "timestamp": "2025-05-31T09:20:01Z"
+      },
+      "completitud": "parcial"
+    },
+    "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace": {
+      "tipo": "venue",
+      "nombre": "The Mountain Terrace",
+      "original_data": {
+        "title": "The Mountain Terrace",
+        "capacidad": {
+          "min": 1,
+          "max": 400
+        },
+        "ubicacion": "17284 SKYLINE BLVD, WOODSIDE, CA 94062",
+        "precio": {
+          "alquiler_espacio": 3500,
+          "por_persona": 41,
+          "otros": [],
+          "notas": "Peak pricing ranges from $3,000 to $8,500, off-peak from $2,500 to $6,000. Additional fees may apply for extra services."
+        },
+        "ambiente": "Covered Outdoor, Indoor, Outdoor",
+        "tipo_local": "Mountain, Garden, Lodge",
+        "servicios": [
+          "Bar service",
+          "Catering",
+          "Clean up",
+          "Dance floor",
+          "Dressing room",
+          "Event coordinator",
+          "Event rentals",
+          "On-site accommodation",
+          "Pet friendly",
+          "Wheelchair accessible",
+          "WiFi"
+        ],
+        "restricciones": [
+          "No outside catering",
+          "No outside alcohol",
+          "No confetti, rice, sparklers, or balloons",
+          "Flower petals allowed with a $100 clean-up fee"
+        ],
+        "eventos_compatibles": [
+          "Weddings",
+          "Receptions",
+          "Commitment ceremonies",
+          "Corporate events",
+          "Social gatherings"
+        ],
+        "outlinks": [],
+        "url": "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+        "tipo": "venue",
+        "timestamp": "2025-05-31T09:20:30Z"
+      },
+      "completitud": "parcial"
+    },
+    "precio:notas::Peak pricing ranges from $3,000 to $8,500, off-peak from $2,500 to $6,000. Additional fees may apply for extra services.": {
+      "tipo": "precio_notas",
+      "valor": "Peak pricing ranges from $3,000 to $8,500, off-peak from $2,500 to $6,000. Additional fees may apply for extra services."
+    },
+    "ambiente::covered outdoor": {
+      "tipo": "ambiente",
+      "valor": "Covered Outdoor"
+    },
+    "tipo_local::mountain": {
+      "tipo": "tipo_local",
+      "valor": "Mountain"
+    },
+    "tipo_local::garden": {
+      "tipo": "tipo_local",
+      "valor": "Garden"
+    },
+    "tipo_local::lodge": {
+      "tipo": "tipo_local",
+      "valor": "Lodge"
+    },
+    "servicio::bar service": {
+      "tipo": "servicio",
+      "valor": "Bar service"
+    },
+    "servicio::catering": {
+      "tipo": "servicio",
+      "valor": "Catering"
+    },
+    "servicio::dressing room": {
+      "tipo": "servicio",
+      "valor": "Dressing room"
+    },
+    "servicio::on-site accommodation": {
+      "tipo": "servicio",
+      "valor": "On-site accommodation"
+    },
+    "restriccion::no outside catering": {
+      "tipo": "restriccion",
+      "valor": "No outside catering"
+    },
+    "restriccion::no outside alcohol": {
+      "tipo": "restriccion",
+      "valor": "No outside alcohol"
+    },
+    "restriccion::no confetti, rice, sparklers, or balloons": {
+      "tipo": "restriccion",
+      "valor": "No confetti, rice, sparklers, or balloons"
+    },
+    "restriccion::flower petals allowed with a $100 clean-up fee": {
+      "tipo": "restriccion",
+      "valor": "Flower petals allowed with a $100 clean-up fee"
+    },
+    "evento::weddings": {
+      "tipo": "evento",
+      "valor": "Weddings"
+    },
+    "evento::receptions": {
+      "tipo": "evento",
+      "valor": "Receptions"
+    },
+    "evento::commitment ceremonies": {
+      "tipo": "evento",
+      "valor": "Commitment ceremonies"
+    },
+    "evento::corporate events": {
+      "tipo": "evento",
+      "valor": "Corporate events"
+    },
+    "evento::social gatherings": {
+      "tipo": "evento",
+      "valor": "Social gatherings"
+    }
+  },
+  "edges": [
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/summit-farm-weddings"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/watson-block"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/fruitcraft-fermentery-distillery"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/stroudsmoor-country-inn"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/donauschwaben-s-german-american-cultural-center"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/ashton-gardens-corinth"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-boylston-rooms"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/bakers-ranch-florida-s-premier-all-inclusive-venue"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-red-barn-at-outlook-farm"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/venue-at-the-grove"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/nazareth-hall"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-oviatt-penthouse-event-deck"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/brooklyn-winery"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/spruce-mountain-ranch"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/flagstaff-house-restaurant"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/a-simple-affair"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/green-acres-event-center"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-gallagher"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/itasca-country-club"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/blue-dress-barn"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/chicago-winery"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/willowdale-estate"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/walden"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/the-milestone-mansion-denton"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/deity--2"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/bay-13-brewery-and-kitchen"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "capacidad",
+      "capacidad::250"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "precio_alquiler_espacio",
+      "precio:alquiler_espacio::3000"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "precio_notas",
+      "precio:notas::Starting at $3,000 for full wedding packages. Additional packages start at $6,000. Exclusive access to the venue (one event per day). No hidden fees. Updated pricing on their website."
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "ambiente",
+      "ambiente::interior"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "tipo_local",
+      "tipo_local::industrial space"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::event rentals"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::lighting/sound"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::pet friendly"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::wheelchair accessible"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::wifi"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::self parking - free"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::self parking - paid"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::shuttle"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::valet - paid"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::rentals lighting"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "servicio",
+      "servicio::standard chairs"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "restriccion",
+      "restriccion::no specific restrictions mentioned."
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::wedding ceremony"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::wedding reception"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::rehearsal dinner"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::wedding shower"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::welcome party"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::farewell brunch"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::couples luncheon"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::baraat"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::cocktail hour"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::engagement party"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::after party"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/olio-modern-industrial-event-space",
+      "evento_compatible",
+      "evento::elopement"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "capacidad",
+      "capacidad::350"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "precio_alquiler_espacio",
+      "precio:alquiler_espacio::5000"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "precio_por_persona",
+      "precio:por_persona::32"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "precio_otros",
+      "precio:otros::[23, 40, 21, 62]"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "precio_notas",
+      "precio:notas::Peak pricing: $5,000-14,000 for venue rental, $32-65 for catering, $23-40 for beverages. Prices vary based on season and package."
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "ambiente",
+      "ambiente::indoor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "ambiente",
+      "ambiente::outdoor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "tipo_local",
+      "tipo_local::ballrooms"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "tipo_local",
+      "tipo_local::banquet halls"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "tipo_local",
+      "tipo_local::industrial spaces"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::bar services"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::catering services"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::clean up"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::dance floor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::dressing room / bridal suite"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::event coordinator"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::event rentals"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::event staff"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::lighting/sound"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::pet friendly"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::service staff"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::set up"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::transportation"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::wedding cake services"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::wheelchair accessible"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "servicio",
+      "servicio::wifi"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "restriccion",
+      "restriccion::no outside alcohol allowed"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "restriccion",
+      "restriccion::peak season: march-june and september-december"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "restriccion",
+      "restriccion::off-peak season: january-february and july-august"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "evento_compatible",
+      "evento::wedding ceremony"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "evento_compatible",
+      "evento::wedding reception"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "evento_compatible",
+      "evento::cocktail hour"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/firefly-gardens"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/ashton-gardens-north-houston-by-walters-wedding-estates"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/big-sky-by-walters-wedding-estates"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/iron-manor-by-walters-wedding-estates",
+      "referencia",
+      "outlink::https://www.zola.com/wedding-vendors/wedding-venues/hidden-pines-lake-houston"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "precio_alquiler_espacio",
+      "precio:alquiler_espacio::{'off-peak': 15000, 'peak': 20000}"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "precio_notas",
+      "precio:notas::Precios varían según temporada (off-peak: enero-abril, diciembre; peak: mayo-noviembre). Incluye servicios como catering, bebidas, alquileres y más."
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "ambiente",
+      "ambiente::indoor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "ambiente",
+      "ambiente::outdoor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "tipo_local",
+      "tipo_local::historic estates"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "tipo_local",
+      "tipo_local::mansions"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::bar services"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::catering services"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::clean up"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::dance floor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::dressing room / bridal suite"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::event coordinator"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::event rentals"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::event staff"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::liability insurance"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::lighting/sound"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::on-site accommodations"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::pet friendly"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::service staff"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::set up"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::transportation"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::wedding cake services"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::wheelchair accessible"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "servicio",
+      "servicio::wifi"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "restriccion",
+      "restriccion::no se permite almacenamiento antes/después del evento"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "restriccion",
+      "restriccion::no wifi (solo recepción móvil)"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "restriccion",
+      "restriccion::alcohol debe ser proporcionado por el lugar (requisito ny sla)"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::wedding ceremony"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::wedding reception"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::rehearsal dinner"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::wedding shower"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::engagement party"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::welcome party"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::after party"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::farewell brunch"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::cocktail hour"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-sanctuary-ri",
+      "evento_compatible",
+      "evento::other"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "precio_alquiler_espacio",
+      "precio:alquiler_espacio::3500"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "precio_por_persona",
+      "precio:por_persona::41"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "precio_otros",
+      "precio:otros::[250, 2800, 3600, 2500]"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "precio_notas",
+      "precio:notas::Precios varían por día: Lunes-Jueves $250/hora (mínimo 4 horas), Viernes $2,800, Sábado $3,600, Domingo $2,500"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "ambiente",
+      "ambiente::interior"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "tipo_local",
+      "tipo_local::banquete"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "tipo_local",
+      "tipo_local::histórico"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "tipo_local",
+      "tipo_local::industrial"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "servicio",
+      "servicio::mesas y sillas de madera"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "servicio",
+      "servicio::wifi de alta velocidad"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "servicio",
+      "servicio::acceso a ascensor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "servicio",
+      "servicio::limpieza post-evento"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "servicio",
+      "servicio::acceso de 12 horas"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "servicio",
+      "servicio::mobiliario de salón"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "servicio",
+      "servicio::sistema de sonido"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "servicio",
+      "servicio::gestor de lugar en sitio"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "restriccion",
+      "restriccion::proveedores deben presentar seguro de responsabilidad"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "restriccion",
+      "restriccion::acceso limitado a 12 horas"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "restriccion",
+      "restriccion::no se permite alcohol externo"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "restriccion",
+      "restriccion::cancelaciones no reembolsables"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "evento_compatible",
+      "evento::bodas"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "evento_compatible",
+      "evento::recepciones"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "evento_compatible",
+      "evento::ensayos"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "evento_compatible",
+      "evento::brunch"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "evento_compatible",
+      "evento::cocktail"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "evento_compatible",
+      "evento::compromisos"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/watson-block",
+      "evento_compatible",
+      "evento::despedidas"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "precio_alquiler_espacio",
+      "precio:alquiler_espacio::3500"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "precio_por_persona",
+      "precio:por_persona::41"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "precio_notas",
+      "precio:notas::Peak pricing ranges from $3,000 to $8,500, off-peak from $2,500 to $6,000. Additional fees may apply for extra services."
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "ambiente",
+      "ambiente::covered outdoor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "ambiente",
+      "ambiente::indoor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "ambiente",
+      "ambiente::outdoor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "tipo_local",
+      "tipo_local::mountain"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "tipo_local",
+      "tipo_local::garden"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "tipo_local",
+      "tipo_local::lodge"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::bar service"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::catering"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::clean up"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::dance floor"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::dressing room"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::event coordinator"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::event rentals"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::on-site accommodation"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::pet friendly"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::wheelchair accessible"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "servicio",
+      "servicio::wifi"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "restriccion",
+      "restriccion::no outside catering"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "restriccion",
+      "restriccion::no outside alcohol"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "restriccion",
+      "restriccion::no confetti, rice, sparklers, or balloons"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "restriccion",
+      "restriccion::flower petals allowed with a $100 clean-up fee"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "evento_compatible",
+      "evento::weddings"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "evento_compatible",
+      "evento::receptions"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "evento_compatible",
+      "evento::commitment ceremonies"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "evento_compatible",
+      "evento::corporate events"
+    ],
+    [
+      "https://www.zola.com/wedding-vendors/wedding-venues/the-mountain-terrace",
+      "evento_compatible",
+      "evento::social gatherings"
+    ]
+  ]
+}

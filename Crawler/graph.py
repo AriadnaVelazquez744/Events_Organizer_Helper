@@ -26,7 +26,9 @@ class KnowledgeGraphInterface:
             self.nodes[venue_id] = {
                 "tipo": "venue",
                 "nombre": title,
+                "original_data": knowledge,
                 "completitud": "parcial"  # esto se puede actualizar más abajo
+                
             }
             
         def safe_add_node(nid, tipo, valor):
