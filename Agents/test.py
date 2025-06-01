@@ -35,15 +35,15 @@ agent = VenueAgent(
 # 2. Criterios y URL de prueba
 criteria = {
     "obligatorios": ["capacidad", "precio"],
-    "precio": 60,
-    "presupuesto": 4000,
+    "capacidad": 60,
+    "precio": 4000,
     "opcionales": ["tipo_local", "ambiente"],
-    "tipo_local": ["mansión", "country club"],
+    "tipo_local": ["mansions", "country club"],
     "ambiente": ["interior"]
 }
 
 urls = [
-    "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1"
+    "https://www.theknot.com/marketplace/wedding-reception-venues-new-york-ny?sort=featured"
 ]
 
 
@@ -51,10 +51,13 @@ urls = [
 venues = agent.find_venues(criteria, urls)
 graph.save_to_file("venues_graph.json") 
 
-# 4. Ver resultados
 print("\n✅ Venues encontrados:")
 for v in venues:
-    print(f"- {v.get('title')} | Capacidad: {v.get('capacidad')} | Ciudad: {v.get('ciudad')} | Precio: {v.get('precio')}")
+    data = v.get("original_data", {})
+    score = agent.score_optional(data, criteria)
+    print(f"- {data.get('title')} | Capacidad: {data.get('capacidad')} | Ciudad: {data.get('ubicacion') or data.get('ciudad')} | Precio: {data.get('precio')} | Score opcionales: {score}")
+
+
 
 
 # def obtener_venues_desde_api(ciudad="Seattle", capacidad=60, tipo_evento="wedding"):

@@ -944,6 +944,25 @@
     "evento::social gatherings": {
       "tipo": "evento",
       "valor": "Social gatherings"
+    },
+    "https://www.theknot.com/marketplace/wedding-reception-venues-new-york-ny?sort=featured": {
+      "tipo": "venue",
+      "nombre": "ERROR",
+      "original_data": {
+        "title": "ERROR",
+        "capacidad": null,
+        "precio": null,
+        "ambiente": null,
+        "tipo_local": null,
+        "servicios": [],
+        "restricciones": [],
+        "eventos_compatibles": [],
+        "outlinks": [],
+        "url": "https://www.theknot.com/marketplace/wedding-reception-venues-new-york-ny?sort=featured",
+        "tipo": "venue",
+        "timestamp": "2025-06-01T07:41:45Z"
+      },
+      "completitud": "parcial"
     }
   },
   "edges": [
