@@ -44,43 +44,29 @@ def scrape_page(url: str, context: dict = None) -> dict:
     print(f"[SCRAPER] Intentando requests: {url}")
     try:
         response = requests.get(url, timeout=10)
-        if response.status_code == 200 and len(response.text.strip()) > 1000:
+        if response.status_code == 200:
             html = response.text
+        else:
+            print(f"[SCRAPER] Código no 200: {response.status_code}")
     except Exception as e:
         print(f"[SCRAPER] Requests falló: {e}")
 
-    if not html:
-        print("[SCRAPER] Usando Selenium con scroll y espera...")
+    if not html or len(html.strip()) < 1000:
+        print("[SCRAPER] Usando Selenium...")
         try:
             driver = setup_driver()
             driver.get(url)
-
-            # Espera opcional: espera a que cargue una clase común
-            try:
-                WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, "a[href*='/wedding-vendors/wedding-venues/']"))
-                )
-            except:
-                print("[SCRAPER] Advertencia: No se detectó selector esperado, usando scroll de todas formas")
-
-            # Scroll para cargar contenido dinámico
-            for _ in range(4):
-                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                time.sleep(2)
-
+            time.sleep(3)  # espera para carga dinámica
             html = driver.page_source
-
-            # DEBUG: guarda el HTML para inspección manual
-            with open("debug_output.html", "w", encoding="utf-8") as f:
+            with open("debug_last_scrape.html", "w", encoding="utf-8") as f:
                 f.write(html)
-
             driver.quit()
-
         except Exception as e:
             print(f"[SCRAPER] Selenium falló: {e}")
             return {"url": url, "title": "ERROR", "outlinks": []}
-
-    if "/search/" in url or "theknot.com/marketplace" in url:
+    
+    # Si es página de búsqueda
+    if "/search/" in url or "sort=featured" in url:
         outlinks = extract_venue_links(html)
         print("[SCRAPER] Links extraídos:", outlinks)
         return {
@@ -89,29 +75,87 @@ def scrape_page(url: str, context: dict = None) -> dict:
             "outlinks": outlinks,
             "tipo": "search"
         }
+    venue_prompt = """
+Extrae del siguiente texto los datos de un lugar para eventos si el texto solo menciona un lugar:
 
-    structured = llm_extract_openrouter(html, url=url)
+- Nombre del lugar
+- Capacidad (número de personas)
+- Ubicación
+- Extrae la información de precios dividiendo en:
+
+- "alquiler_espacio": precio fijo por alquilar el lugar (por evento o por día), cualquier cosa que empiece por "starting at ..."
+- "por_persona": precio por persona, si aplica
+- "otros": cualquier precio adicional mencionado
+
+Incluye también notas o condiciones especiales (por ejemplo, si es solo para ciertas fechas).
+
+Devuelve un subJSON con esta estructura:
+
+  "precio": 
+    "alquiler_espacio": 3500,
+    "por_persona": 41,
+    "otros": [],
+    "notas": "..."
+  
+
+- Si es interior, exterior o ambos(cuando sea ambos devuelve los dos valores )
+- Tipo de local (hotel, playa, granja, etc.)
+- Servicios incluidos
+- Restricciones del lugar
+- Tipos de eventos compatibles
+- URLs en el texto que parezcan corresponder a otros lugares similares
+
+Si el texto menciona varios lugares solo busca y extrae URLs en todo el texto aunque no aparezcan donde se menciona un lugar
+
+Devuelve un JSON con estas claves exactas:
+"title", "capacidad", "ubicación", "precio", "ambiente", "tipo_local", "servicios", "restricciones", "eventos_compatibles", "outlinks"
+
+
+Texto:
+{text}
+"""
+
+    catering_prompt = venue_prompt = """
+Extrae del siguiente texto los datos de una agencia de catering si el texto solo menciona una:
+
+- Nombre 
+- Area de Servicio
+- Extrae la información de precios
+
+- Cuisine
+- Dietary Options
+- Catering
+- Restricciones
+- URLs en el texto que parezcan corresponder a otros lugares similares
+
+Devuelve un JSON con estas claves exactas:
+"title", "service area", "precio", "cuisine", "dietary_options", "catering", "outlinks"
+
+
+Texto:
+{text}
+"""
+
+    structured = llm_extract_openrouter(html, url=url, prompt_template=venue_prompt)
     structured["url"] = url
     structured["tipo"] = "venue"
     structured["outlinks"] = extract_venue_links(html)
     structured["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     return structured
 
-
 def extract_venue_links(html: str) -> list:
     soup = BeautifulSoup(html, "html.parser")
     venue_links = set()
 
-    # Zola
     zola_pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-venues/[a-z0-9\-]+/?$")
-    # The Knot
-    knot_pattern = re.compile(r"^https://www\.theknot\.com/marketplace/[\w\-]+-wedding-venues-[\w\-]+/?$")
+    knot_pattern = re.compile(r"^https://www\.theknot\.com/marketplace/[a-z0-9\-]+/?$")
 
     for a in soup.find_all("a", href=True):
         href = a["href"]
+
         if href.startswith("/wedding-vendors/wedding-venues/"):
             href = "https://www.zola.com" + href
-        if href.startswith("/marketplace/"):
+        elif href.startswith("/marketplace/"):
             href = "https://www.theknot.com" + href
 
         if zola_pattern.match(href) or knot_pattern.match(href):

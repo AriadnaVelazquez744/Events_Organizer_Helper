@@ -33,55 +33,21 @@ def extract_relevant_text(soup: BeautifulSoup):
 
     return "\n".join(parts)
 
-def llm_extract_openrouter(html: str, url: str = "") -> dict:
-    print(3)
+def llm_extract_openrouter(
+    html: str,
+    url: str = "",
+    prompt_template: str = "",
+    model: str = "deepseek/deepseek-chat-v3-0324:free"
+) -> dict:
+    print("[LLM EXTRACT] Limpieza HTML...")
     soup = clean_html_soup(html)
-    print(4)
     relevant_text = soup.get_text(separator=" ", strip=True)
 
-    prompt = f"""
-Extrae del siguiente texto los datos de un lugar para eventos si el texto solo menciona un lugar:
-
-- Nombre del lugar
-- Capacidad (número de personas)
-- Ubicación
-- Extrae la información de precios dividiendo en:
-
-- "alquiler_espacio": precio fijo por alquilar el lugar (por evento o por día), cualquier cosa que empiece por "starting at ..."
-- "por_persona": precio por persona, si aplica
-- "otros": cualquier precio adicional mencionado
-
-Incluye también notas o condiciones especiales (por ejemplo, si es solo para ciertas fechas).
-
-Devuelve un subJSON con esta estructura:
-
-  "precio": 
-    "alquiler_espacio": 3500,
-    "por_persona": 41,
-    "otros": [],
-    "notas": "..."
-  
-
-- Si es interior, exterior o ambos(cuando sea ambos devuelve los dos valores )
-- Tipo de local (hotel, playa, granja, etc.)
-- Servicios incluidos
-- Restricciones del lugar
-- Tipos de eventos compatibles
-- URLs en el texto que parezcan corresponder a otros lugares similares
-
-Si el texto menciona varios lugares solo busca y extrae URLs en todo el texto aunque no aparezcan donde se menciona un lugar
-
-Devuelve un JSON con estas claves exactas:
-"title", "capacidad", "ubicación", "precio", "ambiente", "tipo_local", "servicios", "restricciones", "eventos_compatibles", "outlinks"
-
-
-Texto:
-{relevant_text}
-"""
+    prompt = prompt_template.format(text=relevant_text, url=url)
 
     try:
         response = client.chat.completions.create(
-            model="deepseek/deepseek-chat-v3-0324:free",
+            model=model,
             messages=[{"role": "user", "content": prompt}],
             response_format="json"
         )
