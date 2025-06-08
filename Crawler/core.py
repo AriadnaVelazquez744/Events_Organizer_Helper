@@ -16,12 +16,22 @@ class AdvancedCrawlerAgent:
         self.mission_profile = mission_profile or {}
         self.log = []
         self.visited = set()
-        self.max_visits = 1000
+        self.max_visits = 6
         self.to_visit = []  # nueva pila FIFO
 
     def enqueue_url(self, url):
-        if url not in self.visited and url not in self.to_visit:
+        if "search" in url and "?page=" in url:
             self.to_visit.append(url)
+        else:    
+            if (
+                url in self.visited 
+                or url in self.to_visit 
+                or url in self.graph_interface.nodes
+            ):
+                print(f"[CRAWLER] Ignorando URL ya conocida: {url}")
+                return
+            self.to_visit.append(url)
+
 
 
     def crawl(self, url: str, context: Dict[str, Any] = None, depth: int = 0):

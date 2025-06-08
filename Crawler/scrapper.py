@@ -87,15 +87,12 @@ Extract event venue data from the following text if the text only mentions a ven
 - "per_person": Price per person, if applicable
 - "other": Any additional prices mentioned
 
-Also include notes or special conditions (for example, if it's only for certain dates).
-
 Returns a subJSON with this structure:
 
 "price":
 "space_rental": 3500,
 "per_person": 41,
 "other": [],
-"notes": "..."
 
 - Whether it's indoor, outdoor, or both (returns both values when it's both)
 - Venue type (hotel, beach, farm, etc.)
@@ -106,7 +103,7 @@ Returns a subJSON with this structure:
 
 If the text mentions multiple venues, it only searches and extracts URLs throughout the text even if they don't appear where a venue is mentioned.
 
-Returns a JSON with these exact keys:
+Your response must be exactly a JSON with these exact keys, without any notes or reviews after, make shure that the json has a correct structure:
 "title", "capacity", "location", "price", "atmosphere", "venue_type", "services", "restrictions", "supported_events", "outlinks"
 
 Text:
@@ -114,25 +111,44 @@ Text:
 """
 
     catering_prompt = """
-Extrae del siguiente texto los datos de una agencia de catering si el texto solo menciona una:
+Extracts data from the following text about a catering agency if the text only mentions one:
 
-- Nombre 
-- Area de Servicio
-- Extrae la información de precios
+- Name
+- Service Area
+- Extracts pricing information
 
 - Cuisine
 - Dietary Options
 - Catering
-- Restricciones
-- URLs en el texto que parezcan corresponder a otros lugares similares
+- Restrictions
+- URLs in the text that appear to correspond to other similar locations
 
-Devuelve un JSON con estas claves exactas:
-"title", "service area", "precio", "cuisine", "dietary_options", "catering", "outlinks"
+Your response must be exactly a JSON with these exact keys, without any notes or reviews after, make shure that the json has a correct structure:
+"title", "service area", "price", "cuisine", "dietary_options", "catering", "restrictions", "outlinks"
 
-
-Texto:
+Text:
 {text}
 """
+
+    decor_prompt="""
+    Extracts data from the following text about a catering agency if the text only mentions one:
+
+    - Name
+    - Extracts pricing information
+
+    - Decorations & Accents
+    - Invitations & Paper Goods
+    - Rentals & Equipment
+    - Restrictions
+    - URLs in the text that appear to correspond to other similar locations
+
+    Your response must be exactly a JSON with these exact keys, without any notes or reviews after, make shure that the json has a correct structure:
+    "title", "price", "decorations/accents", "invitations/paper_goods", "rentals/equipment", "restrictions", "outlinks"
+
+    Text:
+    {text}
+    """
+    
     if "zola" in url :
         structured = llm_extract_openrouter(html, url=url, prompt_template=venue_prompt)
         structured["tipo"] = "venue"

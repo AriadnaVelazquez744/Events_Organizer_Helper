@@ -37,7 +37,7 @@ def llm_extract_openrouter(
     html: str,
     url: str = "",
     prompt_template: str = "",
-    model: str = "deepseek/deepseek-chat-v3-0324:free"
+    model: str = "meta-llama/llama-3.3-8b-instruct:free"
 ) -> dict:
     print("[LLM EXTRACT] Limpieza HTML...")
     soup = clean_html_soup(html)
@@ -49,7 +49,6 @@ def llm_extract_openrouter(
         response = client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": prompt}],
-            response_format="json"
         )
         content = response.choices[0].message.content
         
@@ -58,6 +57,7 @@ def llm_extract_openrouter(
             content = content.replace("```json", "").replace("```", "").strip()
         elif content.startswith("```"):
             content = content.replace("```", "").strip()
+
             
         return json.loads(content)
     
