@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 from Crawler.expert import ExpertSystemInterface
 from Crawler.graph import KnowledgeGraphInterface
 
-class VenueAgent:
+class DecorAgent:
     def __init__(self, name: str, crawler: AdvancedCrawlerAgent, graph: KnowledgeGraphInterface, expert: ExpertSystemInterface):
         self.name = name
         self.crawler = crawler
@@ -30,26 +30,26 @@ class VenueAgent:
                     print(f"[RULE] {data.get('title')} - campo '{campo}' ausente")
                     return False
 
-                # 🚩 CASO ESPECIAL: CAPACIDAD
-                if campo == "capacity":
-                    if isinstance(valor, dict):
-                        candidatos = [v for v in valor.values() if isinstance(v, (int, float))]
-                        if not candidatos:
-                            print(f"[RULE] {data.get('title')} - capacidad no tiene valores numéricos válidos")
-                            return False
-                        if max(candidatos) >= valor_esperado:
-                            return True
-                        print(f"[RULE] {data.get('title')} - capacidad={candidatos} < requerido {valor_esperado}")
-                        return False
-                    elif isinstance(valor, (int, float)):
-                        if valor >= valor_esperado:
-                            return True
-                        print(f"[RULE] {data.get('title')} - capacidad={valor} < requerido {valor_esperado}")
-                        return False
-                    return False
+                # # 🚩 CASO ESPECIAL: CAPACIDAD
+                # if campo == "capacidad":
+                #     if isinstance(valor, dict):
+                #         candidatos = [v for v in valor.values() if isinstance(v, (int, float))]
+                #         if not candidatos:
+                #             print(f"[RULE] {data.get('title')} - capacidad no tiene valores numéricos válidos")
+                #             return False
+                #         if max(candidatos) >= valor_esperado:
+                #             return True
+                #         print(f"[RULE] {data.get('title')} - capacidad={candidatos} < requerido {valor_esperado}")
+                #         return False
+                #     elif isinstance(valor, (int, float)):
+                #         if valor >= valor_esperado:
+                #             return True
+                #         print(f"[RULE] {data.get('title')} - capacidad={valor} < requerido {valor_esperado}")
+                #         return False
+                #     return False
 
                 # 🚩 CASO ESPECIAL: PRECIO
-                elif campo == "price":
+                elif campo == "precio":
                     if isinstance(valor, dict):
                         candidatos = [v for v in valor.values() if isinstance(v, (int, float)) and v > 0]
                         if not candidatos:
@@ -126,8 +126,8 @@ class VenueAgent:
 
         return score
 
-    def find_venues(self, criteria: Dict[str, Any], urls: List[str]) -> List[Dict[str, Any]]:
-        print("[VenueAgent] Crawling URLs...")
+    def find_decor(self, criteria: Dict[str, Any], urls: List[str]) -> List[Dict[str, Any]]:
+        print("[DecorAgent] Crawling URLs...")
         self.setup_rules(criteria)
         for url in urls:
             self.crawler.enqueue_url(url)
@@ -136,8 +136,8 @@ class VenueAgent:
             next_url = self.crawler.to_visit.pop(0)
             self.crawler.crawl(next_url, context=criteria)
 
-        print("[VenueAgent] Procesando nodos tipo 'venue'...")
-        candidates = self.graph.query("venue")
+        print("[DecorAgent] Procesando nodos tipo 'decor'...")
+        candidates = self.graph.query("decor")
 
         valid = []
         for v in candidates:
@@ -145,7 +145,7 @@ class VenueAgent:
             if self.expert.process_knowledge(data):
                 valid.append((v, data))
 
-        print(f"[VenueAgent] {len(valid)} venues válidos tras reglas obligatorias")
+        print(f"[DecorAgent] {len(valid)} decors válidos tras reglas obligatorias")
 
         scored = [(v[0], self.score_optional(v[1], criteria)) for v in valid]
         scored.sort(key=lambda x: x[1], reverse=True)

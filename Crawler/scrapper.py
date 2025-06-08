@@ -76,46 +76,44 @@ def scrape_page(url: str, context: dict = None) -> dict:
             "tipo": "search"
         }
     venue_prompt = """
-Extrae del siguiente texto los datos de un lugar para eventos si el texto solo menciona un lugar:
+Extract event venue data from the following text if the text only mentions a venue:
 
-- Nombre del lugar
-- Capacidad (número de personas)
-- Ubicación
-- Extrae la información de precios dividiendo en:
+- Venue name
+- Capacity (number of people)
+- Location
+- Extract pricing information by splitting into:
 
-- "alquiler_espacio": precio fijo por alquilar el lugar (por evento o por día), cualquier cosa que empiece por "starting at ..."
-- "por_persona": precio por persona, si aplica
-- "otros": cualquier precio adicional mencionado
+- "space_rental": Fixed price for renting the venue (per event or per day), anything beginning with "starting at..."
+- "per_person": Price per person, if applicable
+- "other": Any additional prices mentioned
 
-Incluye también notas o condiciones especiales (por ejemplo, si es solo para ciertas fechas).
+Also include notes or special conditions (for example, if it's only for certain dates).
 
-Devuelve un subJSON con esta estructura:
+Returns a subJSON with this structure:
 
-  "precio": 
-    "alquiler_espacio": 3500,
-    "por_persona": 41,
-    "otros": [],
-    "notas": "..."
-  
+"price":
+"space_rental": 3500,
+"per_person": 41,
+"other": [],
+"notes": "..."
 
-- Si es interior, exterior o ambos(cuando sea ambos devuelve los dos valores )
-- Tipo de local (hotel, playa, granja, etc.)
-- Servicios incluidos
-- Restricciones del lugar
-- Tipos de eventos compatibles
-- URLs en el texto que parezcan corresponder a otros lugares similares
+- Whether it's indoor, outdoor, or both (returns both values when it's both)
+- Venue type (hotel, beach, farm, etc.)
+- Included services
+- Venue restrictions
+- Supported event types
+- URLs in the text that appear to correspond to other similar venues
 
-Si el texto menciona varios lugares solo busca y extrae URLs en todo el texto aunque no aparezcan donde se menciona un lugar
+If the text mentions multiple venues, it only searches and extracts URLs throughout the text even if they don't appear where a venue is mentioned.
 
-Devuelve un JSON con estas claves exactas:
-"title", "capacidad", "ubicación", "precio", "ambiente", "tipo_local", "servicios", "restricciones", "eventos_compatibles", "outlinks"
+Returns a JSON with these exact keys:
+"title", "capacity", "location", "price", "atmosphere", "venue_type", "services", "restrictions", "supported_events", "outlinks"
 
-
-Texto:
+Text:
 {text}
 """
 
-    catering_prompt = venue_prompt = """
+    catering_prompt = """
 Extrae del siguiente texto los datos de una agencia de catering si el texto solo menciona una:
 
 - Nombre 
@@ -135,10 +133,14 @@ Devuelve un JSON con estas claves exactas:
 Texto:
 {text}
 """
-
-    structured = llm_extract_openrouter(html, url=url, prompt_template=venue_prompt)
+    if "zola" in url :
+        structured = llm_extract_openrouter(html, url=url, prompt_template=venue_prompt)
+        structured["tipo"] = "venue"
+    elif "theknot" in url :
+        structured = llm_extract_openrouter(html, url=url, prompt_template=catering_prompt)
+        structured["tipo"] = "catering"
     structured["url"] = url
-    structured["tipo"] = "venue"
+    
     structured["outlinks"] = extract_venue_links(html)
     structured["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     return structured
