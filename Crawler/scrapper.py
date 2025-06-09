@@ -142,7 +142,7 @@ Text:
     - Restrictions
     - URLs in the text that appear to correspond to other similar locations
 
-    Your response must be exactly a JSON with these exact keys, without any notes or reviews after, make shure that the json has a correct structure:
+    Your response must be exactly a JSON with these exact keys, without any notes or reviews after, not matter that something missing, make shure that the json has a correct structure:
     "title", "price", "decorations/accents", "invitations/paper_goods", "rentals/equipment", "restrictions", "outlinks"
 
     Text:

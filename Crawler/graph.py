@@ -128,4 +128,25 @@ class KnowledgeGraphInterface:
             data = json.load(f)
             self.nodes = data.get("nodes", {})
             self.edges = data.get("edges", [])
+            
+    def clean_errors(self):
+        """Elimina nodos con errores (nombre == 'ERROR' o title == 'ERROR') y sus edges"""
+        to_remove = []
+
+        for node_id, node_data in self.nodes.items():
+            if node_data.get("tipo") == "venue":
+                if node_data.get("nombre") == "ERROR":
+                    to_remove.append(node_id)
+                elif node_data.get("original_data", {}).get("title") == "ERROR":
+                    to_remove.append(node_id)
+
+        print(f"[GRAPH] Nodos con errores detectados: {len(to_remove)}")
+
+        # Eliminar nodos y edges asociadas
+        for node_id in to_remove:
+            del self.nodes[node_id]
+            self.edges = [e for e in self.edges if e[0] != node_id and e[2] != node_id]
+
+        print(f"[GRAPH] Nodos y edges eliminados con éxito.")
+
 

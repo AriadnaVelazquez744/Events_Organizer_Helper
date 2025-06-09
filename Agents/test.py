@@ -15,6 +15,7 @@ from Crawler.policy import CrawlPolicy
 
 # 1. Inicialización de componentes
 graph = KnowledgeGraphInterface("venues_graph.json")
+graph.clean_errors()
 expert = ExpertSystemInterface()
 policy = CrawlPolicy()
 
@@ -50,6 +51,7 @@ urls = [
 # 3. Ejecutar búsqueda
 venues = agent.find_venues(criteria, urls)
 graph.save_to_file("venues_graph.json") 
+graph.clean_errors()
 
 print("\n✅ Venues encontrados:")
 for v in venues:
