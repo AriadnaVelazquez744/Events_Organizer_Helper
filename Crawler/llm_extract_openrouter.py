@@ -4,6 +4,7 @@ import openai
 import json
 import re
 import requests
+import time
 from bs4 import BeautifulSoup
 import os
 from dotenv import load_dotenv
@@ -12,12 +13,17 @@ load_dotenv()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL = "llama3-70b-8192"  # puedes usar también "llama3-70b-8192"
+MODEL = "llama-3.3-70b-versatile"  # puedes usar también "llama3-70b-8192"
 
 HEADERS = {
     "Authorization": f"Bearer {GROQ_API_KEY}",
     "Content-Type": "application/json"
 }
+
+client = openai.OpenAI(
+   api_key = os.getenv("OPENROUTER_API_KEY"),
+   base_url = "https://openrouter.ai/api/v1"
+)
 
 
 def clean_html_soup(html: str):
@@ -44,7 +50,7 @@ def llm_extract_openrouter(
     html: str,
     url: str = "",
     prompt_template: str = "",
-    model: str = "meta-llama/llama-3.3-8b-instruct:free"
+    model: str = "meta-llama/llama-3.3-70b-instruct:free"
 ) -> dict:
     print("[LLM EXTRACT] Limpieza HTML...")
     soup = clean_html_soup(html)
@@ -61,10 +67,23 @@ def llm_extract_openrouter(
 
     try:
         response = requests.post(GROQ_API_URL, headers=HEADERS, json=payload)
+        rate_limit_remaining = response.headers.get("X-RateLimit-Remaining")
+        rate_limit_limit = response.headers.get("X-RateLimit-Limit")
+        retry_after = response.headers.get("Retry-After")
+    
+        print(f"Límite: {rate_limit_limit} | Restantes: {rate_limit_remaining} | {retry_after}")
+        result = response.json()
         print(response)
         result = response.json()
-
         content = result.get("choices", [{}])[0].get("message", {}).get("content", "")
+        
+        # response = client.chat.completions.create(
+        #     model=model,
+        #     messages=[{"role": "user", "content": prompt}],
+        # )
+
+
+        # content = response.choices[0].message.content
         print(f"[LLM RESPONSE] {content}")
         if content.startswith("```json"):
             content = content.replace("```json", "").replace("```", "").strip()
@@ -74,6 +93,7 @@ def llm_extract_openrouter(
         parsed = extract_json_from_response(content)
             
         return parsed
+        # return json.loads(content)
     
     except Exception as e:
         print(f"[LLM ERROR] {e}")

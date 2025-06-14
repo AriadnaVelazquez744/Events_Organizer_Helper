@@ -114,17 +114,20 @@ Text:
 Extracts data from the following text about a catering agency if the text only mentions one:
 
 - Name
-- Service Area
+- Services
+- Ubication
 - Extracts pricing information
 
-- Cuisine
+- Cuisines
 - Dietary Options
-- Catering
+- Meal types
+- Beverage services
+- Drink types
 - Restrictions
 - URLs in the text that appear to correspond to other similar locations
 
 Your response must be exactly a JSON with these exact keys, without any notes or reviews after, make shure that the json has a correct structure:
-"title", "service area", "price", "cuisine", "dietary_options", "catering", "restrictions", "outlinks"
+"title", "services", "ubication", "price", "cuisines", "dietary_options", "meal_types", "beverage_services" , "drink_types" ,"restrictions", "outlinks"
 
 Text:
 {text}
@@ -149,9 +152,12 @@ Text:
     {text}
     """
     
-    if "zola" in url :
+    if "zola" in url and "wedding-venues" in url :
         structured = llm_extract_openrouter(html, url=url, prompt_template=venue_prompt)
         structured["tipo"] = "venue"
+    elif "zola" in url and "wedding-catering" in url :
+        structured = llm_extract_openrouter(html, url=url, prompt_template=catering_prompt)
+        structured["tipo"] = "catering"
     elif "theknot" in url :
         structured = llm_extract_openrouter(html, url=url, prompt_template=catering_prompt)
         structured["tipo"] = "catering"
@@ -165,18 +171,26 @@ def extract_venue_links(html: str) -> list:
     soup = BeautifulSoup(html, "html.parser")
     venue_links = set()
 
-    zola_pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-venues/[a-z0-9\-]+/?$")
+    zola_venue_pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-venues/[a-z0-9\-]+/?$")
+    zola_catering_pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-catering/[a-z0-9\-]+/?$")
     knot_pattern = re.compile(r"^https://www\.theknot\.com/marketplace/[a-z0-9\-]+/?$")
 
     for a in soup.find_all("a", href=True):
         href = a["href"]
 
+        # Normaliza URLs relativas
         if href.startswith("/wedding-vendors/wedding-venues/"):
+            href = "https://www.zola.com" + href
+        elif href.startswith("/wedding-vendors/wedding-catering/"):
             href = "https://www.zola.com" + href
         elif href.startswith("/marketplace/"):
             href = "https://www.theknot.com" + href
 
-        if zola_pattern.match(href) or knot_pattern.match(href):
+        if (
+            zola_venue_pattern.match(href)
+            or zola_catering_pattern.match(href)
+            or knot_pattern.match(href)
+        ):
             venue_links.add(href)
 
     return list(venue_links)

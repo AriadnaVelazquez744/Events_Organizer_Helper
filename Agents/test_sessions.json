@@ -1,0 +1,126 @@
+{
+  "5de887c2-ddfe-4ef6-aede-789399cb0382": {
+    "user_id": "usuario_test",
+    "beliefs": {
+      "state": {
+        "criterios": {
+          "presupuesto_total": 50000,
+          "fecha": "2024-12-15"
+        },
+        "venue": null,
+        "catering": null,
+        "decor": null,
+        "presupuesto_asignado": {},
+        "conflictos": [],
+        "evaluaciones": {},
+        "pendiente": [],
+        "metadata": {
+          "ultima_actualizacion": "2025-06-14T05:23:31.755131",
+          "version": "1.0",
+          "estado": "inicial"
+        }
+      },
+      "metadata": {
+        "ultima_actualizacion": "2025-06-14T05:23:31.755131",
+        "version": "1.0",
+        "estado": "inicial"
+      }
+    },
+    "created_at": "2025-06-14T05:23:31.754852",
+    "last_activity": "2025-06-14T05:23:31.759504",
+    "status": "active"
+  },
+  "1fd63f35-66ae-4b92-bc7e-7f66d13918ea": {
+    "user_id": "usuario_test",
+    "beliefs": {
+      "state": {
+        "criterios": {
+          "presupuesto_total": 50000,
+          "fecha": "2024-12-15"
+        },
+        "venue": null,
+        "catering": null,
+        "decor": null,
+        "presupuesto_asignado": {},
+        "conflictos": [],
+        "evaluaciones": {},
+        "pendiente": [],
+        "metadata": {
+          "ultima_actualizacion": "2025-06-14T05:25:33.881641",
+          "version": "1.0",
+          "estado": "inicial"
+        }
+      },
+      "metadata": {
+        "ultima_actualizacion": "2025-06-14T05:25:33.881641",
+        "version": "1.0",
+        "estado": "inicial"
+      }
+    },
+    "created_at": "2025-06-14T05:25:33.881307",
+    "last_activity": "2025-06-14T05:25:33.881737",
+    "status": "active"
+  },
+  "81cc94e5-20f9-41f2-b755-f8fa1c77c9d0": {
+    "user_id": "usuario_test",
+    "beliefs": {
+      "state": {
+        "criterios": {
+          "presupuesto_total": 50000,
+          "fecha": "2024-12-15"
+        },
+        "venue": null,
+        "catering": null,
+        "decor": null,
+        "presupuesto_asignado": {},
+        "conflictos": [],
+        "evaluaciones": {},
+        "pendiente": [],
+        "metadata": {
+          "ultima_actualizacion": "2025-06-14T05:26:48.085308",
+          "version": "1.0",
+          "estado": "inicial"
+        }
+      },
+      "metadata": {
+        "ultima_actualizacion": "2025-06-14T05:26:48.085308",
+        "version": "1.0",
+        "estado": "inicial"
+      }
+    },
+    "created_at": "2025-06-14T05:26:48.081022",
+    "last_activity": "2025-06-14T05:26:48.085595",
+    "status": "active"
+  },
+  "b11057b1-17bb-4921-bfbb-c7a940fc0f69": {
+    "user_id": "usuario_test",
+    "beliefs": {
+      "state": {
+        "criterios": {
+          "presupuesto_total": 50000,
+          "fecha": "2024-12-15"
+        },
+        "venue": null,
+        "catering": null,
+        "decor": null,
+        "presupuesto_asignado": {},
+        "conflictos": [],
+        "evaluaciones": {},
+        "pendiente": [],
+        "metadata": {
+          "ultima_actualizacion": "2025-06-14T05:27:40.278308",
+          "version": "1.0",
+          "estado": "inicial"
+        }
+      },
+      "metadata": {
+        "ultima_actualizacion": "2025-06-14T05:27:40.278308",
+        "version": "1.0",
+        "estado": "inicial"
+      }
+    },
+    "created_at": "2025-06-14T05:27:40.273210",
+    "last_activity": "2025-06-14T05:27:40.278497",
+    "status": "active"
+  }
+}

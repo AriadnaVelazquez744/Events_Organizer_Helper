@@ -15,6 +15,7 @@ from Crawler.policy import CrawlPolicy
 
 # 1. Inicialización de componentes
 graph = KnowledgeGraphInterface("catering_graph.json")
+graph.clean_errors()
 expert = ExpertSystemInterface()
 policy = CrawlPolicy()
 
@@ -34,28 +35,33 @@ agent = CateringAgent(
 
 # 2. Criterios y URL de prueba
 criteria = {
-    "obligatorios": ["capacidad", "precio"],
-    "capacidad": 60,
-    "precio": 4000,
-    "opcionales": ["tipo_local", "ambiente"],
-    "tipo_local": ["mansions", "country club"],
-    "ambiente": ["interior"]
+    "obligatorios": ["price", "meal_types", "dietary_options"],
+    "price": 4000,
+    "meal_types": ["buffet", "plated"],
+    "dietary_options": ["vegan", "gluten-free"],
+    "opcionales": ["cuisines", "beverage_services"],
+    "cuisines": ["italian", "mediterranean"],
+    "beverage_services": ["bar", "open bar"]
+    
 }
 
 urls = [
-    "https://www.theknot.com/marketplace/wedding-reception-venues-new-york-ny?sort=featured"
+    "https://www.zola.com/wedding-vendors/search/wedding-catering?page=1"
 ]
 
+venue_nodes = graph.query("catering")
 
+# Impresión del total
+print(f"Total de caterings almacenados: {len(venue_nodes)}")
 # 3. Ejecutar búsqueda
-venues = agent.find_venues(criteria, urls)
+caterings = agent.find_catering(criteria, urls)
 graph.save_to_file("catering_graph.json") 
+graph.clean_errors()
 
-print("\n✅ Venues encontrados:")
-for v in venues:
-    data = v.get("original_data", {})
+print("\n✅ Caterings encontrados:")
+for c in caterings:
+    data = c.get("original_data", {})
     score = agent.score_optional(data, criteria)
-    print(f"- {data.get('title')} | Capacidad: {data.get('capacidad')} | Ciudad: {data.get('ubicacion') or data.get('ciudad')} | Precio: {data.get('precio')} | Score opcionales: {score}")
-
+    print(f"- {data.get('title')} | Ubicación: {data.get('ubication')} | Precio: {data.get('price')} | Tipos comida: {data.get('meal_types')} | Score opcionales: {score}")
 
 

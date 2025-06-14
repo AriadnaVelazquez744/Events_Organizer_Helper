@@ -25,6 +25,7 @@ crawler = AdvancedCrawlerAgent(
     expert_system=expert,
     policy=policy
 )
+print(len(graph.nodes))
 
 agent = VenueAgent(
     name="VenueAgent",
@@ -46,9 +47,10 @@ criteria = {
 urls = [
     "https://www.zola.com/wedding-vendors/search/wedding-venues?page=1"
 ]
+venue_nodes = graph.query("venue")
 
-
-# 3. Ejecutar búsqueda
+# Impresión del total
+print(f"Total de venues almacenados: {len(venue_nodes)}")
 venues = agent.find_venues(criteria, urls)
 graph.save_to_file("venues_graph.json") 
 graph.clean_errors()
