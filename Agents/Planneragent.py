@@ -7,6 +7,7 @@ from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
 from beliefs_schema import BeliefState
 from session_memory import SessionMemoryManager
+from planner_rag import PlannerRAG
 
 @dataclass
 class Task:
@@ -25,6 +26,7 @@ class PlannerAgentBDI:
         self.active_sessions: Dict[str, Dict] = {}  # session_id -> session_data
         self.task_queue: Dict[str, List[Task]] = {}  # session_id -> [tasks]
         self.current_task: Dict[str, Task] = {}  # session_id -> current_task
+        self.rag = PlannerRAG()  # Inicializa el sistema RAG
         
     def create_session(self, user_id: str) -> str:
         """Crea una nueva sesión para un usuario."""
@@ -81,6 +83,13 @@ class PlannerAgentBDI:
         # Actualiza criterios
         if "criterios" in request:
             beliefs.set("criterios", request["criterios"])
+            
+            # Usa RAG para obtener recomendaciones de presupuesto
+            if "presupuesto_total" in request["criterios"]:
+                budget_distribution = self.rag.get_budget_distribution(
+                    request["criterios"]["presupuesto_total"]
+                )
+                beliefs.set("presupuesto_asignado", budget_distribution)
 
         # Crea tareas basadas en los criterios
         self._create_tasks(session_id, request)
@@ -95,6 +104,15 @@ class PlannerAgentBDI:
 
         # Identifica qué elementos necesitan ser recalculados
         affected_elements = self._identify_affected_elements(correction)
+        
+        # Usa RAG para obtener estrategias de resolución
+        if "conflicto" in correction:
+            strategies = self.rag.suggest_conflict_resolution(
+                correction["conflicto"],
+                correction
+            )
+            if strategies:
+                beliefs.set("estrategias_resolucion", strategies)
         
         # Crea nuevas tareas solo para los elementos afectados
         self._create_correction_tasks(session_id, affected_elements, correction)
@@ -112,6 +130,18 @@ class PlannerAgentBDI:
         if message["tipo"] == "error":
             current_task.status = "error"
             current_task.error = message["contenido"]
+            
+            # Usa RAG para obtener estrategias de resolución de errores
+            strategies = self.rag.suggest_conflict_resolution(
+                "error_agente",
+                {
+                    "task_type": current_task.type,
+                    "error": message["contenido"]
+                }
+            )
+            if strategies:
+                session = self.active_sessions[session_id]
+                session["beliefs"].set("estrategias_error", strategies)
         else:
             current_task.status = "completed"
             current_task.result = message["contenido"]
@@ -119,7 +149,30 @@ class PlannerAgentBDI:
             # Actualiza beliefs con el resultado
             session = self.active_sessions[session_id]
             beliefs = session["beliefs"]
-            beliefs.set(current_task.type, message["contenido"])
+            
+            # Mapeo de tipos de tarea a claves de belief
+            task_to_belief = {
+                "budget_distribution": "presupuesto_asignado",
+                "venue_search": "venue",
+                "catering_search": "catering",
+                "decor_search": "decor"
+            }
+            
+            belief_key = task_to_belief.get(current_task.type)
+            if belief_key:
+                beliefs.set(belief_key, message["contenido"])
+                
+                # Actualiza patrones de éxito en RAG
+                self.rag.update_success_pattern(
+                    "vendor_selection",
+                    {
+                        "type": current_task.type,
+                        "result": message["contenido"],
+                        "parameters": current_task.parameters
+                    }
+                )
+            else:
+                print(f"[⚠️] Tipo de tarea no mapeado: {current_task.type}")
 
         # Verifica si hay más tareas pendientes
         self._process_next_task(session_id)

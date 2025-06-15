@@ -66,24 +66,24 @@ def llm_extract_openrouter(
     }
 
     try:
-        response = requests.post(GROQ_API_URL, headers=HEADERS, json=payload)
-        rate_limit_remaining = response.headers.get("X-RateLimit-Remaining")
-        rate_limit_limit = response.headers.get("X-RateLimit-Limit")
-        retry_after = response.headers.get("Retry-After")
+        # response = requests.post(GROQ_API_URL, headers=HEADERS, json=payload)
+        # rate_limit_remaining = response.headers.get("X-RateLimit-Remaining")
+        # rate_limit_limit = response.headers.get("X-RateLimit-Limit")
+        # retry_after = response.headers.get("Retry-After")
     
-        print(f"Límite: {rate_limit_limit} | Restantes: {rate_limit_remaining} | {retry_after}")
-        result = response.json()
-        print(response)
-        result = response.json()
-        content = result.get("choices", [{}])[0].get("message", {}).get("content", "")
+        # print(f"Límite: {rate_limit_limit} | Restantes: {rate_limit_remaining} | {retry_after}")
+        # result = response.json()
+        # print(response)
+        # result = response.json()
+        # content = result.get("choices", [{}])[0].get("message", {}).get("content", "")
         
-        # response = client.chat.completions.create(
-        #     model=model,
-        #     messages=[{"role": "user", "content": prompt}],
-        # )
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+        )
 
 
-        # content = response.choices[0].message.content
+        content = response.choices[0].message.content
         print(f"[LLM RESPONSE] {content}")
         if content.startswith("```json"):
             content = content.replace("```json", "").replace("```", "").strip()
@@ -92,8 +92,8 @@ def llm_extract_openrouter(
             
         parsed = extract_json_from_response(content)
             
-        return parsed
-        # return json.loads(content)
+        # return parsed
+        return json.loads(content)
     
     except Exception as e:
         print(f"[LLM ERROR] {e}")

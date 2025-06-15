@@ -16,7 +16,7 @@ class AdvancedCrawlerAgent:
         self.mission_profile = mission_profile or {}
         self.log = []
         self.visited = set()
-        self.max_visits = 13
+        self.max_visits = 33
         self.to_visit = []  # nueva pila FIFO
 
     def enqueue_url(self, url):

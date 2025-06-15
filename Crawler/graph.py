@@ -1,4 +1,3 @@
-
 # crawler/graph.py
 import json
 import os
@@ -34,6 +33,8 @@ class KnowledgeGraphInterface:
             self._insert_venue(entity_id, knowledge)
         elif entity_type == "catering":
             self._insert_catering(entity_id, knowledge)
+        elif entity_type == "decor":
+            self._insert_decor(entity_id, knowledge)
         else:
             print(f"[GRAPH] Tipo desconocido: {entity_type}")
 
@@ -215,9 +216,55 @@ class KnowledgeGraphInterface:
                 nid = safe_add_node(f"{rel}::{val}", rel, val)
                 safe_add_edge(entity_id, rel, nid)
 
+    def _insert_decor(self, entity_id: str, knowledge: Dict[str, Any]):
+        """Inserta un nodo de decoración floral en el grafo."""
+        def safe_add_node(nid, tipo, valor):
+            if nid not in self.nodes:
+                self.nodes[nid] = {"tipo": tipo, "valor": valor}
+            return nid
 
+        def safe_add_edge(from_id, rel, to_id):
+            if (from_id, rel, to_id) not in self.edges:
+                self.edges.append((from_id, rel, to_id))
 
+        fields = [
+            ("ubication", "ubication"),
+            ("price", "price"),
+            ("service_levels", "service_level"),
+            ("pre_wedding_services", "pre_wedding_service"),
+            ("post_wedding_services", "post_wedding_service"),
+            ("day_of_services", "day_of_service"),
+            ("arrangement_styles", "arrangement_style"),
+            ("floral_arrangements", "floral_arrangement"),
+            ("restrictions", "restriction"),
+            ("outlinks", "outlink")
+        ]
 
+        for field, rel in fields:
+            val = knowledge.get(field)
+            if not val:
+                continue
+
+            if isinstance(val, list):
+                for v in val:
+                    nid = safe_add_node(f"{rel}::{v.lower().strip()}", rel, v)
+                    safe_add_edge(entity_id, rel, nid)
+            elif isinstance(val, str):
+                for item in [v.strip() for v in val.split(",")]:
+                    nid = safe_add_node(f"{rel}::{item.lower()}", rel, item)
+                    safe_add_edge(entity_id, rel, nid)
+            elif isinstance(val, (int, float, dict)):
+                nid = safe_add_node(f"{rel}::{val}", rel, val)
+                safe_add_edge(entity_id, rel, nid)
+
+        # Completitud
+        has_essential = all([
+            knowledge.get("title"),
+            knowledge.get("price"),
+            knowledge.get("service_levels"),
+            knowledge.get("floral_arrangements")
+        ])
+        self.nodes[entity_id]["completitud"] = "completa" if has_essential else "parcial"
 
     def query(self, entity_type: Optional[str] = None) -> List[Dict[str, Any]]:
         if entity_type:

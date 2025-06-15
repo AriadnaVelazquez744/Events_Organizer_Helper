@@ -7,6 +7,7 @@ from Crawler.core import AdvancedCrawlerAgent
 from typing import List, Dict, Any, Union, Optional
 from Crawler.expert import ExpertSystemInterface
 from Crawler.graph import KnowledgeGraphInterface
+from catering_rag import CateringRAG
 
 class CateringAgent:
     def __init__(self, name: str, crawler: AdvancedCrawlerAgent, graph: KnowledgeGraphInterface, expert: ExpertSystemInterface):
@@ -15,6 +16,7 @@ class CateringAgent:
         self.graph = graph
         self.expert = expert
         self.inference_rules = {}
+        self.rag = CateringRAG()  # Inicializa el sistema RAG
 
     def _extract_price_value(self, price_str: str) -> Optional[float]:
         """Extrae el valor numérico de un string de precio."""
@@ -141,10 +143,10 @@ class CateringAgent:
                     if min_price is None:
                         print(f"[RULE] {data.get('title')} - precio no tiene valores numéricos válidos")
                         return False
-                    
+
                     if min_price <= valor_esperado:
-                        return True
-                    
+                            return True
+
                     print(f"[RULE] {data.get('title')} - precio mínimo {min_price} > presupuesto {valor_esperado}")
                     return False
 
@@ -192,11 +194,11 @@ class CateringAgent:
                                 if meal_type in meal_type_mapping:
                                     if not any(equivalent in valor_lower for equivalent in meal_type_mapping[meal_type]):
                                         print(f"[RULE] {data.get('title')} - no tiene {meal_type} o equivalente")
-                                        return False
+                                    return False
                                 elif meal_type not in valor_lower:
                                     print(f"[RULE] {data.get('title')} - no tiene {meal_type}")
-                                    return False
-                            return True
+                            return False
+                        return True
                         return all(d.lower() in str(valor).lower() for d in valor_esperado)
                     return valor_esperado.lower() in str(valor).lower()
 
@@ -251,6 +253,26 @@ class CateringAgent:
         print("[CateringAgent] Iniciando búsqueda de catering...")
         self.setup_rules(criteria)
 
+        # Obtener recomendaciones del RAG
+        if "budget" in criteria and "guest_count" in criteria:
+            menu_recommendation = self.rag.get_menu_recommendation(
+                budget=criteria["budget"],
+                guest_count=criteria["guest_count"],
+                dietary_requirements=criteria.get("dietary_options", ["regular"]),
+                style=criteria.get("style", "standard")
+            )
+            
+            # Actualizar criterios con las recomendaciones del RAG
+            if menu_recommendation:
+                criteria["recommended_courses"] = menu_recommendation["courses"]
+                criteria["recommended_dietary_options"] = menu_recommendation["dietary_options"]
+                criteria["estimated_cost"] = menu_recommendation["estimated_cost"]
+                
+                # Si hay restricciones dietéticas, obtener alternativas
+                if "dietary_options" in criteria:
+                    alternatives = self.rag.suggest_dietary_alternatives(criteria["dietary_options"])
+                    criteria["dietary_alternatives"] = alternatives
+
         # Verificar si ya tenemos datos en el grafo
         print("[CateringAgent] Verificando datos existentes en el grafo...")
         existing_data = self.graph.query("catering")
@@ -292,5 +314,19 @@ class CateringAgent:
 
         # Limitar a los 50 mejores resultados
         results = [v for v, _ in scored[:50]]
+        
+        # Actualizar patrones de éxito en RAG
+        if results:
+            self.rag.update_success_pattern(
+                {
+                    "style": criteria.get("style", "standard"),
+                    "courses": criteria.get("recommended_courses", []),
+                    "dietary_options": criteria.get("dietary_options", ["regular"]),
+                    "estimated_cost": criteria.get("estimated_cost", 0),
+                    "guest_count": criteria.get("guest_count", 0)
+                },
+                True  # Asumimos éxito si encontramos resultados
+            )
+        
         print(f"[CateringAgent] Se retornan los {len(results)} mejores resultados")
         return results

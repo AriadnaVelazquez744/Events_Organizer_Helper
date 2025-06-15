@@ -9,6 +9,7 @@ from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 from dotenv import load_dotenv
 from openai import OpenAI
+from planner_rag import PlannerRAG
 
 load_dotenv()
 
@@ -30,6 +31,7 @@ class BudgetDistributorAgent:
         self.memory_file = memory_file
         self.history = self._load_memory()
         self.service_constraints = self._initialize_constraints()
+        self.rag = PlannerRAG()  # Inicializa el sistema RAG
         
     def _load_knowledge_graph(self, category: str) -> Dict:
         """Carga el grafo de conocimiento correspondiente a la categoría."""
@@ -119,7 +121,7 @@ class BudgetDistributorAgent:
             print(f"  - Características requeridas: {', '.join(required_features)}")
             
         return constraints
-
+        
     def _load_memory(self) -> Dict[str, Dict[str, float]]:
         if os.path.exists(self.memory_file):
             with open(self.memory_file, "r") as f:
@@ -179,7 +181,7 @@ The weights should:
             "catering": 0.35,  # Segunda prioridad
             "decor": 0.25  # Menor prioridad
         }
-
+        
     def merge_with_history(self, user_id: str, new_weights: Dict[str, float]) -> Dict[str, float]:
         """Fusiona nuevas preferencias con el historial usando un sistema de aprendizaje adaptativo."""
         prev = self.history.get(user_id)
@@ -305,21 +307,17 @@ The weights should:
 
     def _initialize_state(self, weights: Dict[str, float], budget: int) -> Dict[str, int]:
         """Inicializa un estado válido respetando restricciones."""
-        state = {}
-        remaining_budget = budget
+        # Primero obtiene la recomendación del RAG
+        rag_distribution = self.rag.get_budget_distribution(budget)
         
-        # Primera pasada: asignar mínimos
+        # Convierte la distribución del RAG a un estado inicial
+        state = {k: int(v) for k, v in rag_distribution.items() if k in self.categories}
+        
+        # Ajusta según las restricciones
         for category in self.categories:
-            state[category] = self.service_constraints[category].min_budget
-            remaining_budget -= state[category]
-        
-        # Segunda pasada: distribuir el resto según pesos
-        if remaining_budget > 0:
-            total_weight = sum(weights.values())
-            for category in self.categories:
-                additional = int(remaining_budget * weights[category] / total_weight)
-                max_possible = self.service_constraints[category].max_budget - state[category]
-                state[category] += min(additional, max_possible)
+            if category in state:
+                constraints = self.service_constraints[category]
+                state[category] = max(min(state[category], constraints.max_budget), constraints.min_budget)
         
         return state
 
@@ -342,7 +340,7 @@ The weights should:
             scaled[max_category] += diff
         
         return scaled
-
+    
     def explain_allocation(self, user_id: str, allocation: Dict[str, int]) -> str:
         """Genera una explicación detallada de la asignación."""
         pref = self.history.get(user_id, {})
@@ -382,6 +380,16 @@ The weights should:
 
         print("[📈] Optimizando distribución final...")
         final = self.optimize(merged, total_budget)
+        
+        # Actualiza patrones de éxito en RAG
+        self.rag.update_success_pattern(
+            "budget_management",
+            {
+                "total_budget": total_budget,
+                "distribution": final,
+                "success_rate": 0.95  # Asumimos éxito si llegamos aquí
+            }
+        )
         
         print("[✅] Resultado final:")
         for k, v in final.items():

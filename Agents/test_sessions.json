@@ -122,5 +122,98 @@
     "created_at": "2025-06-14T05:27:40.273210",
     "last_activity": "2025-06-14T05:27:40.278497",
     "status": "active"
+  },
+  "5dcc3da6-50f9-4caf-a8d7-488255afa3e5": {
+    "user_id": "usuario_test",
+    "beliefs": {
+      "state": {
+        "criterios": {
+          "presupuesto_total": 50000,
+          "fecha": "2024-12-15"
+        },
+        "venue": null,
+        "catering": null,
+        "decor": null,
+        "presupuesto_asignado": {},
+        "conflictos": [],
+        "evaluaciones": {},
+        "pendiente": [],
+        "metadata": {
+          "ultima_actualizacion": "2025-06-15T01:15:55.766704",
+          "version": "1.0",
+          "estado": "inicial"
+        }
+      },
+      "metadata": {
+        "ultima_actualizacion": "2025-06-15T01:15:55.766704",
+        "version": "1.0",
+        "estado": "inicial"
+      }
+    },
+    "created_at": "2025-06-15T01:15:55.766227",
+    "last_activity": "2025-06-15T01:15:55.766873",
+    "status": "active"
+  },
+  "85de944c-f03d-4526-ae48-8deef4188942": {
+    "user_id": "usuario_test",
+    "beliefs": {
+      "state": {
+        "criterios": {
+          "presupuesto_total": 50000,
+          "fecha": "2024-12-15"
+        },
+        "venue": null,
+        "catering": null,
+        "decor": null,
+        "presupuesto_asignado": {},
+        "conflictos": [],
+        "evaluaciones": {},
+        "pendiente": [],
+        "metadata": {
+          "ultima_actualizacion": "2025-06-15T01:18:59.575290",
+          "version": "1.0",
+          "estado": "inicial"
+        }
+      },
+      "metadata": {
+        "ultima_actualizacion": "2025-06-15T01:18:59.575290",
+        "version": "1.0",
+        "estado": "inicial"
+      }
+    },
+    "created_at": "2025-06-15T01:18:59.570929",
+    "last_activity": "2025-06-15T01:18:59.575486",
+    "status": "active"
+  },
+  "d246bdeb-0e22-4ad2-a20d-477e902d45ca": {
+    "user_id": "usuario_test",
+    "beliefs": {
+      "state": {
+        "criterios": {
+          "presupuesto_total": 50000,
+          "fecha": "2024-12-15"
+        },
+        "venue": null,
+        "catering": null,
+        "decor": null,
+        "presupuesto_asignado": {},
+        "conflictos": [],
+        "evaluaciones": {},
+        "pendiente": [],
+        "metadata": {
+          "ultima_actualizacion": "2025-06-15T02:02:10.029884",
+          "version": "1.0",
+          "estado": "inicial"
+        }
+      },
+      "metadata": {
+        "ultima_actualizacion": "2025-06-15T02:02:10.029884",
+        "version": "1.0",
+        "estado": "inicial"
+      }
+    },
+    "created_at": "2025-06-15T02:02:10.025058",
+    "last_activity": "2025-06-15T02:02:10.030377",
+    "status": "active"
   }
 }

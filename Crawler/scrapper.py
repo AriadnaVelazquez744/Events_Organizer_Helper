@@ -1,4 +1,3 @@
-
 # scraper.py
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -21,6 +20,11 @@ def setup_driver():
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("start-maximized")
     options.add_argument("window-size=1920x1080")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-popup-blocking")
 
     # User-Agent falso
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
@@ -38,6 +42,15 @@ def setup_driver():
 
     return driver
 
+def wait_for_element(driver, by, value, timeout=10):
+    """Espera a que un elemento esté presente en la página."""
+    try:
+        element = WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located((by, value))
+        )
+        return element
+    except:
+        return None
 
 def scrape_page(url: str, context: dict = None) -> dict:
     html = None
@@ -56,7 +69,25 @@ def scrape_page(url: str, context: dict = None) -> dict:
         try:
             driver = setup_driver()
             driver.get(url)
-            time.sleep(3)  # espera para carga dinámica
+            
+            # Espera inicial para carga de página
+            time.sleep(5)
+            
+            # Para páginas de The Knot
+            if "theknot.com" in url:
+                # Espera a que el contenido principal esté cargado
+                if "/marketplace/" in url and "?sort=featured" in url:
+                    # Es una página de búsqueda
+                    wait_for_element(driver, By.CLASS_NAME, "marketplace-search-results", timeout=15)
+                else:
+                    # Es una página de vendedor
+                    wait_for_element(driver, By.CLASS_NAME, "vendor-profile", timeout=15)
+                    # Scroll para cargar contenido dinámico
+                    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    time.sleep(2)
+                    driver.execute_script("window.scrollTo(0, 0);")
+                    time.sleep(1)
+            
             html = driver.page_source
             with open("debug_last_scrape.html", "w", encoding="utf-8") as f:
                 f.write(html)
@@ -66,7 +97,7 @@ def scrape_page(url: str, context: dict = None) -> dict:
             return {"url": url, "title": "ERROR", "outlinks": []}
     
     # Si es página de búsqueda
-    if "/search/" in url or "sort=featured" in url:
+    if "/search/" in url or "?sort=featured" in url:
         outlinks = extract_venue_links(html)
         print("[SCRAPER] Links extraídos:", outlinks)
         return {
@@ -75,7 +106,85 @@ def scrape_page(url: str, context: dict = None) -> dict:
             "outlinks": outlinks,
             "tipo": "search"
         }
-    venue_prompt = """
+
+    # Inicializar structured con valores por defecto
+    structured = {
+        "url": url,
+        "title": "Unknown",
+        "ubication": None,
+        "price": None,
+        "service_levels": [],
+        "pre_wedding_services": [],
+        "post_wedding_services": [],
+        "day_of_services": [],
+        "arrangement_styles": [],
+        "floral_arrangements": [],
+        "restrictions": [],
+        "outlinks": [],
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    }
+
+    # Determinar el tipo de página y usar el prompt correspondiente
+    if "zola" in url and "wedding-venues" in url:
+        result = llm_extract_openrouter(html, url=url, prompt_template=venue_prompt)
+        if result:
+            structured.update(result)
+            structured["tipo"] = "venue"
+    elif "zola" in url and "wedding-catering" in url:
+        result = llm_extract_openrouter(html, url=url, prompt_template=catering_prompt)
+        if result:
+            structured.update(result)
+            structured["tipo"] = "catering"
+    elif "zola" in url and "wedding-florists" in url:
+        result = llm_extract_openrouter(html, url=url, prompt_template=decor_prompt)
+        if result:
+            structured.update(result)
+            structured["tipo"] = "decor"
+    elif "theknot" in url:
+        result = llm_extract_openrouter(html, url=url, prompt_template=decor_prompt)
+        if result:
+            structured.update(result)
+            structured["tipo"] = "decor"
+
+    # Extraer outlinks si no se han extraído antes
+    if not structured.get("outlinks"):
+        structured["outlinks"] = extract_venue_links(html)
+
+    return structured
+
+def extract_venue_links(html: str) -> list:
+    soup = BeautifulSoup(html, "html.parser")
+    venue_links = set()
+
+    zola_venue_pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-venues/[a-z0-9\-]+/?$")
+    zola_catering_pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-catering/[a-z0-9\-]+/?$")
+    zola_florist_pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-florists/[a-z0-9\-]+/?$")
+    knot_pattern = re.compile(r"^https://www\.theknot\.com/marketplace/[a-z0-9\-]+/?$")
+
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+
+        # Normaliza URLs relativas
+        if href.startswith("/wedding-vendors/wedding-venues/"):
+            href = "https://www.zola.com" + href
+        elif href.startswith("/wedding-vendors/wedding-catering/"):
+            href = "https://www.zola.com" + href
+        elif href.startswith("/wedding-vendors/wedding-florists/"):
+            href = "https://www.zola.com" + href
+        elif href.startswith("/marketplace/"):
+            href = "https://www.theknot.com" + href
+
+        if (
+            zola_venue_pattern.match(href)
+            or zola_catering_pattern.match(href)
+            or zola_florist_pattern.match(href)
+            or knot_pattern.match(href)
+        ):
+            venue_links.add(href)
+
+    return list(venue_links)
+
+venue_prompt = """
 Extract event venue data from the following text if the text only mentions a venue:
 
 - Venue name
@@ -110,7 +219,7 @@ Text:
 {text}
 """
 
-    catering_prompt = """
+catering_prompt = """
 Extracts data from the following text about a catering agency if the text only mentions one:
 
 - Name
@@ -133,64 +242,24 @@ Text:
 {text}
 """
 
-    decor_prompt="""
-    Extracts data from the following text about a catering agency if the text only mentions one:
+decor_prompt="""
+    Extract data from the following text about a floral design service if the text only mentions one:
 
     - Name
-    - Extracts pricing information
-
-    - Decorations & Accents
-    - Invitations & Paper Goods
-    - Rentals & Equipment
+    - Location
+    - Price information
+    - Service levels 
+    - Pre-wedding services 
+    - Post-wedding services 
+    - Day-of services 
+    - Arrangement styles 
+    - Floral arrangements offered 
     - Restrictions
-    - URLs in the text that appear to correspond to other similar locations
+    - URLs in the text that appear to correspond to other similar services
 
-    Your response must be exactly a JSON with these exact keys, without any notes or reviews after, not matter that something missing, make shure that the json has a correct structure:
-    "title", "price", "decorations/accents", "invitations/paper_goods", "rentals/equipment", "restrictions", "outlinks"
+    Your response must be exactly a JSON with these exact keys, without any notes or reviews after, make sure that the json has a correct structure:
+    "title", "ubication", "price", "service_levels", "pre_wedding_services", "post_wedding_services", "day_of_services", "arrangement_styles", "floral_arrangements", "restrictions", "outlinks"
 
     Text:
     {text}
     """
-    
-    if "zola" in url and "wedding-venues" in url :
-        structured = llm_extract_openrouter(html, url=url, prompt_template=venue_prompt)
-        structured["tipo"] = "venue"
-    elif "zola" in url and "wedding-catering" in url :
-        structured = llm_extract_openrouter(html, url=url, prompt_template=catering_prompt)
-        structured["tipo"] = "catering"
-    elif "theknot" in url :
-        structured = llm_extract_openrouter(html, url=url, prompt_template=catering_prompt)
-        structured["tipo"] = "catering"
-    structured["url"] = url
-    
-    structured["outlinks"] = extract_venue_links(html)
-    structured["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    return structured
-
-def extract_venue_links(html: str) -> list:
-    soup = BeautifulSoup(html, "html.parser")
-    venue_links = set()
-
-    zola_venue_pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-venues/[a-z0-9\-]+/?$")
-    zola_catering_pattern = re.compile(r"^https://www\.zola\.com/wedding-vendors/wedding-catering/[a-z0-9\-]+/?$")
-    knot_pattern = re.compile(r"^https://www\.theknot\.com/marketplace/[a-z0-9\-]+/?$")
-
-    for a in soup.find_all("a", href=True):
-        href = a["href"]
-
-        # Normaliza URLs relativas
-        if href.startswith("/wedding-vendors/wedding-venues/"):
-            href = "https://www.zola.com" + href
-        elif href.startswith("/wedding-vendors/wedding-catering/"):
-            href = "https://www.zola.com" + href
-        elif href.startswith("/marketplace/"):
-            href = "https://www.theknot.com" + href
-
-        if (
-            zola_venue_pattern.match(href)
-            or zola_catering_pattern.match(href)
-            or knot_pattern.match(href)
-        ):
-            venue_links.add(href)
-
-    return list(venue_links)
