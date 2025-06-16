@@ -23,10 +23,10 @@ class ExpertSystemInterface:
 
             if not passed:
                 title = knowledge.get("title") or knowledge.get("nombre") or "n/a"
-                print(f"[RULE FAILED] {title} en regla {idx}")
+                # print(f"[RULE FAILED] {title} en regla {idx}")
                 return False
         title = knowledge.get("title") or knowledge.get("nombre") or "n/a"
-        print(f"[RULE PASSED] {title}")
+        # print(f"[RULE PASSED] {title}")
         return True
 
 

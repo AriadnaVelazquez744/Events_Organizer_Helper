@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from typing import Dict, Any, Optional
 from collections import defaultdict
-from beliefs_schema import BeliefState
+from Agents.beliefs_schema import BeliefState
 
 class SessionMemoryManager:
     def __init__(self, storage_file: str = "session_memory.json"):
@@ -26,9 +26,11 @@ class SessionMemoryManager:
         with open(self.storage_file, 'w') as f:
             json.dump(self.sessions, f, indent=2)
 
-    def create_session(self, user_id: str) -> str:
+    def create_session(self, user_id: str, session_id: Optional[str] = None) -> str:
         """Crea una nueva sesión para un usuario."""
-        session_id = str(uuid.uuid4())
+        if session_id is None:
+            session_id = str(uuid.uuid4())
+            
         self.sessions[session_id] = {
             "user_id": user_id,
             "beliefs": BeliefState().to_dict(),
@@ -59,7 +61,13 @@ class SessionMemoryManager:
         beliefs = BeliefState.from_dict(session_data["beliefs"])
         
         for key, value in updates.items():
-            beliefs.set(key, value)
+            if isinstance(value, dict) and key in ["completado"]:
+                # Handle nested updates for completion status
+                for subkey, subvalue in value.items():
+                    beliefs.update(key, subkey, subvalue)
+            else:
+                # Handle direct belief updates
+                beliefs.set(key, value)
         
         session_data["beliefs"] = beliefs.to_dict()
         session_data["last_activity"] = datetime.now().isoformat()

@@ -5,11 +5,11 @@ import json
 import random
 import math
 import numpy as np
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass
 from dotenv import load_dotenv
 from openai import OpenAI
-from planner_rag import PlannerRAG
+from Agents.planner_rag import PlannerRAG
 
 load_dotenv()
 
@@ -35,11 +35,35 @@ class BudgetDistributorAgent:
         
     def _load_knowledge_graph(self, category: str) -> Dict:
         """Carga el grafo de conocimiento correspondiente a la categoría."""
-        graph_file = f"{category}_graph.json"
-        if os.path.exists(graph_file):
-            with open(graph_file, 'r') as f:
-                return json.load(f)
-        return {}
+        # Mapeo de categorías a nombres de archivo
+        file_mapping = {
+            "venue": "venues_graph.json",  # Nombre correcto para venues
+            "catering": "catering_graph.json",
+            "decor": "decor_graph.json"
+        }
+        
+        # Obtener el directorio actual del script
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        graph_file = os.path.join(current_dir, file_mapping.get(category, f"{category}_graph.json"))
+        
+        print(f"[BudgetDistributorAgent] Intentando cargar grafo para {category}")
+        print(f"[BudgetDistributorAgent] Ruta del archivo: {graph_file}")
+        print(f"[BudgetDistributorAgent] ¿Existe el archivo?: {os.path.exists(graph_file)}")
+        
+        try:
+            if os.path.exists(graph_file):
+                with open(graph_file, 'r') as f:
+                    data = json.load(f)
+                    print(f"[BudgetDistributorAgent] Grafo cargado exitosamente para {category}")
+                    return data
+            print(f"[⚠️] No se encontró el archivo de conocimiento para {category}: {graph_file}")
+            return {}
+        except json.JSONDecodeError as e:
+            print(f"[⚠️] Error al decodificar {graph_file}: {str(e)}")
+            return {}
+        except Exception as e:
+            print(f"[⚠️] Error inesperado al cargar {graph_file}: {str(e)}")
+            return {}
 
     def _extract_price_range(self, data: Dict) -> Tuple[float, float]:
         """Extrae el rango de precios de los datos del grafo."""
@@ -116,9 +140,9 @@ class BudgetDistributorAgent:
                 required_features=required_features
             )
             
-            print(f"[📊] Restricciones para {category}:")
-            print(f"  - Rango de precios: ${min_price:,.2f} - ${max_price:,.2f}")
-            print(f"  - Características requeridas: {', '.join(required_features)}")
+            # print(f"[📊] Restricciones para {category}:")
+            # print(f"  - Rango de precios: ${min_price:,.2f} - ${max_price:,.2f}")
+            # print(f"  - Características requeridas: {', '.join(required_features)}")
             
         return constraints
         
@@ -134,45 +158,102 @@ class BudgetDistributorAgent:
 
     def infer_priorities(self, user_text: str) -> Dict[str, float]:
         """Infiere prioridades usando LLM con un prompt más estructurado."""
-        prompt = f"""
-Given this user's wedding description: 
-"{user_text}"
+        print("[BudgetDistributorAgent] Intentando inferir prioridades del texto del usuario...")
+        
+        try:
+            # Parsear los criterios del JSON
+            criteria = json.loads(user_text)
+            
+            prompt = f"""
+Based on these wedding planning criteria:
 
-Analyze the text and assign importance weights to these categories:
+Venue Requirements:
+- Capacity: {criteria.get('venue', {}).get('capacity', 0)} guests
+- Location: {criteria.get('venue', {}).get('location', 'Not specified')}
+- Required Features: {', '.join(criteria.get('venue', {}).get('obligatorios', []))}
+
+Catering Requirements:
+- Meal Types: {', '.join(criteria.get('catering', {}).get('meal_types', []))}
+- Dietary Options: {', '.join(criteria.get('catering', {}).get('dietary_options', []))}
+- Required Features: {', '.join(criteria.get('catering', {}).get('obligatorios', []))}
+
+Decor Requirements:
+- Service Level: {', '.join(criteria.get('decor', {}).get('service_levels', []))}
+- Floral Arrangements: {', '.join(criteria.get('decor', {}).get('floral_arrangements', []))}
+- Required Features: {', '.join(criteria.get('decor', {}).get('obligatorios', []))}
+
+Total Budget: ${criteria.get('presupuesto_total', 0)}
+Guest Count: {criteria.get('guest_count', 0)}
+Style: {criteria.get('style', 'Not specified')}
+
+Assign importance weights to these categories:
 {", ".join(self.categories)}
 
-Consider:
-1. Explicit mentions of preferences
-2. Implicit priorities based on description
-3. Cultural and social context
-4. Practical requirements
-
-Your response must be a JSON with this exact structure:
-{{ "venue": 0.3, "catering": 0.2, ... }}
+IMPORTANT: Your response must be ONLY a valid JSON object with this exact structure:
+{{ "venue": value, "catering": value, "decor": value }}
 
 The weights should:
 - Sum to 1.0
-- Reflect relative importance
-- Consider both stated and implied preferences
+- Reflect relative importance based on the specific requirements
+- Consider the complexity and scope of each category's requirements
+- Take into account the total budget and guest count
+
+DO NOT include any additional text or explanation. ONLY return the JSON object.
 """
-        try:
+            print("[BudgetDistributorAgent] Enviando prompt a la API...")
+            print(f"[BudgetDistributorAgent] Prompt: {prompt}")
+            
             response = client.chat.completions.create(
                 model="meta-llama/llama-3.3-8b-instruct:free",
                 messages=[{"role": "user", "content": prompt}]
             )
+            
+            if not response or not response.choices:
+                print("[BudgetDistributorAgent] No se recibió respuesta válida de la API")
+                return self._get_default_weights()
+                
             content = response.choices[0].message.content
-            weights = json.loads(content)
-            return self._normalize_weights(weights)
+            print(f"[BudgetDistributorAgent] Respuesta recibida: {content}")
+            
+            try:
+                weights = json.loads(content)
+                print(f"[BudgetDistributorAgent] Pesos parseados: {weights}")
+                return self._normalize_weights(weights)
+            except json.JSONDecodeError as e:
+                print(f"[BudgetDistributorAgent] Error al parsear JSON: {str(e)}")
+                return self._get_default_weights()
+                
         except Exception as e:
-            print("[LLM ERROR]", e)
+            print(f"[BudgetDistributorAgent] Error al inferir prioridades: {str(e)}")
+            print("[BudgetDistributorAgent] Usando distribución por defecto")
             return self._get_default_weights()
 
     def _normalize_weights(self, weights: Dict[str, float]) -> Dict[str, float]:
         """Normaliza los pesos para que sumen 1.0."""
-        total = sum(weights.values())
+        print("[BudgetDistributorAgent] Normalizando pesos...")
+        
+        # Verifica que todos los pesos sean números válidos
+        valid_weights = {}
+        for category in self.categories:
+            try:
+                weight = float(weights.get(category, 0))
+                if weight >= 0:
+                    valid_weights[category] = weight
+                else:
+                    print(f"[BudgetDistributorAgent] Peso negativo encontrado para {category}: {weight}")
+                    valid_weights[category] = 0
+            except (ValueError, TypeError):
+                print(f"[BudgetDistributorAgent] Peso inválido encontrado para {category}: {weights.get(category)}")
+                valid_weights[category] = 0
+        
+        total = sum(valid_weights.values())
         if total == 0:
+            print("[BudgetDistributorAgent] Suma de pesos es 0, usando distribución por defecto")
             return self._get_default_weights()
-        return {k: v/total for k, v in weights.items()}
+            
+        normalized = {k: v/total for k, v in valid_weights.items()}
+        print(f"[BudgetDistributorAgent] Pesos normalizados: {normalized}")
+        return normalized
 
     def _get_default_weights(self) -> Dict[str, float]:
         """Retorna pesos por defecto basados en prioridades típicas."""
@@ -235,32 +316,41 @@ The weights should:
                 
         return concordant / total if total > 0 else 0.0
 
-    def optimize(self, weights: Dict[str, float], budget: int, iterations=1000) -> Dict[str, int]:
+    def optimize(self, weights: Dict[str, float], budget: int, iterations=100) -> Dict[str, int]:
         """Optimiza la distribución del presupuesto usando Simulated Annealing mejorado."""
-        def cost(state: Dict[str, int]) -> float:
+        print(f"[BudgetDistributorAgent] Iniciando optimización con Simulated Annealing")
+        print(f"[BudgetDistributorAgent] Usando pesos fijos: {weights}")
+        print(f"[BudgetDistributorAgent] Presupuesto total: {budget}")
+        
+        def cost(state: Dict[str, float]) -> float:
             """Función de costo que considera múltiples factores."""
-            # Costo base basado en preferencias
-            base_cost = -sum(weights[k] * math.log(1 + state[k]) for k in state)
-            
-            # Penalización por violar restricciones
-            constraint_penalty = 0
-            for category, amount in state.items():
-                if category in self.service_constraints:
-                    constraints = self.service_constraints[category]
-                    if amount < constraints.min_budget:
-                        constraint_penalty += (constraints.min_budget - amount) * 2
-                    if amount > constraints.max_budget:
-                        constraint_penalty += (amount - constraints.max_budget) * 2
-            
-            # Penalización por desbalance
-            balance_penalty = 0
-            total = sum(state.values())
-            if total != budget:
-                balance_penalty = abs(total - budget) * 10
-            
-            return base_cost + constraint_penalty + balance_penalty
+            try:
+                # Costo base basado en preferencias (usando los pesos fijos)
+                base_cost = -sum(weights[k] * math.log(1 + state[k]) for k in state)
+                
+                # Penalización por violar restricciones
+                constraint_penalty = 0
+                for category, amount in state.items():
+                    if category in self.service_constraints:
+                        constraints = self.service_constraints[category]
+                        if amount < constraints.min_budget:
+                            constraint_penalty += (constraints.min_budget - amount) * 2
+                        if amount > constraints.max_budget:
+                            constraint_penalty += (amount - constraints.max_budget) * 2
+                
+                # Penalización por desbalance
+                balance_penalty = 0
+                total = sum(state.values())
+                if abs(total - budget) > 0.01:  # Permitir un pequeño margen de error
+                    balance_penalty = abs(total - budget) * 10
+                
+                final_cost = base_cost + constraint_penalty + balance_penalty
+                return final_cost
+            except Exception as e:
+                print(f"[BudgetDistributorAgent] Error en cálculo de costo: {str(e)}")
+                return float('inf')
 
-        def neighbor(state: Dict[str, int]) -> Dict[str, int]:
+        def neighbor(state: Dict[str, float]) -> Dict[str, float]:
             """Genera un vecino válido respetando restricciones."""
             new_state = state.copy()
             k1, k2 = random.sample(list(state.keys()), 2)
@@ -272,24 +362,64 @@ The weights should:
             )
             
             if max_increase > 0:
-                delta = random.randint(1, min(100, max_increase))
-                new_state[k1] += delta
-                new_state[k2] -= delta
+                # Reducir el tamaño del cambio para mejor convergencia
+                delta = random.uniform(0.1, min(10, max_increase))
+                new_state[k1] = state[k1] + delta
+                new_state[k2] = state[k2] - delta
             
             return new_state
 
+        def initialize_state() -> Dict[str, float]:
+            """Inicializa un estado válido respetando restricciones."""
+            # Primero obtiene la recomendación del RAG
+            rag_distribution = self.rag.get_budget_distribution(budget)
+            
+            # Convierte la distribución del RAG a un estado inicial
+            state = {k: float(v) for k, v in rag_distribution.items() if k in self.categories}
+            
+            # Ajusta según las restricciones
+            for category in self.categories:
+                if category in state:
+                    constraints = self.service_constraints[category]
+                    state[category] = max(min(state[category], constraints.max_budget), constraints.min_budget)
+            
+            return state
+
+        def normalize_state(state: Dict[str, float]) -> Dict[str, int]:
+            """Normaliza el estado final para que sume exactamente el presupuesto."""
+            # Primero redondeamos todos los valores
+            rounded = {k: round(v) for k, v in state.items()}
+            
+            # Calculamos la diferencia con el presupuesto total
+            total = sum(rounded.values())
+            diff = budget - total
+            
+            if diff != 0:
+                # Ajustamos la categoría con mayor peso
+                max_weight_category = max(weights.items(), key=lambda x: x[1])[0]
+                rounded[max_weight_category] += diff
+            
+            return rounded
+
         # Inicialización mejorada
-        current = self._initialize_state(weights, budget)
+        current = initialize_state()
+        print(f"[BudgetDistributorAgent] Estado inicial: {current}")
         best = current.copy()
         best_cost = cost(best)
+        print(f"[BudgetDistributorAgent] Costo inicial: {best_cost}")
         
-        # Parámetros de Simulated Annealing
-        initial_temp = 1000
-        final_temp = 1
+        # Parámetros de Simulated Annealing ajustados
+        initial_temp = 100
+        final_temp = 0.1
         alpha = 0.95
+        max_iterations = 1000  # Límite total de iteraciones
         
         current_temp = initial_temp
-        while current_temp > final_temp:
+        iteration = 0
+        no_improvement_count = 0
+        
+        while current_temp > final_temp and iteration < max_iterations:
+            improved = False
             for _ in range(iterations):
                 candidate = neighbor(current)
                 candidate_cost = cost(candidate)
@@ -300,47 +430,27 @@ The weights should:
                     if candidate_cost < best_cost:
                         best = candidate
                         best_cost = candidate_cost
+                        improved = True
+                        no_improvement_count = 0
+                        print(f"[BudgetDistributorAgent] Nueva mejor solución encontrada en iteración {iteration}: {best} (costo: {best_cost})")
+                
+                iteration += 1
+                if iteration >= max_iterations:
+                    break
+            
+            if not improved:
+                no_improvement_count += 1
+                if no_improvement_count >= 5:  # Si no hay mejora en 5 ciclos, terminar
+                    print("[BudgetDistributorAgent] No se encontraron mejoras en los últimos ciclos, terminando...")
+                    break
             
             current_temp *= alpha
         
-        return self._normalize_state(best, budget)
+        final_state = normalize_state(best)
+        print(f"[BudgetDistributorAgent] Estado final: {final_state}")
+        print(f"[BudgetDistributorAgent] Costo final: {cost(final_state)}")
+        return final_state
 
-    def _initialize_state(self, weights: Dict[str, float], budget: int) -> Dict[str, int]:
-        """Inicializa un estado válido respetando restricciones."""
-        # Primero obtiene la recomendación del RAG
-        rag_distribution = self.rag.get_budget_distribution(budget)
-        
-        # Convierte la distribución del RAG a un estado inicial
-        state = {k: int(v) for k, v in rag_distribution.items() if k in self.categories}
-        
-        # Ajusta según las restricciones
-        for category in self.categories:
-            if category in state:
-                constraints = self.service_constraints[category]
-                state[category] = max(min(state[category], constraints.max_budget), constraints.min_budget)
-        
-        return state
-
-    def _normalize_state(self, state: Dict[str, int], budget: int) -> Dict[str, int]:
-        """Normaliza el estado final para que sume exactamente el presupuesto."""
-        current_sum = sum(state.values())
-        if current_sum == 0:
-            return {k: 0 for k in state}
-            
-        # Ajusta proporcionalmente
-        factor = budget / current_sum
-        scaled = {k: int(v * factor) for k, v in state.items()}
-        
-        # Ajusta el residuo
-        diff = budget - sum(scaled.values())
-        if diff != 0:
-            # Asigna el residuo a la categoría con mayor peso
-            max_category = max(self.history.get("current", self._get_default_weights()).items(), 
-                             key=lambda x: x[1])[0]
-            scaled[max_category] += diff
-        
-        return scaled
-    
     def explain_allocation(self, user_id: str, allocation: Dict[str, int]) -> str:
         """Genera una explicación detallada de la asignación."""
         pref = self.history.get(user_id, {})
@@ -371,31 +481,102 @@ The weights should:
 
     def run(self, user_id: str, total_budget: int, user_description: str) -> Dict[str, int]:
         """Ejecuta el proceso completo de distribución de presupuesto."""
-        print("[🧠] Infiriendo prioridades iniciales...")
-        inferred = self.infer_priorities(user_description)
-        print("[📊] Pesos inferidos por LLM:", inferred)
-
-        merged = self.merge_with_history(user_id, inferred)
-        print("[🔁] Preferencias fusionadas con historial:", merged)
-
-        print("[📈] Optimizando distribución final...")
-        final = self.optimize(merged, total_budget)
+        print(f"[BudgetDistributorAgent] Iniciando distribución de presupuesto para {total_budget}...")
         
-        # Actualiza patrones de éxito en RAG
-        self.rag.update_success_pattern(
-            "budget_management",
-            {
-                "total_budget": total_budget,
-                "distribution": final,
-                "success_rate": 0.95  # Asumimos éxito si llegamos aquí
-            }
-        )
-        
-        print("[✅] Resultado final:")
-        for k, v in final.items():
-            print(f"- {k}: ${v:,}")
+        # Obtener pesos iniciales (solo una vez)
+        print("[BudgetDistributorAgent] Inferiendo prioridades iniciales...")
+        weights = self.infer_priorities(user_description)
+        print(f"[BudgetDistributorAgent] Pesos inferidos: {weights}")
+
+        # Verificar que los pesos sean válidos
+        if not all(0 <= w <= 1 for w in weights.values()):
+            print("[BudgetDistributorAgent] Pesos inválidos detectados, usando distribución por defecto")
+            weights = self._get_default_weights()
+
+        # Optimizar distribución usando los pesos fijos
+        print("[BudgetDistributorAgent] Iniciando optimización con pesos fijos...")
+        try:
+            distribution = self.optimize(weights, total_budget)
+            print(f"[BudgetDistributorAgent] Distribución final: {distribution}")
             
-        print("\n[📝] Explicación:")
-        print(self.explain_allocation(user_id, final))
+            # Verificar que la distribución sea válida
+            if not distribution or sum(distribution.values()) != total_budget:
+                print("[BudgetDistributorAgent] Distribución inválida, usando distribución proporcional")
+                distribution = {
+                    category: int(total_budget * weight)
+                    for category, weight in weights.items()
+                }
+                # Ajustar el residuo
+                diff = total_budget - sum(distribution.values())
+                if diff != 0:
+                    max_category = max(weights.items(), key=lambda x: x[1])[0]
+                    distribution[max_category] += diff
+        except Exception as e:
+            print(f"[BudgetDistributorAgent] Error en optimización: {str(e)}")
+            print("[BudgetDistributorAgent] Usando distribución proporcional simple")
+            distribution = {
+                category: int(total_budget * weight)
+                for category, weight in weights.items()
+            }
+            # Ajustar el residuo
+            diff = total_budget - sum(distribution.values())
+            if diff != 0:
+                max_category = max(weights.items(), key=lambda x: x[1])[0]
+                distribution[max_category] += diff
+
+        # Actualizar historial
+        self.history[user_id] = weights
+        self._save_memory()
+
+        print(f"[BudgetDistributorAgent] Distribución final validada: {distribution}")
+        print(f"[BudgetDistributorAgent] Suma total: {sum(distribution.values())}")
         
-        return final
+        return distribution
+
+    def receive(self, message: Dict[str, Any]):
+        """Procesa mensajes entrantes."""
+        if message["tipo"] == "task":
+            task_id = message["contenido"]["task_id"]
+            parameters = message["contenido"]["parameters"]
+            session_id = message["session_id"]
+            
+            try:
+                print(f"[BudgetDistributorAgent] Procesando tarea de distribución de presupuesto")
+                # Extraer el presupuesto total y los criterios
+                total_budget = parameters.get("budget", 0)
+                criteria = parameters.get("criterios", {})
+                
+                print(f"[BudgetDistributorAgent] Criterios recibidos: {json.dumps(criteria, indent=2)}")
+                
+                # Ejecutar la distribución del presupuesto
+                distribution = self.run(
+                    user_id=session_id,
+                    total_budget=total_budget,
+                    user_description=json.dumps(criteria)  # Enviamos los criterios completos
+                )
+                
+                # Enviar respuesta
+                return {
+                    "origen": "BudgetDistributorAgent",
+                    "destino": message["origen"],
+                    "tipo": "agent_response",
+                    "contenido": {
+                        "task_id": task_id,
+                        "distribution": distribution
+                    },
+                    "session_id": session_id
+                }
+            except Exception as e:
+                print(f"[BudgetDistributorAgent] Error procesando tarea: {str(e)}")
+                return {
+                    "origen": "BudgetDistributorAgent",
+                    "destino": message["origen"],
+                    "tipo": "error",
+                    "contenido": {
+                        "task_id": task_id,
+                        "error": str(e)
+                    },
+                    "session_id": session_id
+                }
+        else:
+            print(f"[BudgetDistributorAgent] Tipo de mensaje no reconocido: {message['tipo']}")

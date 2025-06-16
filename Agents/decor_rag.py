@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 import json
 import math
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Any
+import os
 
 @dataclass
 class DecorPattern:
@@ -17,166 +18,136 @@ class DecorPattern:
     usage_count: int
 
 class DecorRAG:
-    def __init__(self, knowledge_file: str = "decor_knowledge.json"):
-        self.knowledge_file = knowledge_file
-        self.decor_patterns: List[DecorPattern] = []
-        self._load_knowledge()
-
-    def _load_knowledge(self):
-        """Carga la base de conocimiento desde el archivo."""
-        try:
-            with open(self.knowledge_file, 'r') as f:
-                data = json.load(f)
-                if isinstance(data, dict) and "decor_patterns" in data:
-                    for pattern_data in data["decor_patterns"]:
-                        if isinstance(pattern_data, dict):
-                            try:
-                                # Convertir rangos de precio y cantidad de invitados a tuplas
-                                price_range = tuple(pattern_data.get("price_range", [0.0, 0.0]))
-                                guest_count_range = tuple(pattern_data.get("guest_count_range", [0, 0]))
-                                
-                                pattern = DecorPattern(
-                                    style=pattern_data.get("style", "classic"),
-                                    decorations=pattern_data.get("decorations", []),
-                                    paper_goods=pattern_data.get("paper_goods", []),
-                                    rentals=pattern_data.get("rentals", []),
-                                    price_range=price_range,
-                                    guest_count_range=guest_count_range,
-                                    success_rate=float(pattern_data.get("success_rate", 0.0)),
-                                    last_used=pattern_data.get("last_used", datetime.now().isoformat()),
-                                    usage_count=int(pattern_data.get("usage_count", 0))
-                                )
-                                self.decor_patterns.append(pattern)
-                            except Exception as e:
-                                print(f"Error procesando patrón: {e}")
-        except FileNotFoundError:
-            # Inicializa con patrones base si no existe el archivo
-            self.decor_patterns = [
-                DecorPattern(
-                    style="classic",
-                    decorations=["flores", "velas", "centros", "arreglos", "candelabros"],
-                    paper_goods=["invitaciones", "menús", "tarjetas", "etiquetas"],
-                    rentals=["mesas", "sillas", "manteles", "cubiertos", "cristalería"],
-                    price_range=(50.0, 100.0),
-                    guest_count_range=(50, 200),
-                    success_rate=0.8,
-                    last_used=datetime.now().isoformat(),
-                    usage_count=0
-                ),
-                DecorPattern(
-                    style="premium",
-                    decorations=["flores premium", "velas aromáticas", "centros artesanales", 
-                               "arreglos exclusivos", "candelabros vintage", "iluminación especial"],
-                    paper_goods=["invitaciones personalizadas", "menús gourmet", "tarjetas premium",
-                               "etiquetas doradas", "programas de evento"],
-                    rentals=["mesas premium", "sillas de diseño", "manteles de lujo", 
-                            "cubiertos premium", "cristalería fina", "vajilla exclusiva"],
-                    price_range=(100.0, 200.0),
-                    guest_count_range=(30, 150),
-                    success_rate=0.9,
-                    last_used=datetime.now().isoformat(),
-                    usage_count=0
-                )
-            ]
-            self._save_knowledge()
-
-    def _save_knowledge(self):
-        """Guarda la base de conocimiento en el archivo."""
-        data = {
-            "decor_patterns": [
-                {
-                    "style": pattern.style,
-                    "decorations": pattern.decorations,
-                    "paper_goods": pattern.paper_goods,
-                    "rentals": pattern.rentals,
-                    "price_range": list(pattern.price_range),
-                    "guest_count_range": list(pattern.guest_count_range),
-                    "success_rate": pattern.success_rate,
-                    "last_used": pattern.last_used,
-                    "usage_count": pattern.usage_count
-                }
-                for pattern in self.decor_patterns
-            ]
+    def __init__(self):
+        self.patterns_file = "decor_patterns.json"
+        self.patterns = self._load_patterns()
+        
+    def _load_patterns(self) -> Dict[str, Any]:
+        """Carga los patrones de éxito desde el archivo."""
+        if os.path.exists(self.patterns_file):
+            with open(self.patterns_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return {
+            "success_patterns": [],
+            "budget_recommendations": [],
+            "style_recommendations": []
         }
-        with open(self.knowledge_file, 'w') as f:
-            json.dump(data, f, indent=2)
+        
+    def _save_patterns(self):
+        """Guarda los patrones de éxito en el archivo."""
+        with open(self.patterns_file, 'w', encoding='utf-8') as f:
+            json.dump(self.patterns, f, indent=2, ensure_ascii=False)
 
-    def get_decor_recommendation(self, budget: float, guest_count: int, 
-                               style: str = "classic") -> Dict:
-        """Genera una recomendación de decoración basada en los criterios proporcionados."""
-        # Filtra patrones por estilo y requisitos
-        valid_patterns = [
-            p for p in self.decor_patterns
-            if p.style == style and
-            p.guest_count_range[0] <= guest_count <= p.guest_count_range[1]
-        ]
+    def get_decor_recommendation(self, budget: float, guest_count: int, style: str = "classic") -> Dict[str, Any]:
+        """Genera recomendaciones basadas en el presupuesto y estilo."""
+        # Calcular presupuesto por invitado
+        budget_per_guest = budget / guest_count if guest_count > 0 else 0
+        
+        # Recomendaciones base por estilo
+        style_recommendations = {
+            "classic": {
+                "decorations": [
+                    "Centros de mesa clásicos",
+                    "Arcos decorativos",
+                    "Candelabros",
+                    "Manteles elegantes"
+                ],
+                "paper_goods": [
+                    "Invitaciones formales",
+                    "Menús elegantes",
+                    "Place cards"
+                ],
+                "rentals": [
+                    "Sillas Chiavari",
+                    "Mesas redondas",
+                    "Cristalería fina"
+                ]
+            },
+            "rustic": {
+                "decorations": [
+                    "Centros de mesa naturales",
+                    "Arreglos de madera",
+                    "Luz de velas",
+                    "Elementos vintage"
+                ],
+                "paper_goods": [
+                    "Invitaciones kraft",
+                    "Menús rústicos",
+                    "Tags de madera"
+                ],
+                "rentals": [
+                    "Mesas de madera",
+                    "Sillas de campo",
+                    "Vajilla rústica"
+                ]
+            },
+            "modern": {
+                "decorations": [
+                    "Centros geométricos",
+                    "Iluminación LED",
+                    "Elementos metálicos",
+                    "Diseños minimalistas"
+                ],
+                "paper_goods": [
+                    "Invitaciones minimalistas",
+                    "Menús modernos",
+                    "Tarjetas acrílicas"
+                ],
+                "rentals": [
+                    "Mesas de cristal",
+                    "Sillas modernas",
+                    "Vajilla contemporánea"
+                ]
+            }
+        }
 
-        if not valid_patterns:
-            return self._generate_custom_recommendation(budget, guest_count, style)
-
-        # Ordena por tasa de éxito y uso
-        valid_patterns.sort(key=lambda p: (p.success_rate, p.usage_count), reverse=True)
-        best_pattern = valid_patterns[0]
-
-        # Calcula el costo estimado
-        base_cost = (best_pattern.price_range[0] + best_pattern.price_range[1]) / 2
-        estimated_cost = base_cost * guest_count
-
-        # Ajusta el costo si excede el presupuesto
-        if estimated_cost > budget:
-            # Reduce elementos para ajustar al presupuesto
-            decorations = best_pattern.decorations[:3]
-            paper_goods = best_pattern.paper_goods[:2]
-            rentals = best_pattern.rentals[:3]
-            estimated_cost = budget
-        else:
-            decorations = best_pattern.decorations
-            paper_goods = best_pattern.paper_goods
-            rentals = best_pattern.rentals
+        # Ajustar recomendaciones según el presupuesto
+        base_recommendations = style_recommendations.get(style, style_recommendations["classic"])
+        
+        # Calcular costos estimados
+        estimated_cost = {
+            "decorations": min(budget * 0.4, 5000),  # 40% del presupuesto, máximo $5000
+            "paper_goods": min(budget * 0.1, 1000),  # 10% del presupuesto, máximo $1000
+            "rentals": min(budget * 0.3, 3000)       # 30% del presupuesto, máximo $3000
+        }
 
         return {
-            "style": style,
-            "decorations": decorations,
-            "paper_goods": paper_goods,
-            "rentals": rentals,
-            "estimated_cost": estimated_cost,
-            "guest_count": guest_count
+            "decorations": base_recommendations["decorations"],
+            "paper_goods": base_recommendations["paper_goods"],
+            "rentals": base_recommendations["rentals"],
+            "estimated_cost": estimated_cost
         }
 
-    def _generate_custom_recommendation(self, budget: float, guest_count: int, 
-                                      style: str) -> Dict:
-        """Genera una recomendación personalizada cuando no hay patrones válidos."""
-        # Elementos base según el estilo
-        if style == "premium":
-            decorations = ["flores premium", "velas aromáticas", "centros artesanales"]
-            paper_goods = ["invitaciones personalizadas", "menús gourmet"]
-            rentals = ["mesas premium", "sillas de diseño", "manteles de lujo"]
-            base_cost = 150.0
-        else:  # classic
-            decorations = ["flores", "velas", "centros"]
-            paper_goods = ["invitaciones", "menús"]
-            rentals = ["mesas", "sillas", "manteles"]
-            base_cost = 75.0
+    def update_success_pattern(self, pattern: Dict[str, Any], success: bool):
+        """Actualiza los patrones de éxito basados en resultados previos."""
+        if success:
+            self.patterns["success_patterns"].append({
+                "pattern": pattern,
+                "timestamp": "2024-03-19T00:00:00Z"  # Esto debería ser dinámico
+            })
+            self._save_patterns()
 
-        # Calcula el costo estimado
-        estimated_cost = base_cost * guest_count
-
-        # Ajusta el costo si excede el presupuesto
-        if estimated_cost > budget:
-            # Reduce elementos para ajustar al presupuesto
-            decorations = decorations[:2]
-            paper_goods = paper_goods[:1]
-            rentals = rentals[:2]
-            estimated_cost = budget
-
-        return {
-            "style": style,
-            "decorations": decorations,
-            "paper_goods": paper_goods,
-            "rentals": rentals,
-            "estimated_cost": estimated_cost,
-            "guest_count": guest_count
+    def suggest_conflict_resolution(self, conflict_type: str, context: Dict[str, Any]) -> List[str]:
+        """Sugiere estrategias para resolver conflictos comunes."""
+        strategies = {
+            "budget_conflict": [
+                "Priorizar elementos esenciales y reducir extras",
+                "Buscar alternativas más económicas para elementos decorativos",
+                "Considerar opciones de alquiler en lugar de compra"
+            ],
+            "style_conflict": [
+                "Encontrar un punto medio entre estilos",
+                "Mantener consistencia en un estilo principal",
+                "Usar elementos neutros que complementen diferentes estilos"
+            ],
+            "vendor_conflict": [
+                "Buscar proveedores con más flexibilidad",
+                "Negociar términos y condiciones",
+                "Considerar proveedores alternativos"
+            ]
         }
+        
+        return strategies.get(conflict_type, ["Revisar y ajustar los requisitos"])
 
     def find_similar_cases(self, style: str, guest_count: int, 
                           budget: float) -> List[Dict]:
@@ -214,43 +185,4 @@ class DecorRAG:
         
         # Ordenar por similitud
         similar_cases.sort(key=lambda x: x["similarity"], reverse=True)
-        return similar_cases
-
-    def update_success_pattern(self, pattern_data: Dict, success: bool):
-        """Actualiza un patrón basado en su éxito."""
-        # Busca un patrón existente que coincida
-        matching_pattern = None
-        for pattern in self.decor_patterns:
-            if (pattern.style == pattern_data["style"] and
-                pattern.guest_count_range[0] <= pattern_data["guest_count"] <= pattern.guest_count_range[1]):
-                matching_pattern = pattern
-                break
-
-        if matching_pattern:
-            # Actualiza el patrón existente
-            matching_pattern.usage_count += 1
-            matching_pattern.last_used = datetime.now().isoformat()
-            
-            # Actualiza la tasa de éxito
-            if success:
-                matching_pattern.success_rate = (matching_pattern.success_rate * 
-                                              (matching_pattern.usage_count - 1) + 1.0) / matching_pattern.usage_count
-            else:
-                matching_pattern.success_rate = (matching_pattern.success_rate * 
-                                              (matching_pattern.usage_count - 1)) / matching_pattern.usage_count
-        else:
-            # Crea un nuevo patrón
-            new_pattern = DecorPattern(
-                style=pattern_data["style"],
-                decorations=pattern_data["decorations"],
-                paper_goods=pattern_data["paper_goods"],
-                rentals=pattern_data["rentals"],
-                price_range=(pattern_data["estimated_cost"] * 0.8, pattern_data["estimated_cost"] * 1.2),
-                guest_count_range=(pattern_data["guest_count"] * 0.8, pattern_data["guest_count"] * 1.2),
-                success_rate=1.0 if success else 0.0,
-                last_used=datetime.now().isoformat(),
-                usage_count=1
-            )
-            self.decor_patterns.append(new_pattern)
-
-        self._save_knowledge() 
+        return similar_cases 

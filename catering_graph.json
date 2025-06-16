@@ -1,0 +1,72 @@
+{
+  "menu_patterns": [
+    {
+      "style": "standard",
+      "courses": [
+        "entrada",
+        "plato_principal",
+        "postre"
+      ],
+      "dietary_options": [
+        "regular",
+        "vegetariano"
+      ],
+      "price_range": [
+        50.0,
+        100.0
+      ],
+      "guest_count_range": [
+        50,
+        200
+      ],
+      "success_rate": 0.8,
+      "last_used": "2025-06-16T04:19:24.979554",
+      "usage_count": 0
+    },
+    {
+      "style": "premium",
+      "courses": [
+        "entrada",
+        "sopa",
+        "plato_principal",
+        "ensalada",
+        "postre"
+      ],
+      "dietary_options": [
+        "regular",
+        "vegetariano",
+        "vegano"
+      ],
+      "price_range": [
+        100.0,
+        200.0
+      ],
+      "guest_count_range": [
+        30,
+        150
+      ],
+      "success_rate": 0.9,
+      "last_used": "2025-06-16T04:19:24.979563",
+      "usage_count": 0
+    },
+    {
+      "style": "standard",
+      "courses": [],
+      "dietary_options": [
+        "vegan",
+        "gluten-free"
+      ],
+      "price_range": [
+        0.0,
+        0.0
+      ],
+      "guest_count_range": [
+        0,
+        0
+      ],
+      "success_rate": 1.0,
+      "last_used": "2025-06-16T14:09:02.800002",
+      "usage_count": 33
+    }
+  ]
+}

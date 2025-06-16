@@ -8,7 +8,7 @@ from Crawler.core import AdvancedCrawlerAgent
 from typing import List, Dict, Any, Union, Optional
 from Crawler.expert import ExpertSystemInterface
 from Crawler.graph import KnowledgeGraphInterface
-from decor_rag import DecorRAG
+from Agents.decor_rag import DecorRAG
 
 class DecorAgent:
     def __init__(self, name: str, crawler: AdvancedCrawlerAgent, graph: KnowledgeGraphInterface, expert: ExpertSystemInterface):
@@ -82,20 +82,20 @@ class DecorAgent:
                 valor = data.get(campo)
 
                 if valor is None:
-                    print(f"[RULE] {data.get('title')} - campo '{campo}' ausente")
+                    # print(f"[RULE] {data.get('title')} - campo '{campo}' ausente")
                     return False
 
                 # Caso especial: Precio
                 if campo == "price":
                     min_price = self._get_minimum_price(valor)
                     if min_price is None:
-                        print(f"[RULE] {data.get('title')} - precio no tiene valores numéricos válidos")
+                        # print(f"[RULE] {data.get('title')} - precio no tiene valores numéricos válidos")
                         return False
 
                     if min_price <= valor_esperado:
                         return True
 
-                    print(f"[RULE] {data.get('title')} - precio mínimo {min_price} > presupuesto {valor_esperado}")
+                    # print(f"[RULE] {data.get('title')} - precio mínimo {min_price} > presupuesto {valor_esperado}")
                     return False
 
                 # Caso especial: Niveles de servicio
@@ -238,7 +238,7 @@ class DecorAgent:
         # Verificar si ya tenemos datos en el grafo
         print("[DecorAgent] Verificando datos existentes en el grafo...")
         existing_data = self.graph.query("decor")
-        if not existing_data:
+        if  len(existing_data) < 30:
             print("[DecorAgent] No hay datos en el grafo, iniciando crawling...")
             for url in urls:
                 self.crawler.enqueue_url(url)
@@ -262,7 +262,7 @@ class DecorAgent:
                 
             if self.expert.process_knowledge(data):
                 valid.append((v, data))
-                print(f"[DecorAgent] Decorador válido: {data.get('title', 'Sin título')}")
+                # print(f"[DecorAgent] Decorador válido: {data.get('title', 'Sin título')}")
 
         print(f"[DecorAgent] {len(valid)} decoradores válidos tras reglas obligatorias")
 
@@ -293,3 +293,41 @@ class DecorAgent:
         
         print(f"[DecorAgent] Se retornan los {len(results)} mejores resultados")
         return results
+
+    def receive(self, message: Dict[str, Any]):
+        """Procesa mensajes entrantes."""
+        if message["tipo"] == "task":
+            task_id = message["contenido"]["task_id"]
+            parameters = message["contenido"]["parameters"]
+            session_id = message["session_id"]
+            
+            try:
+                print(f"[DecorAgent] Procesando tarea de búsqueda de decoración")
+                # Procesar la tarea
+                results = self.find_decor(parameters, [])  # Por ahora lista vacía de URLs
+                
+                # Enviar respuesta
+                return {
+                    "origen": self.name,
+                    "destino": message["origen"],
+                    "tipo": "agent_response",
+                    "contenido": {
+                        "task_id": task_id,
+                        "results": results
+                    },
+                    "session_id": session_id
+                }
+            except Exception as e:
+                print(f"[DecorAgent] Error procesando tarea: {str(e)}")
+                return {
+                    "origen": self.name,
+                    "destino": message["origen"],
+                    "tipo": "error",
+                    "contenido": {
+                        "task_id": task_id,
+                        "error": str(e)
+                    },
+                    "session_id": session_id
+                }
+        else:
+            print(f"[DecorAgent] Tipo de mensaje no reconocido: {message['tipo']}")

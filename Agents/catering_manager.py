@@ -7,7 +7,7 @@ from Crawler.core import AdvancedCrawlerAgent
 from typing import List, Dict, Any, Union, Optional
 from Crawler.expert import ExpertSystemInterface
 from Crawler.graph import KnowledgeGraphInterface
-from catering_rag import CateringRAG
+from Agents.catering_rag import CateringRAG
 
 class CateringAgent:
     def __init__(self, name: str, crawler: AdvancedCrawlerAgent, graph: KnowledgeGraphInterface, expert: ExpertSystemInterface):
@@ -125,6 +125,7 @@ class CateringAgent:
         return score / max_score if max_score > 0 else 0.0
 
     def setup_rules(self, criteria: Dict[str, Any]):
+        """Configura las reglas de validación basadas en los criterios."""
         self.expert.clear_rules()
         obligatorios = criteria.get("obligatorios", [])
 
@@ -134,20 +135,20 @@ class CateringAgent:
                 valor = data.get(campo)
 
                 if valor is None:
-                    print(f"[RULE] {data.get('title')} - campo '{campo}' ausente")
+                    # print(f"[RULE] {data.get('title')} - campo '{campo}' ausente")
                     return False
 
-                # Caso especial: Precio
+                # 🚩 CASO ESPECIAL: PRECIO
                 if campo == "price":
                     min_price = self._get_minimum_price(valor)
                     if min_price is None:
-                        print(f"[RULE] {data.get('title')} - precio no tiene valores numéricos válidos")
+                        # print(f"[RULE] {data.get('title')} - precio no tiene valores numéricos válidos")
                         return False
 
                     if min_price <= valor_esperado:
                             return True
 
-                    print(f"[RULE] {data.get('title')} - precio mínimo {min_price} > presupuesto {valor_esperado}")
+                    # print(f"[RULE] {data.get('title')} - precio mínimo {min_price} > presupuesto {valor_esperado}")
                     return False
 
                 # Caso especial: Ubicación
@@ -175,6 +176,24 @@ class CateringAgent:
                         return all(d.lower() in str(valor).lower() for d in valor_esperado)
                     return valor_esperado.lower() in str(valor).lower()
 
+                # # Caso especial: Tipos de comida
+                # elif campo == "meal_types":
+                #     if isinstance(valor_esperado, list):
+                #         if isinstance(valor, list):
+                #             # Mapeo de tipos de comida equivalentes
+                #             meal_type_mapping = {
+                #                 "plated": ["seated meal", "plated"],
+                #                 "buffet": ["buffet"]
+                #             }
+                            
+                #             # Convertir todo a minúsculas para comparación
+                #             valor_lower = [v.lower() for v in valor]
+                #             valor_esperado_lower = [v.lower() for v in valor_esperado]
+                            
+                #             # Verificar cada tipo de comida esperado
+                #             for meal_type in valor_esperado_lower:
+                #                 if meal_type in meal_type_mapping:
+                                   
                 # Caso especial: Tipos de comida
                 elif campo == "meal_types":
                     if isinstance(valor_esperado, list):
@@ -192,21 +211,29 @@ class CateringAgent:
                             # Verificar cada tipo de comida esperado
                             for meal_type in valor_esperado_lower:
                                 if meal_type in meal_type_mapping:
+                                    # Si el tipo está en el mapeo, verificar sus equivalentes
                                     if not any(equivalent in valor_lower for equivalent in meal_type_mapping[meal_type]):
-                                        print(f"[RULE] {data.get('title')} - no tiene {meal_type} o equivalente")
-                                    return False
+                                        # print(f"[RULE] {data.get('title')} - no tiene {meal_type} o equivalente")
+                                        return False
                                 elif meal_type not in valor_lower:
-                                    print(f"[RULE] {data.get('title')} - no tiene {meal_type}")
-                            return False
-                        return True
-                        return all(d.lower() in str(valor).lower() for d in valor_esperado)
-                    return valor_esperado.lower() in str(valor).lower()
-
-                # Caso por defecto: comparación directa
-                else:
-                    if isinstance(valor_esperado, str):
+                                    # Si el tipo no está en el mapeo, verificar directamente
+                                    # print(f"[RULE] {data.get('title')} - no tiene {meal_type}")
+                                    return False
+                            return True
+                        else:
+                            # Si valor no es una lista, verificar si contiene todos los tipos esperados
+                            valor_str = str(valor).lower()
+                            return all(d.lower() in valor_str for d in valor_esperado)
+                    else:
+                        # Si valor_esperado no es una lista, verificar coincidencia directa
                         return valor_esperado.lower() in str(valor).lower()
-                    return valor == valor_esperado
+
+                # --- DEFAULT COMPARACIÓN DIRECTA ---
+                else:
+                    if valor != valor_esperado:
+                        # print(f"[RULE] {data.get('title')} - {campo} = {valor} != {valor_esperado}")
+                        return False
+                    return True
 
             return regla
 
@@ -276,7 +303,7 @@ class CateringAgent:
         # Verificar si ya tenemos datos en el grafo
         print("[CateringAgent] Verificando datos existentes en el grafo...")
         existing_data = self.graph.query("catering")
-        if not existing_data:
+        if  len(existing_data) < 60:
             print("[CateringAgent] No hay datos en el grafo, iniciando crawling...")
             for url in urls:
                 self.crawler.enqueue_url(url)
@@ -300,9 +327,9 @@ class CateringAgent:
                 
             if self.expert.process_knowledge(data):
                 valid.append((v, data))
-                print(f"[CateringAgent] Catering válido: {data.get('title', 'Sin título')}")
+                # print(f"[t] Catering válido: {data.get('title', 'Sin título')}")
 
-        print(f"[CateringAgent] {len(valid)} caterings válidos tras reglas obligatorias")
+        # print(f"[CateringAgent] {len(valid)} caterings válidos tras reglas obligatorias")
 
         if not valid:
             print("[CateringAgent] Advertencia: No se encontraron caterings válidos")
@@ -330,3 +357,41 @@ class CateringAgent:
         
         print(f"[CateringAgent] Se retornan los {len(results)} mejores resultados")
         return results
+
+    def receive(self, message: Dict[str, Any]):
+        """Procesa mensajes entrantes."""
+        if message["tipo"] == "task":
+            task_id = message["contenido"]["task_id"]
+            parameters = message["contenido"]["parameters"]
+            session_id = message["session_id"]
+            
+            try:
+                print(f"[CateringAgent] Procesando tarea de búsqueda de catering")
+                # Procesar la tarea
+                results = self.find_catering(parameters, [])  # Por ahora lista vacía de URLs
+                
+                # Enviar respuesta
+                return {
+                    "origen": self.name,
+                    "destino": message["origen"],
+                    "tipo": "agent_response",
+                    "contenido": {
+                        "task_id": task_id,
+                        "results": results
+                    },
+                    "session_id": session_id
+                }
+            except Exception as e:
+                print(f"[CateringAgent] Error procesando tarea: {str(e)}")
+                return {
+                    "origen": self.name,
+                    "destino": message["origen"],
+                    "tipo": "error",
+                    "contenido": {
+                        "task_id": task_id,
+                        "error": str(e)
+                    },
+                    "session_id": session_id
+                }
+        else:
+            print(f"[CateringAgent] Tipo de mensaje no reconocido: {message['tipo']}")

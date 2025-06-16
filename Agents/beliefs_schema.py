@@ -13,95 +13,108 @@ class Conflict:
 
 class BeliefState:
     def __init__(self):
-        self.state = {
-            "criterios": {},
+        self.beliefs = {
+            "criterios": None,
             "venue": None,
             "catering": None,
             "decor": None,
-            "presupuesto_asignado": {},
-            "conflictos": [],
-            "evaluaciones": {},
-            "pendiente": [],
-            "metadata": {
-                "ultima_actualizacion": datetime.now().isoformat(),
-                "version": "1.0",
-                "estado": "inicial"
+            "presupuesto_asignado": None,
+            "presupuesto_usado": 0.0,
+            "conflictos": 0,
+            "estado": "inicial",
+            "ultima_actualizacion": None,
+            "completado": {
+                "venue": False,
+                "catering": False,
+                "decor": False
             }
         }
 
-    def get(self, key: str) -> Any:
+    def get(self, key: str, default: Any = None) -> Any:
         """Obtiene un valor del estado."""
-        return self.state.get(key)
+        return self.beliefs.get(key, default)
 
     def set(self, key: str, value: Any) -> None:
         """Establece un valor en el estado y actualiza la metadata."""
-        if key in self.state:
-            self.state[key] = value
-            self.state["metadata"]["ultima_actualizacion"] = datetime.now().isoformat()
-        else:
-            raise KeyError(f"Clave de belief inválida: {key}")
+        # Actualizar el valor principal
+        self.beliefs[key] = value
+        self.beliefs["ultima_actualizacion"] = datetime.now().isoformat()
+        
+        # Si se está actualizando una categoría principal, actualizar el estado de completado
+        if key in ["venue", "catering", "decor"]:
+            self.beliefs["completado"][key] = value is not None
 
     def update(self, key: str, subkey: str, value: Any) -> None:
         """Actualiza un subvalor en el estado."""
-        if key not in self.state or not isinstance(self.state[key], dict):
-            self.state[key] = {}
-        self.state[key][subkey] = value
-        self.state["metadata"]["ultima_actualizacion"] = datetime.now().isoformat()
+        if key not in self.beliefs:
+            self.beliefs[key] = {}
+        elif not isinstance(self.beliefs[key], dict):
+            self.beliefs[key] = {}
+            
+        self.beliefs[key][subkey] = value
+        self.beliefs["ultima_actualizacion"] = datetime.now().isoformat()
+        
+        # Si se está actualizando el estado de completado, asegurarse de que el valor principal también se actualice
+        if key == "completado" and subkey in ["venue", "catering", "decor"]:
+            if not value and self.beliefs[subkey] is not None:
+                self.beliefs[subkey] = None
+            elif value and self.beliefs[subkey] is None:
+                self.beliefs[subkey] = {}
 
     def append_conflicto(self, conflicto: Conflict) -> None:
         """Añade un conflicto al estado."""
-        self.state["conflictos"].append(conflicto)
-        self.state["metadata"]["estado"] = "conflicto"
+        self.beliefs["conflictos"] += 1
+        self.beliefs["estado"] = "conflicto"
 
     def has_conflicto(self, tipo: str) -> bool:
         """Verifica si existe un conflicto de un tipo específico."""
-        return any(c.tipo == tipo for c in self.state["conflictos"])
+        return any(c.tipo == tipo for c in self.beliefs["conflictos"])
 
     def get_conflictos_por_elemento(self, elemento: str) -> List[Conflict]:
         """Obtiene todos los conflictos relacionados con un elemento específico."""
-        return [c for c in self.state["conflictos"] if elemento in c.elementos_afectados]
+        return [c for c in self.beliefs["conflictos"] if elemento in c.elementos_afectados]
 
     def clear_conflictos(self) -> None:
         """Limpia todos los conflictos."""
-        self.state["conflictos"] = []
-        self.state["metadata"]["estado"] = "limpio"
+        self.beliefs["conflictos"] = 0
+        self.beliefs["estado"] = "limpio"
 
     def resumen(self) -> Dict[str, Any]:
         """Genera un resumen del estado actual."""
         return {
-            "completado": {
-                "venue": self.state["venue"] is not None,
-                "catering": self.state["catering"] is not None,
-                "decor": self.state["decor"] is not None
-            },
-            "conflictos": len(self.state["conflictos"]),
+            "completado": self.beliefs["completado"],
+            "conflictos": self.beliefs["conflictos"],
             "presupuesto_usado": self.get_presupuesto_total_usado(),
-            "estado": self.state["metadata"]["estado"],
-            "ultima_actualizacion": self.state["metadata"]["ultima_actualizacion"]
+            "estado": self.beliefs["estado"],
+            "ultima_actualizacion": self.beliefs["ultima_actualizacion"]
         }
 
     def get_presupuesto_total_usado(self) -> float:
         """Calcula el presupuesto total usado."""
-        return sum(self.state["presupuesto_asignado"].values())
+        return self.beliefs["presupuesto_usado"]
 
     def is_completo(self) -> bool:
         """Verifica si todos los elementos necesarios están completos."""
-        return all(self.state[k] is not None for k in ["venue", "catering", "decor"])
+        return all(self.beliefs[k] is not None for k in ["venue", "catering", "decor"])
 
     def get_elementos_pendientes(self) -> List[str]:
         """Obtiene la lista de elementos que faltan por completar."""
-        return [k for k in ["venue", "catering", "decor"] if self.state[k] is None]
+        return [k for k in ["venue", "catering", "decor"] if self.beliefs[k] is None]
 
     def to_dict(self) -> Dict[str, Any]:
         """Convierte el estado a un diccionario para serialización."""
         return {
-            "state": self.state,
-            "metadata": self.state["metadata"]
+            "beliefs": self.beliefs,
+            "metadata": {
+                "ultima_actualizacion": self.beliefs["ultima_actualizacion"],
+                "version": "1.0",
+                "estado": self.beliefs["estado"]
+            }
         }
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'BeliefState':
         """Crea una instancia de BeliefState desde un diccionario."""
         instance = cls()
-        instance.state = data["state"]
+        instance.beliefs = data["beliefs"]
         return instance

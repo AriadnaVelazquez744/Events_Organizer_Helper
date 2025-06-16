@@ -26,7 +26,7 @@ class DietaryRestriction:
     cost_impact: float
 
 class CateringRAG:
-    def __init__(self, knowledge_file: str = "catering_knowledge.json"):
+    def __init__(self, knowledge_file: str = "catering_graph.json"):
         self.knowledge_file = knowledge_file
         self.menu_patterns: List[MenuPattern] = []
         self.dietary_restrictions: Dict[str, DietaryRestriction] = {
