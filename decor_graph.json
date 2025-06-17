@@ -1,0 +1,26 @@
+{
+  "classic_100": {
+    "style": "classic",
+    "service_levels": [],
+    "pre_wedding_services": [],
+    "post_wedding_services": [],
+    "day_of_services": [],
+    "arrangement_styles": [],
+    "floral_arrangements": [],
+    "decorations": [],
+    "paper_goods": [],
+    "rentals": [],
+    "restrictions": [],
+    "price_range": [
+      0,
+      Infinity
+    ],
+    "guest_count_range": [
+      0,
+      Infinity
+    ],
+    "success_rate": 1.0,
+    "last_used": "2025-06-17T04:05:44.810744",
+    "usage_count": 13
+  }
+}

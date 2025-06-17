@@ -25,9 +25,10 @@ class DecorAgent:
         
         # Busca patrones como "$XX", "XX per item", etc.
         patterns = [
-            r'\$(\d+(?:\.\d+)?)',  # $XX o $XX.XX
+            r'\$(\d+(?:\.\d+)?)[^\d]*$',  # $XX o $XX.XX al final de la cadena
             r'(\d+(?:\.\d+)?)\s*(?:per item|each)',  # XX per item
             r'(\d+(?:\.\d+)?)\s*(?:total|minimum)',  # XX total
+            r'(\d+(?:\.\d+)?)(?:\s*usd|\s*eur|\s*gbp|\s*mxn)?(?:\s*approx)?' # XX usd, XX eur, etc.
         ]
         
         for pattern in patterns:
@@ -135,6 +136,96 @@ class DecorAgent:
             if valor_esperado is not None:
                 self.expert.add_rule(make_rule(campo, valor_esperado))
 
+    def _calculate_bonus_score(self, data: Dict[str, Any], criteria: Dict[str, Any]) -> float:
+        """Calcula un score de bonificación basado en características especiales."""
+        bonus_score = 0.0
+        max_bonus = 0.0
+
+        # Bonificación por servicios premium (2%)
+        service_levels = data.get("service_levels", [])
+        description = data.get("description", "").lower()
+        if service_levels or description:
+            max_bonus += 0.02
+            premium_indicators = [
+                "full-service", "luxury", "premium", "exclusive",
+                "specialty", "unique", "high-end", "boutique"
+            ]
+            premium_count = 0
+            # Buscar en niveles de servicio
+            if service_levels:
+                premium_count += sum(1 for service in service_levels if any(p in str(service).lower() for p in premium_indicators))
+            # Buscar en descripción
+            if description:
+                premium_count += sum(1 for p in premium_indicators if p in description)
+            bonus_score += min(premium_count / 5, 1.0) * 0.02
+
+        # Bonificación por calidad y profesionalismo (2%)
+        reviews = data.get("reviews", [])
+        rating = data.get("rating", 0)
+        if reviews or rating or description:
+            max_bonus += 0.02
+            quality_score = 0.0
+            # Calcular score basado en rating
+            if rating:
+                quality_score += (rating / 5.0) * 0.01
+            # Calcular score basado en número de reviews
+            if reviews:
+                quality_score += min(len(reviews) / 50, 1.0) * 0.01
+            bonus_score += quality_score
+
+        # Bonificación por variedad de servicios (2%)
+        if service_levels:
+            max_bonus += 0.02
+            service_categories = {
+                "pre_wedding": data.get("pre_wedding_services", []),
+                "post_wedding": data.get("post_wedding_services", []),
+                "day_of": data.get("day_of_services", []),
+                "arrangements": data.get("floral_arrangements", []),
+                "styles": data.get("arrangement_styles", [])
+            }
+            category_matches = 0
+            for category, services in service_categories.items():
+                if services and len(services) > 0:
+                    category_matches += 1
+            bonus_score += (category_matches / len(service_categories)) * 0.02
+
+        # Bonificación por flexibilidad (2%)
+        if description or service_levels:
+            max_bonus += 0.02
+            flexibility_indicators = [
+                "custom", "flexible", "adaptable", "special requests",
+                "personalized", "tailored", "modify", "change", "adjust"
+            ]
+            flex_count = 0
+            # Buscar en servicios
+            if service_levels:
+                flex_count += sum(1 for service in service_levels if any(f in str(service).lower() for f in flexibility_indicators))
+            # Buscar en descripción
+            if description:
+                flex_count += sum(1 for f in flexibility_indicators if f in description)
+            bonus_score += min(flex_count / 5, 1.0) * 0.02
+
+        # Bonificación por especialización (2%)
+        styles = data.get("arrangement_styles", [])
+        if description or styles:
+            max_bonus += 0.02
+            specialization_score = 0.0
+            # Calcular score basado en número de estilos
+            if styles:
+                specialization_score += min(len(styles) / 5, 1.0) * 0.01
+            # Calcular score basado en descripción
+            if description:
+                specialization_indicators = [
+                    "specialized", "expert", "specialty", "specialist",
+                    "focused", "dedicated", "professional", "experienced"
+                ]
+                spec_count = sum(1 for i in specialization_indicators if i in description)
+                specialization_score += min(spec_count / 4, 1.0) * 0.01
+            bonus_score += specialization_score
+
+        #print(f" Score de bonificación para {data.get('title', 'Sin título')}: {bonus_score:.2f}")
+        return bonus_score / max_bonus if max_bonus > 0 else 0.0
+
     def score_optional(self, knowledge: Dict[str, Any], criteria: Dict[str, Any]) -> float:
         """Calcula un score combinado de criterios opcionales e inferencias."""
         score = 0.0
@@ -142,32 +233,108 @@ class DecorAgent:
         opcionales = criteria.get("opcionales", [])
         data = knowledge.get("original_data", knowledge)
 
-        # Score de criterios opcionales
+        # Score de criterios opcionales (30% del total)
         for campo in opcionales:
             expected = criteria.get(campo)
             actual = data.get(campo)
             if expected is None or actual is None:
                 continue
 
-            max_score += 1.0
+            max_score += 0.3
             if isinstance(expected, str) and isinstance(actual, str):
                 if expected.lower() in actual.lower():
-                    score += 1.0
+                    score += 0.3
             elif isinstance(expected, list):
                 if isinstance(actual, list):
                     matched = set(e.lower() for e in expected) & set(a.lower() for a in actual)
-                    score += len(matched) / len(expected)
+                    score += (len(matched) / len(expected)) * 0.3
                 elif isinstance(actual, str):
-                    score += sum(1 for e in expected if e.lower() in actual.lower()) / len(expected)
+                    score += (sum(1 for e in expected if e.lower() in actual.lower()) / len(expected)) * 0.3
             elif actual == expected:
-                score += 1.0
+                score += 0.3
 
-        # Score de inferencias
+        # Score de inferencias (20% del total)
         inference_score = self._calculate_inference_score(data, criteria)
-        score += inference_score
-        max_score += 1.0
+        score += inference_score * 0.2
+        max_score += 0.2
 
-        return score / max_score if max_score > 0 else 0.0
+        # Score de recomendaciones del RAG (40% del total)
+        rag_score = 0.0
+        rag_max_score = 0.0
+
+        # Score de niveles de servicio recomendados (10%)
+        if "service_levels" in criteria:
+            rag_max_score += 0.10
+            service_levels = data.get("service_levels", [])
+            if service_levels:
+                matched_services = set(s.lower() for s in service_levels) & set(s.lower() for s in criteria["service_levels"])
+                service_score = len(matched_services) / len(criteria["service_levels"])
+                rag_score += service_score * 0.10
+                #print(f"[DecorAgent] Score de niveles de servicio: {len(matched_services)}/{len(criteria['service_levels'])} ({service_score:.2f})")
+
+        # Score de servicios pre-boda recomendados (10%)
+        if "pre_wedding_services" in criteria:
+            rag_max_score += 0.10
+            pre_services = data.get("pre_wedding_services", [])
+            if pre_services:
+                matched_pre = set(s.lower() for s in pre_services) & set(s.lower() for s in criteria["pre_wedding_services"])
+                pre_score = len(matched_pre) / len(criteria["pre_wedding_services"])
+                rag_score += pre_score * 0.10
+                #print(f"[DecorAgent] Score de servicios pre-boda: {len(matched_pre)}/{len(criteria['pre_wedding_services'])} ({pre_score:.2f})")
+
+        # Score de servicios post-boda recomendados (5%)
+        if "post_wedding_services" in criteria:
+            rag_max_score += 0.05
+            post_services = data.get("post_wedding_services", [])
+            if post_services:
+                matched_post = set(s.lower() for s in post_services) & set(s.lower() for s in criteria["post_wedding_services"])
+                post_score = len(matched_post) / len(criteria["post_wedding_services"])
+                rag_score += post_score * 0.05
+                #print(f"[DecorAgent] Score de servicios post-boda: {len(matched_post)}/{len(criteria['post_wedding_services'])} ({post_score:.2f})")
+
+        # Score de servicios del día recomendados (5%)
+        if "day_of_services" in criteria:
+            rag_max_score += 0.05
+            day_services = data.get("day_of_services", [])
+            if day_services:
+                matched_day = set(s.lower() for s in day_services) & set(s.lower() for s in criteria["day_of_services"])
+                day_score = len(matched_day) / len(criteria["day_of_services"])
+                rag_score += day_score * 0.05
+                #print(f"[DecorAgent] Score de servicios del día: {len(matched_day)}/{len(criteria['day_of_services'])} ({day_score:.2f})")
+
+        # Score de estilos de arreglo recomendados (5%)
+        if "arrangement_styles" in criteria:
+            rag_max_score += 0.05
+            styles = data.get("arrangement_styles", [])
+            if styles:
+                matched_styles = set(s.lower() for s in styles) & set(s.lower() for s in criteria["arrangement_styles"])
+                style_score = len(matched_styles) / len(criteria["arrangement_styles"])
+                rag_score += style_score * 0.05
+                #print(f"[DecorAgent] Score de estilos de arreglo: {len(matched_styles)}/{len(criteria['arrangement_styles'])} ({style_score:.2f})")
+
+        # Score de arreglos florales recomendados (5%)
+        if "floral_arrangements" in criteria:
+            rag_max_score += 0.05
+            arrangements = data.get("floral_arrangements", [])
+            if arrangements:
+                matched_arrangements = set(a.lower() for a in arrangements) & set(a.lower() for a in criteria["floral_arrangements"])
+                arrangement_score = len(matched_arrangements) / len(criteria["floral_arrangements"])
+                rag_score += arrangement_score * 0.05
+                #print(f"[DecorAgent] Score de arreglos florales: {len(matched_arrangements)}/{len(criteria['floral_arrangements'])} ({arrangement_score:.2f})")
+
+        # Normalizar score del RAG
+        if rag_max_score > 0:
+            score += (rag_score / rag_max_score) * 0.4
+            max_score += 0.4
+
+        # Score de bonificación por características especiales (10%)
+        bonus_score = self._calculate_bonus_score(data, criteria)
+        score += bonus_score * 0.1
+        max_score += 0.1
+
+        final_score = score / max_score if max_score > 0 else 0.0
+        #print(f"[DecorAgent] Score final para {data.get('title', 'Sin título')}: {final_score:.2f}")
+        return final_score
 
     def _calculate_inference_score(self, data: Dict[str, Any], criteria: Dict[str, Any]) -> float:
         """Calcula un score basado en inferencias sobre los datos."""
@@ -222,6 +389,7 @@ class DecorAgent:
 
         # Obtener recomendaciones del RAG
         if "budget" in criteria and "guest_count" in criteria:
+            print("[DecorAgent] Obteniendo recomendaciones del RAG...")
             decor_recommendation = self.rag.get_decor_recommendation(
                 budget=criteria["budget"],
                 guest_count=criteria["guest_count"],
@@ -230,10 +398,16 @@ class DecorAgent:
             
             # Actualizar criterios con las recomendaciones del RAG
             if decor_recommendation:
-                criteria["recommended_decorations"] = decor_recommendation["decorations"]
-                criteria["recommended_paper_goods"] = decor_recommendation["paper_goods"]
-                criteria["recommended_rentals"] = decor_recommendation["rentals"]
-                criteria["estimated_cost"] = decor_recommendation["estimated_cost"]
+                print("[DecorAgent] Aplicando recomendaciones del RAG...")
+                criteria["recommended_service_levels"] = decor_recommendation.get("service_levels", [])
+                criteria["recommended_pre_wedding_services"] = decor_recommendation.get("pre_wedding_services", [])
+                criteria["recommended_post_wedding_services"] = decor_recommendation.get("post_wedding_services", [])
+                criteria["recommended_day_of_services"] = decor_recommendation.get("day_of_services", [])
+                criteria["recommended_arrangement_styles"] = decor_recommendation.get("arrangement_styles", [])
+                criteria["recommended_floral_arrangements"] = decor_recommendation.get("floral_arrangements", [])
+                criteria["estimated_cost"] = decor_recommendation.get("estimated_cost", 0)
+        else:
+            print("[DecorAgent] No se encontraron campos necesarios para RAG (budget y guest_count)")
 
         # Verificar si ya tenemos datos en el grafo
         print("[DecorAgent] Verificando datos existentes en el grafo...")

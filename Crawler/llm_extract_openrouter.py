@@ -1,4 +1,3 @@
-
 # extractors/llm_extract_openrouter.py
 import openai
 import json
@@ -56,6 +55,11 @@ def llm_extract_openrouter(
     soup = clean_html_soup(html)
     relevant_text = soup.get_text(separator=" ", strip=True)
 
+    # Verificar que el prompt template tenga la variable {text}
+    if "{text}" not in prompt_template:
+        print("[LLM EXTRACT] Error: prompt_template debe contener {text}")
+        return {}
+    
     prompt = prompt_template.format(text=relevant_text, url=url)
     
     payload = {
@@ -85,29 +89,32 @@ def llm_extract_openrouter(
 
         content = response.choices[0].message.content
         print(f"[LLM RESPONSE] {content}")
+        
+        # Limpiar respuesta si está en formato markdown
         if content.startswith("```json"):
             content = content.replace("```json", "").replace("```", "").strip()
         elif content.startswith("```"):
             content = content.replace("```", "").strip()
-            
-        parsed = extract_json_from_response(content)
-            
-        # return parsed
-        return json.loads(content)
+        
+        # Intentar extraer JSON de la respuesta
+        try:
+            parsed = extract_json_from_response(content)
+            if parsed and isinstance(parsed, dict):
+                return parsed
+            else:
+                # Si extract_json_from_response falla, intentar parsear directamente
+                return json.loads(content)
+        except json.JSONDecodeError as e:
+            print(f"[LLM EXTRACT] Error parsing JSON: {str(e)}")
+            print(f"[LLM EXTRACT] Content: {content[:500]}...")
+            return {}
+        except Exception as e:
+            print(f"[LLM EXTRACT] Error general: {str(e)}")
+            return {}
     
     except Exception as e:
         print(f"[LLM ERROR] {e}")
-        return {
-            "title": "ERROR",
-            "capacidad": None,
-            "precio": None,
-            "ambiente": None,
-            "tipo_local": None,
-            "servicios": [],
-            "restricciones": [],
-            "eventos_compatibles": [],
-            "outlinks": []
-        }
+        return {}
         
 def extract_json_from_response(text: str) -> dict:
     """
@@ -116,6 +123,9 @@ def extract_json_from_response(text: str) -> dict:
     """
 
     try:
+        # Limpiar el texto
+        text = text.strip()
+        
         # Extraer entre los primeros bloques de ```
         if "```" in text:
             parts = text.split("```")
@@ -124,27 +134,44 @@ def extract_json_from_response(text: str) -> dict:
             # Fallback: desde la primera llave abierta hasta la última cerrada
             match = re.search(r"\{[\s\S]*\}", text)
             if not match:
-                raise ValueError("No se encontró un bloque JSON válido.")
+                print("[EXTRACT JSON] No se encontró un bloque JSON válido")
+                return {}
             json_candidate = match.group(0)
 
         # Limpieza básica
         json_candidate = json_candidate.strip()
+        
+        # Remover líneas que solo contienen espacios y llaves
+        lines = json_candidate.split('\n')
+        cleaned_lines = []
+        for line in lines:
+            line = line.strip()
+            if line and not line.startswith('"') and not line.startswith('{') and not line.startswith('}'):
+                continue
+            cleaned_lines.append(line)
+        
+        json_candidate = '\n'.join(cleaned_lines)
+        
+        # Limpiar comas extra al final
         json_candidate = re.sub(r",\s*([\]}])", r"\1", json_candidate)
-        json_candidate = json_candidate.replace("“", "\"").replace("”", "\"").replace("’", "'")
+        
+        # Reemplazar comillas inteligentes
+        json_candidate = json_candidate.replace(""", "\"").replace(""", "\"").replace("'", "'")
+        
+        # Intentar parsear
+        result = json.loads(json_candidate)
+        
+        # Verificar que sea un diccionario
+        if isinstance(result, dict):
+            return result
+        else:
+            print(f"[EXTRACT JSON] Resultado no es un diccionario: {type(result)}")
+            return {}
 
-        return json.loads(json_candidate)
-
+    except json.JSONDecodeError as e:
+        print(f"[EXTRACT JSON] Error de JSON: {e}")
+        print(f"[EXTRACT JSON] JSON candidato: {json_candidate[:200]}...")
+        return {}
     except Exception as e:
-        print(f"[ERROR extract_json_from_response] {e}")
-        return {
-            "title": "ERROR",
-            "capacity": None,
-            "location": None,
-            "price": None,
-            "atmosphere": None,
-            "venue_type": None,
-            "services": [],
-            "restrictions": [],
-            "supported_events": [],
-            "outlinks": []
-        }
+        print(f"[EXTRACT JSON] Error general: {e}")
+        return {}

@@ -8,6 +8,7 @@ from typing import List, Dict, Any, Union, Optional
 from Crawler.expert import ExpertSystemInterface
 from Crawler.graph import KnowledgeGraphInterface
 from Agents.catering_rag import CateringRAG
+import json
 
 class CateringAgent:
     def __init__(self, name: str, crawler: AdvancedCrawlerAgent, graph: KnowledgeGraphInterface, expert: ExpertSystemInterface):
@@ -123,6 +124,101 @@ class CateringAgent:
                     score += 0.5
 
         return score / max_score if max_score > 0 else 0.0
+
+    def _calculate_bonus_score(self, data: Dict[str, Any], criteria: Dict[str, Any]) -> float:
+        """Calcula un score de bonificación basado en características especiales."""
+        bonus_score = 0.0
+        max_bonus = 0.0
+
+        # Bonificación por servicios premium (2%)
+        # Inferimos servicios premium de la descripción y servicios existentes
+        services = data.get("services", [])
+        description = data.get("description", "").lower()
+        if services or description:
+            max_bonus += 0.02
+            premium_indicators = [
+                "chef", "wine", "mixology", "live cooking", "dessert bar",
+                "specialty", "gourmet", "premium", "exclusive", "signature"
+            ]
+            premium_count = 0
+            # Buscar en servicios
+            if services:
+                premium_count += sum(1 for service in services if any(p in str(service).lower() for p in premium_indicators))
+            # Buscar en descripción
+            if description:
+                premium_count += sum(1 for p in premium_indicators if p in description)
+            bonus_score += min(premium_count / 5, 1.0) * 0.02
+
+        # Bonificación por calidad y profesionalismo (2%)
+        # Inferimos de reviews, ratings y descripción
+        reviews = data.get("reviews", [])
+        rating = data.get("rating", 0)
+        if reviews or rating or description:
+            max_bonus += 0.02
+            quality_score = 0.0
+            # Calcular score basado en rating
+            if rating:
+                quality_score += (rating / 5.0) * 0.01
+            # Calcular score basado en número de reviews
+            if reviews:
+                quality_score += min(len(reviews) / 50, 1.0) * 0.01
+            bonus_score += quality_score
+
+        # Bonificación por variedad de servicios (2%)
+        # Inferimos de la cantidad y diversidad de servicios
+        if services:
+            max_bonus += 0.02
+            service_categories = {
+                "food": ["catering", "menu", "food", "dinner", "lunch", "breakfast"],
+                "beverage": ["bar", "drinks", "wine", "cocktail", "beverage"],
+                "service": ["staff", "service", "waiting", "setup", "cleanup"],
+                "equipment": ["rental", "equipment", "tables", "chairs", "linens"],
+                "special": ["custom", "special", "unique", "theme", "event"]
+            }
+            category_matches = 0
+            for category, keywords in service_categories.items():
+                if any(k in str(services).lower() for k in keywords):
+                    category_matches += 1
+            bonus_score += (category_matches / len(service_categories)) * 0.02
+
+        # Bonificación por flexibilidad (2%)
+        # Inferimos de la descripción y servicios
+        if description or services:
+            max_bonus += 0.02
+            flexibility_indicators = [
+                "custom", "flexible", "adaptable", "special requests",
+                "personalized", "tailored", "modify", "change", "adjust"
+            ]
+            flex_count = 0
+            # Buscar en servicios
+            if services:
+                flex_count += sum(1 for service in services if any(f in str(service).lower() for f in flexibility_indicators))
+            # Buscar en descripción
+            if description:
+                flex_count += sum(1 for f in flexibility_indicators if f in description)
+            bonus_score += min(flex_count / 5, 1.0) * 0.02
+
+        # Bonificación por especialización (2%)
+        # Inferimos de la descripción y tipos de comida
+        cuisines = data.get("cuisines", [])
+        if description or cuisines:
+            max_bonus += 0.02
+            specialization_score = 0.0
+            # Calcular score basado en número de tipos de comida
+            if cuisines:
+                specialization_score += min(len(cuisines) / 5, 1.0) * 0.01
+            # Calcular score basado en descripción
+            if description:
+                specialization_indicators = [
+                    "specialized", "expert", "specialty", "specialist",
+                    "focused", "dedicated", "professional", "experienced"
+                ]
+                spec_count = sum(1 for i in specialization_indicators if i in description)
+                specialization_score += min(spec_count / 4, 1.0) * 0.01
+            bonus_score += specialization_score
+
+        #print(f"[CateringAgent] Score de bonificación para {data.get('title', 'Sin título')}: {bonus_score:.2f}")
+        return bonus_score / max_bonus if max_bonus > 0 else 0.0
 
     def setup_rules(self, criteria: Dict[str, Any]):
         """Configura las reglas de validación basadas en los criterios."""
@@ -249,32 +345,82 @@ class CateringAgent:
         opcionales = criteria.get("opcionales", [])
         data = knowledge.get("original_data", knowledge)
 
-        # Score de criterios opcionales
+        # Score de criterios opcionales (30% del total)
         for campo in opcionales:
             expected = criteria.get(campo)
             actual = data.get(campo)
             if expected is None or actual is None:
                 continue
 
-            max_score += 1.0
+            max_score += 0.3
             if isinstance(expected, str) and isinstance(actual, str):
                 if expected.lower() in actual.lower():
-                    score += 1.0
+                    score += 0.3
             elif isinstance(expected, list):
                 if isinstance(actual, list):
                     matched = set(e.lower() for e in expected) & set(a.lower() for a in actual)
-                    score += len(matched) / len(expected)
+                    score += (len(matched) / len(expected)) * 0.3
                 elif isinstance(actual, str):
-                    score += sum(1 for e in expected if e.lower() in actual.lower()) / len(expected)
+                    score += (sum(1 for e in expected if e.lower() in actual.lower()) / len(expected)) * 0.3
             elif actual == expected:
-                score += 1.0
+                score += 0.3
 
-        # Score de inferencias
+        # Score de inferencias (20% del total)
         inference_score = self._calculate_inference_score(data, criteria)
-        score += inference_score
-        max_score += 1.0
+        score += inference_score * 0.2
+        max_score += 0.2
 
-        return score / max_score if max_score > 0 else 0.0
+        # Score de recomendaciones del RAG (40% del total)
+        rag_score = 0.0
+        rag_max_score = 0.0
+
+        # Score de cursos recomendados (15%)
+        if "recommended_courses" in criteria:
+            rag_max_score += 0.15
+            courses = data.get("courses", [])
+            if courses:
+                matched_courses = set(c.lower() for c in courses) & set(c.lower() for c in criteria["recommended_courses"])
+                course_score = len(matched_courses) / len(criteria["recommended_courses"])
+                rag_score += course_score * 0.15
+                #print(f"[CateringAgent] Score de cursos recomendados: {len(matched_courses)}/{len(criteria['recommended_courses'])} ({course_score:.2f})")
+
+        # Score de opciones dietéticas (15%)
+        if "recommended_dietary_options" in criteria:
+            rag_max_score += 0.15
+            dietary = data.get("dietary_options", [])
+            if dietary:
+                matched_dietary = set(d.lower() for d in dietary) & set(d.lower() for d in criteria["recommended_dietary_options"])
+                dietary_score = len(matched_dietary) / len(criteria["recommended_dietary_options"])
+                rag_score += dietary_score * 0.15
+                #print(f" de opciones dietéticas: {len(matched_dietary)}/{len(criteria['recommended_dietary_options'])} ({dietary_score:.2f})")
+
+        # Score de alternativas dietéticas (10%)
+        if "dietary_alternatives" in criteria:
+            rag_max_score += 0.10
+            dietary = data.get("dietary_options", [])
+            alternatives_score = 0.0
+            if dietary:
+                for restriction, alternatives in criteria["dietary_alternatives"].items():
+                    if restriction.lower() in [d.lower() for d in dietary]:
+                        alternatives_score += 0.5
+                    if any(alt.lower() in [d.lower() for d in dietary] for alt in alternatives["alternatives"]):
+                        alternatives_score += 0.5
+                rag_score += (alternatives_score / len(criteria["dietary_alternatives"])) * 0.10
+                #print(f"[CateringAgent] Score de alternativas dietéticas: {alternatives_score:.2f}")
+
+        # Normalizar score del RAG
+        if rag_max_score > 0:
+            score += (rag_score / rag_max_score) * 0.4
+            max_score += 0.4
+
+        # Score de bonificación por características especiales (10%)
+        bonus_score = self._calculate_bonus_score(data, criteria)
+        score += bonus_score * 0.1
+        max_score += 0.1
+
+        final_score = score / max_score if max_score > 0 else 0.0
+        #print(f"[CateringAgent] Score final para {data.get('title', 'Sin título')}: {final_score:.2f}")
+        return final_score
 
     def find_catering(self, criteria: Dict[str, Any], urls: List[str]) -> List[Dict[str, Any]]:
         print("[CateringAgent] Iniciando búsqueda de catering...")
@@ -282,6 +428,8 @@ class CateringAgent:
 
         # Obtener recomendaciones del RAG
         if "budget" in criteria and "guest_count" in criteria:
+            print("[CateringAgent] Obteniendo recomendaciones del RAG...")
+            print(f"[CateringAgent] Criterios para RAG: budget={criteria['budget']}, guest_count={criteria['guest_count']}")
             menu_recommendation = self.rag.get_menu_recommendation(
                 budget=criteria["budget"],
                 guest_count=criteria["guest_count"],
@@ -291,6 +439,8 @@ class CateringAgent:
             
             # Actualizar criterios con las recomendaciones del RAG
             if menu_recommendation:
+                print("[CateringAgent] Aplicando recomendaciones del RAG...")
+                print(f"[CateringAgent] Recomendaciones del RAG: {json.dumps(menu_recommendation, indent=2)}")
                 criteria["recommended_courses"] = menu_recommendation["courses"]
                 criteria["recommended_dietary_options"] = menu_recommendation["dietary_options"]
                 criteria["estimated_cost"] = menu_recommendation["estimated_cost"]
@@ -298,7 +448,13 @@ class CateringAgent:
                 # Si hay restricciones dietéticas, obtener alternativas
                 if "dietary_options" in criteria:
                     alternatives = self.rag.suggest_dietary_alternatives(criteria["dietary_options"])
+                    print(f"[CateringAgent] Alternativas dietéticas sugeridas: {json.dumps(alternatives, indent=2)}")
                     criteria["dietary_alternatives"] = alternatives
+            else:
+                print("[CateringAgent] ⚠️ No se obtuvieron recomendaciones del RAG")
+        else:
+            print("[CateringAgent] No se encontraron campos necesarios para RAG (budget y guest_count)")
+            print(f"[CateringAgent] Criterios disponibles: {json.dumps(criteria, indent=2)}")
 
         # Verificar si ya tenemos datos en el grafo
         print("[CateringAgent] Verificando datos existentes en el grafo...")
@@ -329,7 +485,7 @@ class CateringAgent:
                 valid.append((v, data))
                 # print(f"[t] Catering válido: {data.get('title', 'Sin título')}")
 
-        # print(f"[CateringAgent] {len(valid)} caterings válidos tras reglas obligatorias")
+        print(f"[CateringAgent] {len(valid)} caterings válidos tras reglas obligatorias")
 
         if not valid:
             print("[CateringAgent] Advertencia: No se encontraron caterings válidos")
@@ -344,16 +500,17 @@ class CateringAgent:
         
         # Actualizar patrones de éxito en RAG
         if results:
-            self.rag.update_success_pattern(
-                {
-                    "style": criteria.get("style", "standard"),
-                    "courses": criteria.get("recommended_courses", []),
-                    "dietary_options": criteria.get("dietary_options", ["regular"]),
-                    "estimated_cost": criteria.get("estimated_cost", 0),
-                    "guest_count": criteria.get("guest_count", 0)
-                },
-                True  # Asumimos éxito si encontramos resultados
-            )
+            print("[CateringAgent] Actualizando patrones de éxito en RAG...")
+            pattern_data = {
+                "style": criteria.get("style", "standard"),
+                "courses": criteria.get("recommended_courses", []),
+                "dietary_options": criteria.get("dietary_options", ["regular"]),
+                "estimated_cost": criteria.get("estimated_cost", 0),
+                "guest_count": criteria.get("guest_count", 0)
+            }
+            print(f"[CateringAgent] Datos del patrón a actualizar: {json.dumps(pattern_data, indent=2)}")
+            self.rag.update_success_pattern(pattern_data, True)
+            print("[CateringAgent] Patrón de éxito actualizado")
         
         print(f"[CateringAgent] Se retornan los {len(results)} mejores resultados")
         return results

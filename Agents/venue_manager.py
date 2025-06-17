@@ -7,6 +7,7 @@ from Crawler.core import AdvancedCrawlerAgent
 from typing import List, Dict, Any, Union, Optional
 from Crawler.expert import ExpertSystemInterface
 from Crawler.graph import KnowledgeGraphInterface
+from Agents.venue_rag import VenueRAG
 import json
 
 class VenueAgent:
@@ -21,6 +22,7 @@ class VenueAgent:
             'compatibility': 0.2,  # Reducido de 0.3
             'bonus': 0.2  # Nuevo factor
         }
+        self.rag = VenueRAG()  # Inicializa el sistema RAG
 
     def setup_rules(self, criteria: Dict[str, Any]):
         self.expert.clear_rules()
@@ -197,25 +199,34 @@ class VenueAgent:
         bonus = 0.0
         
         # Bonus por capacidad óptima (no muy grande ni muy pequeña)
-        if data.get("capacity"):
+        if data.get("capacity") is not None:
             capacity = data["capacity"]
             target_capacity = criteria.get("capacity", 0)
-            if target_capacity > 0:
+            if max(capacity, target_capacity) > 0:
                 ratio = min(capacity, target_capacity) / max(capacity, target_capacity)
                 bonus += ratio * 0.2
 
         # Bonus por precio óptimo (más bajo que el máximo)
-        if data.get("price"):
+        if data.get("price") is not None:
             price = data["price"]
             max_price = criteria.get("price", float('inf'))
             if isinstance(price, dict):
                 space_rental = price.get("space_rental")
                 if space_rental is not None:
                     if isinstance(space_rental, dict):
-                        space_rental = max(v for v in space_rental.values() if isinstance(v, (int, float)))
-                    if isinstance(space_rental, (int, float)) and space_rental > 0 and max_price > 0:
+                        # Ensure space_rental values are not empty or all zero before max
+                        numeric_values = [v for v in space_rental.values() if isinstance(v, (int, float)) and v > 0]
+                        if numeric_values:
+                            space_rental = max(numeric_values)
+                        else:
+                            space_rental = 0 # If no valid numeric values, treat as 0
+
+                    if isinstance(space_rental, (int, float)) and space_rental >= 0 and max_price > 0:
                         ratio = 1 - (space_rental / max_price)
                         bonus += ratio * 0.2
+            elif isinstance(price, (int, float)) and price >= 0 and max_price > 0: # Handle non-dict price values
+                ratio = 1 - (price / max_price)
+                bonus += ratio * 0.2
 
         # Bonus por servicios adicionales
         if data.get("services"):
@@ -236,63 +247,183 @@ class VenueAgent:
         return min(bonus, 1.0)
 
     def score_optional(self, knowledge: Dict[str, Any], criteria: Dict[str, Any]) -> float:
-        """Sistema de scoring mejorado que considera relaciones, compatibilidad y bonus"""
+        """Sistema de scoring mejorado que considera relaciones, compatibilidad, bonus y RAG"""
         data = knowledge.get("original_data", knowledge)
         opcionales = criteria.get("opcionales", [])
 
-        # 1. Score base por criterios opcionales
+        # 1. Score base por criterios opcionales (30% del total)
         base_score = 0.0
+        max_base_score = 0.0
         for campo in opcionales:
             expected = criteria.get(campo)
             actual = data.get(campo)
             if expected is None or actual is None:
                 continue
 
+            max_base_score += 0.3
             if isinstance(expected, str) and isinstance(actual, str):
                 if expected.lower() in actual.lower():
-                    base_score += 1.0
+                    base_score += 0.3
             elif isinstance(expected, list):
                 if isinstance(actual, list):
                     matched = set(e.lower() for e in expected) & set(a.lower() for a in actual)
-                    base_score += len(matched) * 0.5
+                    base_score += (len(matched) / len(expected)) * 0.3
                 elif isinstance(actual, str):
-                    base_score += sum(0.5 for e in expected if e.lower() in actual.lower())
+                    base_score += (sum(1 for e in expected if e.lower() in actual.lower()) / len(expected)) * 0.3
             elif actual == expected:
-                base_score += 1.0
+                base_score += 0.3
 
         # Normalizar score base
-        base_score = min(base_score / len(opcionales) if opcionales else 0, 1.0)
+        base_score = base_score / max_base_score if max_base_score > 0 else 0.0
 
-        # 2. Score de compatibilidad (solo si el score base es significativo)
+        # 2. Score de compatibilidad (20% del total)
         compatibility_score = 0.0
         if base_score > 0.1:  # Solo calcular compatibilidad si el score base es bueno
             venue_id = data.get("url")
             if venue_id:
-                related_venues = self.get_related_venues(venue_id, max_distance=1)  # Reducir distancia máxima
+                related_venues = self.get_related_venues(venue_id, max_distance=1)
                 if related_venues:
                     compatibility_scores = [
                         self.calculate_compatibility_score(knowledge, related)
-                        for related in related_venues[:5]  # Limitar a 5 venues relacionados
+                        for related in related_venues[:5]
                     ]
                     compatibility_score = sum(compatibility_scores) / len(compatibility_scores)
 
-        # 3. Score de bonus (solo si el score base es significativo)
+        # 3. Score de bonus (10% del total)
         bonus_score = 0.0
-        if base_score > 0.1:  # Solo calcular bonus si el score base es bueno
+        if base_score > 0.1:
             bonus_score = self.calculate_bonus_score(data, criteria)
 
-        # 4. Combinar scores con pesos
+        # 4. Score de recomendaciones del RAG (40% del total)
+        rag_score = 0.0
+        rag_max_score = 0.0
+
+        # Score de atmosphere recomendado (10%)
+        if "recommended_atmosphere" in criteria and criteria["recommended_atmosphere"]:
+            rag_max_score += 0.10
+            atmosphere = data.get("atmosphere", [])
+            if atmosphere:
+                # Convertir a lista si es string
+                if isinstance(atmosphere, str):
+                    atmosphere = [atmosphere]
+                # Hacer matching más flexible
+                atmosphere_lower = [a.lower() for a in atmosphere]
+                recommended_lower = [a.lower() for a in criteria["recommended_atmosphere"]]
+                matched_atmosphere = set(atmosphere_lower) & set(recommended_lower)
+                atmosphere_score = len(matched_atmosphere) / len(criteria["recommended_atmosphere"])
+                rag_score += atmosphere_score * 0.10
+                print(f"[VenueAgent] Score de atmosphere: {len(matched_atmosphere)}/{len(criteria['recommended_atmosphere'])} ({atmosphere_score:.2f})")
+            else:
+                print(f"[VenueAgent] DEBUG: Venue {data.get('title', 'Sin título')} no tiene campo 'atmosphere'. Campos disponibles: {list(data.keys())}")
+
+        # Score de venue_type recomendado (10%)
+        if "recommended_venue_type" in criteria and criteria["recommended_venue_type"]:
+            rag_max_score += 0.10
+            venue_type = data.get("venue_type", [])
+            if venue_type:
+                # Convertir a lista si es string
+                if isinstance(venue_type, str):
+                    venue_type = [venue_type]
+                # Hacer matching más flexible
+                venue_type_lower = [v.lower() for v in venue_type]
+                recommended_lower = [v.lower() for v in criteria["recommended_venue_type"]]
+                matched_venue_type = set(venue_type_lower) & set(recommended_lower)
+                venue_type_score = len(matched_venue_type) / len(criteria["recommended_venue_type"])
+                rag_score += venue_type_score * 0.10
+                print(f"[VenueAgent] Score de venue_type: {len(matched_venue_type)}/{len(criteria['recommended_venue_type'])} ({venue_type_score:.2f})")
+            else:
+                print(f"[VenueAgent] DEBUG: Venue {data.get('title', 'Sin título')} no tiene campo 'venue_type'. Campos disponibles: {list(data.keys())}")
+
+        # Score de services recomendados (10%)
+        if "recommended_services" in criteria and criteria["recommended_services"]:
+            rag_max_score += 0.10
+            services = data.get("services", [])
+            if services:
+                # Convertir a lista si es string
+                if isinstance(services, str):
+                    services = [services]
+                # Hacer matching más flexible
+                services_lower = [s.lower() for s in services]
+                recommended_lower = [s.lower() for s in criteria["recommended_services"]]
+                matched_services = set(services_lower) & set(recommended_lower)
+                services_score = len(matched_services) / len(criteria["recommended_services"])
+                rag_score += services_score * 0.10
+                print(f"[VenueAgent] Score de services: {len(matched_services)}/{len(criteria['recommended_services'])} ({services_score:.2f})")
+            else:
+                print(f"[VenueAgent] DEBUG: Venue {data.get('title', 'Sin título')} no tiene campo 'services'. Campos disponibles: {list(data.keys())}")
+
+        # Score de supported_events recomendados (5%)
+        if "recommended_supported_events" in criteria and criteria["recommended_supported_events"]:
+            rag_max_score += 0.05
+            supported_events = data.get("supported_events", [])
+            if supported_events:
+                matched_events = set(e.lower() for e in supported_events) & set(e.lower() for e in criteria["recommended_supported_events"])
+                events_score = len(matched_events) / len(criteria["recommended_supported_events"])
+                rag_score += events_score * 0.05
+                print(f"[VenueAgent] Score de supported_events: {len(matched_events)}/{len(criteria['recommended_supported_events'])} ({events_score:.2f})")
+
+        # Score de restrictions recomendadas (5%)
+        if "recommended_restrictions" in criteria and criteria["recommended_restrictions"]:
+            rag_max_score += 0.05
+            restrictions = data.get("restrictions", [])
+            if restrictions:
+                matched_restrictions = set(r.lower() for r in restrictions) & set(r.lower() for r in criteria["recommended_restrictions"])
+                restrictions_score = len(matched_restrictions) / len(criteria["recommended_restrictions"])
+                rag_score += restrictions_score * 0.05
+                print(f"[VenueAgent] Score de restrictions: {len(matched_restrictions)}/{len(criteria['recommended_restrictions'])} ({restrictions_score:.2f})")
+
+        # Normalizar score del RAG solo si rag_max_score > 0
+        if rag_max_score > 0:
+            rag_score = (rag_score / rag_max_score) * 0.4
+        else:
+            rag_score = 0.0  # Si no hay recomendaciones del RAG, no contribuye al score
+
+        # 5. Combinar scores con pesos
         final_score = (
-            base_score * self.WEIGHTS['base_score'] +
-            compatibility_score * self.WEIGHTS['compatibility'] +
-            bonus_score * self.WEIGHTS['bonus']
+            base_score * 0.3 +
+            compatibility_score * 0.2 +
+            bonus_score * 0.1 +
+            rag_score
         )
 
+        print(f"[VenueAgent] Score final para {data.get('title', 'Sin título')}: {final_score:.2f}")
         return min(final_score, 1.0)
 
     def find_venues(self, criteria: Dict[str, Any], urls: List[str] = None) -> List[Dict[str, Any]]:
         print("[VenueAgent] Iniciando búsqueda de venues...")
         self.setup_rules(criteria)
+
+        # Obtener recomendaciones del RAG
+        if "budget" in criteria and "guest_count" in criteria:
+            print("[VenueAgent] Obteniendo recomendaciones del RAG...")
+            print(f"[VenueAgent] Criterios para RAG: budget={criteria['budget']}, guest_count={criteria['guest_count']}")
+            venue_recommendation = self.rag.get_venue_recommendation(
+                budget=criteria["budget"],
+                guest_count=criteria["guest_count"],
+                style=criteria.get("style", "classic"),
+                location=criteria.get("location", "")
+            )
+            
+            # Actualizar criterios con las recomendaciones del RAG
+            if venue_recommendation:
+                print("[VenueAgent] Aplicando recomendaciones del RAG...")
+                print(f"[VenueAgent] Recomendaciones del RAG: {json.dumps(venue_recommendation, indent=2)}")
+                criteria["recommended_atmosphere"] = venue_recommendation["atmosphere"]
+                criteria["recommended_venue_type"] = venue_recommendation["venue_type"]
+                criteria["recommended_services"] = venue_recommendation["services"]
+                criteria["recommended_supported_events"] = venue_recommendation["supported_events"]
+                criteria["recommended_restrictions"] = venue_recommendation["restrictions"]
+                criteria["capacity_range"] = venue_recommendation["capacity_range"]
+                criteria["price_range"] = venue_recommendation["price_range"]
+                print(f"[VenueAgent] Criterios actualizados con RAG - Atmosphere: {criteria['recommended_atmosphere']}")
+                print(f"[VenueAgent] Criterios actualizados con RAG - Venue Type: {criteria['recommended_venue_type']}")
+                print(f"[VenueAgent] Criterios actualizados con RAG - Services: {criteria['recommended_services']}")
+                print(f"[VenueAgent] Criterios actualizados con RAG - Supported Events: {criteria['recommended_supported_events']}")
+            else:
+                print("[VenueAgent] ⚠️ No se obtuvieron recomendaciones del RAG")
+        else:
+            print("[VenueAgent] No se encontraron campos necesarios para RAG (budget y guest_count)")
+            print(f"[VenueAgent] Criterios disponibles: {json.dumps(criteria, indent=2)}")
 
         # URLs por defecto si no se proporcionan
         if urls is None or not urls:
@@ -366,6 +497,25 @@ class VenueAgent:
 
         # Limitar a los 50 mejores resultados
         results = [v for v, _ in scored[:50]]
+        
+        # Actualizar patrones de éxito en RAG
+        if results:
+            print("[VenueAgent] Actualizando patrones de éxito en RAG...")
+            pattern_data = {
+                "style": criteria.get("style", "classic"),
+                "location": criteria.get("location", ""),
+                "capacity_range": criteria.get("capacity_range", [0, 0]),
+                "price_range": criteria.get("price_range", [0, 0]),
+                "atmosphere": criteria.get("recommended_atmosphere", []),
+                "venue_type": criteria.get("recommended_venue_type", []),
+                "services": criteria.get("recommended_services", []),
+                "supported_events": criteria.get("recommended_supported_events", []),
+                "restrictions": criteria.get("recommended_restrictions", [])
+            }
+            print(f"[VenueAgent] Datos del patrón a actualizar: {json.dumps(pattern_data, indent=2)}")
+            self.rag.update_success_pattern(pattern_data, True)
+            print("[VenueAgent] Patrón de éxito actualizado")
+        
         print(f"[VenueAgent] Se retornan los {len(results)} mejores resultados")
         
         # Guardar el grafo antes de retornar

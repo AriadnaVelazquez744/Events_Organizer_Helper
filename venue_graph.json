@@ -1,0 +1,332 @@
+{
+  "classic_Los Angeles_80_22010.4": {
+    "style": "classic",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "Los Angeles",
+    "price_range": [
+      22010.4,
+      33015.6
+    ],
+    "atmosphere": [
+      "Elegant",
+      "Traditional",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Ballroom",
+      "Hotel",
+      "Country Club"
+    ],
+    "services": [
+      "Full-Service Venue",
+      "Event Coordination",
+      "Catering",
+      "Bar Service"
+    ],
+    "restrictions": [],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Rehearsal Dinner"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-17T02:55:18.702142",
+    "usage_count": 1
+  },
+  "classic__80_22006.4": {
+    "style": "classic",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22006.4,
+      33009.6
+    ],
+    "atmosphere": [
+      "Elegant",
+      "Traditional",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Ballroom",
+      "Hotel",
+      "Country Club"
+    ],
+    "services": [
+      "Full-Service Venue",
+      "Event Coordination",
+      "Catering",
+      "Bar Service"
+    ],
+    "restrictions": [],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Rehearsal Dinner"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-17T02:58:30.832913",
+    "usage_count": 1
+  },
+  "classic__80_21991.2": {
+    "style": "classic",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21991.2,
+      32986.799999999996
+    ],
+    "atmosphere": [
+      "Elegant",
+      "Traditional",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Ballroom",
+      "Hotel",
+      "Country Club"
+    ],
+    "services": [
+      "Full-Service Venue",
+      "Event Coordination",
+      "Catering",
+      "Bar Service"
+    ],
+    "restrictions": [],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Rehearsal Dinner"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-17T03:03:50.302270",
+    "usage_count": 1
+  },
+  "classic__80_15813.6": {
+    "style": "classic",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      15813.6,
+      23720.399999999998
+    ],
+    "atmosphere": [
+      "Elegant",
+      "Traditional",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Ballroom",
+      "Hotel",
+      "Country Club"
+    ],
+    "services": [
+      "Full-Service Venue",
+      "Event Coordination",
+      "Catering",
+      "Bar Service"
+    ],
+    "restrictions": [],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Rehearsal Dinner"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-17T03:10:13.441496",
+    "usage_count": 1
+  },
+  "classic__80_15975.2": {
+    "style": "classic",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      15975.2,
+      23962.8
+    ],
+    "atmosphere": [
+      "Elegant",
+      "Traditional",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Ballroom",
+      "Hotel",
+      "Country Club"
+    ],
+    "services": [
+      "Full-Service Venue",
+      "Event Coordination",
+      "Catering",
+      "Bar Service"
+    ],
+    "restrictions": [],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Rehearsal Dinner"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-17T03:11:05.038754",
+    "usage_count": 1
+  },
+  "classic__80_21964.0": {
+    "style": "classic",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21964.0,
+      32946.0
+    ],
+    "atmosphere": [
+      "Elegant",
+      "Traditional",
+      "Sophisticated",
+      "Indoor",
+      "Formal"
+    ],
+    "venue_type": [
+      "Ballroom",
+      "Hotel",
+      "Country Club",
+      "Golf and Country Club",
+      "Club"
+    ],
+    "services": [
+      "Full-Service Venue",
+      "Event Coordination",
+      "Catering",
+      "Bar Service",
+      "Bar services",
+      "Catering services"
+    ],
+    "restrictions": [],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Rehearsal Dinner"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-17T03:14:37.299459",
+    "usage_count": 1
+  },
+  "classic__80_22076.0": {
+    "style": "classic",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22076.0,
+      33114.0
+    ],
+    "atmosphere": [
+      "Elegant",
+      "Traditional",
+      "Sophisticated",
+      "Indoor",
+      "Formal"
+    ],
+    "venue_type": [
+      "Ballroom",
+      "Hotel",
+      "Country Club",
+      "Golf and Country Club",
+      "Club"
+    ],
+    "services": [
+      "Full-Service Venue",
+      "Event Coordination",
+      "Catering",
+      "Bar Service",
+      "Bar services",
+      "Catering services"
+    ],
+    "restrictions": [],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Rehearsal Dinner"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-17T03:34:06.558507",
+    "usage_count": 1
+  },
+  "classic__80_21940.800000000003": {
+    "style": "classic",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21940.800000000003,
+      32911.2
+    ],
+    "atmosphere": [
+      "Elegant",
+      "Traditional",
+      "Sophisticated",
+      "Indoor",
+      "Formal"
+    ],
+    "venue_type": [
+      "Ballroom",
+      "Hotel",
+      "Country Club",
+      "Golf and Country Club",
+      "Club"
+    ],
+    "services": [
+      "Full-Service Venue",
+      "Event Coordination",
+      "Catering",
+      "Bar Service",
+      "Bar services",
+      "Catering services"
+    ],
+    "restrictions": [],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Rehearsal Dinner"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-17T04:05:44.508179",
+    "usage_count": 1
+  }
+}

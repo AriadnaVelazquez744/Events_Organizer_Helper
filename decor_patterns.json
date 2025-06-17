@@ -351,6 +351,174 @@
         "guest_count": 0
       },
       "timestamp": "2024-03-19T00:00:00Z"
+    },
+    {
+      "pattern": {
+        "style": "classic",
+        "decorations": [
+          "Centros de mesa clásicos",
+          "Arcos decorativos",
+          "Candelabros",
+          "Manteles elegantes"
+        ],
+        "paper_goods": [
+          "Invitaciones formales",
+          "Menús elegantes",
+          "Place cards"
+        ],
+        "rentals": [
+          "Sillas Chiavari",
+          "Mesas redondas",
+          "Cristalería fina"
+        ],
+        "estimated_cost": {
+          "decorations": 3134.8,
+          "paper_goods": 783.7,
+          "rentals": 2351.1
+        },
+        "guest_count": 100
+      },
+      "timestamp": "2024-03-19T00:00:00Z"
+    },
+    {
+      "pattern": {
+        "style": "classic",
+        "decorations": [
+          "Centros de mesa clásicos",
+          "Arcos decorativos",
+          "Candelabros",
+          "Manteles elegantes"
+        ],
+        "paper_goods": [
+          "Invitaciones formales",
+          "Menús elegantes",
+          "Place cards"
+        ],
+        "rentals": [
+          "Sillas Chiavari",
+          "Mesas redondas",
+          "Cristalería fina"
+        ],
+        "estimated_cost": {
+          "decorations": 3019.2000000000003,
+          "paper_goods": 754.8000000000001,
+          "rentals": 2264.4
+        },
+        "guest_count": 100
+      },
+      "timestamp": "2024-03-19T00:00:00Z"
+    },
+    {
+      "pattern": {
+        "style": "classic",
+        "decorations": [
+          "Centros de mesa clásicos",
+          "Arcos decorativos",
+          "Candelabros",
+          "Manteles elegantes"
+        ],
+        "paper_goods": [
+          "Invitaciones formales",
+          "Menús elegantes",
+          "Place cards"
+        ],
+        "rentals": [
+          "Sillas Chiavari",
+          "Mesas redondas",
+          "Cristalería fina"
+        ],
+        "estimated_cost": {
+          "decorations": 3095.2000000000003,
+          "paper_goods": 773.8000000000001,
+          "rentals": 2321.4
+        },
+        "guest_count": 100
+      },
+      "timestamp": "2024-03-19T00:00:00Z"
+    },
+    {
+      "pattern": {
+        "style": "classic",
+        "decorations": [
+          "Centros de mesa clásicos",
+          "Arcos decorativos",
+          "Candelabros",
+          "Manteles elegantes"
+        ],
+        "paper_goods": [
+          "Invitaciones formales",
+          "Menús elegantes",
+          "Place cards"
+        ],
+        "rentals": [
+          "Sillas Chiavari",
+          "Mesas redondas",
+          "Cristalería fina"
+        ],
+        "estimated_cost": {
+          "decorations": 3067.6000000000004,
+          "paper_goods": 766.9000000000001,
+          "rentals": 2300.7
+        },
+        "guest_count": 100
+      },
+      "timestamp": "2024-03-19T00:00:00Z"
+    },
+    {
+      "pattern": {
+        "style": "classic",
+        "decorations": [
+          "Centros de mesa clásicos",
+          "Arcos decorativos",
+          "Candelabros",
+          "Manteles elegantes"
+        ],
+        "paper_goods": [
+          "Invitaciones formales",
+          "Menús elegantes",
+          "Place cards"
+        ],
+        "rentals": [
+          "Sillas Chiavari",
+          "Mesas redondas",
+          "Cristalería fina"
+        ],
+        "estimated_cost": {
+          "decorations": 3021.6000000000004,
+          "paper_goods": 755.4000000000001,
+          "rentals": 2266.2
+        },
+        "guest_count": 100
+      },
+      "timestamp": "2024-03-19T00:00:00Z"
+    },
+    {
+      "pattern": {
+        "style": "classic",
+        "decorations": [
+          "Centros de mesa clásicos",
+          "Arcos decorativos",
+          "Candelabros",
+          "Manteles elegantes"
+        ],
+        "paper_goods": [
+          "Invitaciones formales",
+          "Menús elegantes",
+          "Place cards"
+        ],
+        "rentals": [
+          "Sillas Chiavari",
+          "Mesas redondas",
+          "Cristalería fina"
+        ],
+        "estimated_cost": {
+          "decorations": 3080.8,
+          "paper_goods": 770.2,
+          "rentals": 2310.6
+        },
+        "guest_count": 100
+      },
+      "timestamp": "2024-03-19T00:00:00Z"
     }
   ],
   "budget_recommendations": [],

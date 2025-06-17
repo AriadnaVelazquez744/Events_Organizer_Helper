@@ -93,5 +93,105 @@
     "venue": 0.4,
     "catering": 0.35,
     "decor": 0.25
+  },
+  "e125ddf7-5e21-45de-94d2-64b69e8bee64": {
+    "venue": 0.4,
+    "catering": 0.35,
+    "decor": 0.25
+  },
+  "c7f1a5e3-bc33-4acc-a87f-715f1b537b3c": {
+    "venue": 0.4,
+    "catering": 0.35,
+    "decor": 0.25
+  },
+  "db489487-7e11-47b6-b2c8-19ab656581b3": {
+    "venue": 0.4,
+    "catering": 0.35,
+    "decor": 0.25
+  },
+  "289ae45e-bffd-4913-88b6-bf2aa6888494": {
+    "venue": 0.4,
+    "catering": 0.35,
+    "decor": 0.25
+  },
+  "837f2e76-23cb-42c4-b349-242739847c53": {
+    "venue": 0.4,
+    "catering": 0.35,
+    "decor": 0.25
+  },
+  "26d99143-3aee-4804-a84e-7d5069944534": {
+    "venue": 0.4,
+    "catering": 0.35,
+    "decor": 0.25
+  },
+  "b439c2e3-74f3-4dd1-9ed8-c40b29b15dd0": {
+    "venue": 0.4,
+    "catering": 0.35,
+    "decor": 0.25
+  },
+  "584b3ba9-8253-46ab-af33-bb0e191e244d": {
+    "venue": 0.34,
+    "catering": 0.32,
+    "decor": 0.34
+  },
+  "2d0d870d-451a-4115-a0f9-acac41b70a5a": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "375965c4-29d2-40a4-80e3-4e58f9dc437d": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "d4ca2cfe-f1ef-4ae0-bf5e-f42459666a84": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "8f688ecd-a2b4-4615-8731-d5e89885a40e": {
+    "venue": 0.35,
+    "catering": 0.35,
+    "decor": 0.3
+  },
+  "11e6cd78-5e59-4944-b683-fe989b7ea8a4": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "a255a98b-46d7-45cb-b04a-d1f16886bfc6": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "9b35b69b-6e30-435d-b3a4-9cb2106bb651": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "038a25af-88b9-43e2-acda-94ca5a7c72b5": {
+    "venue": 0.33,
+    "catering": 0.33,
+    "decor": 0.34
+  },
+  "869dacb0-c872-484e-aae3-2081ae690571": {
+    "venue": 0.25,
+    "catering": 0.45,
+    "decor": 0.3
+  },
+  "5e3fe3e6-4591-4d2f-b893-ab350e9b0d52": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "c9271ab1-f12f-4485-9bfc-97a8105a335c": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "37032a4e-b864-4969-8980-b08e9f08d169": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
   }
 }

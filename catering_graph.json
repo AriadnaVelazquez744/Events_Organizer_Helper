@@ -67,6 +67,52 @@
       "success_rate": 1.0,
       "last_used": "2025-06-16T14:09:02.800002",
       "usage_count": 33
+    },
+    {
+      "style": "standard",
+      "courses": [
+        "entrada",
+        "plato_principal",
+        "postre"
+      ],
+      "dietary_options": [
+        "vegan",
+        "gluten-free"
+      ],
+      "price_range": [
+        11701.6,
+        17552.399999999998
+      ],
+      "guest_count_range": [
+        100,
+        200
+      ],
+      "success_rate": 1.0,
+      "last_used": "2025-06-16T18:04:17.604743",
+      "usage_count": 2
+    },
+    {
+      "style": "standard",
+      "courses": [
+        "appetizer",
+        "main_course",
+        "dessert"
+      ],
+      "dietary_options": [
+        "vegan",
+        "gluten-free"
+      ],
+      "price_range": [
+        14342.400000000001,
+        21513.6
+      ],
+      "guest_count_range": [
+        100,
+        200
+      ],
+      "success_rate": 1.0,
+      "last_used": "2025-06-17T04:05:44.660935",
+      "usage_count": 18
     }
   ]
 }

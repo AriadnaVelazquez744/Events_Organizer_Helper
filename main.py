@@ -6,6 +6,8 @@ from Crawler.core import AdvancedCrawlerAgent
 from Crawler.graph import KnowledgeGraphInterface
 from Crawler.expert import ExpertSystemInterface
 from Crawler.policy import CrawlPolicy
+from Crawler.monitoring import DataQualityMonitor
+from Crawler.quality_validator import DataQualityValidator
 from Agents.session_memory import SessionMemoryManager
 from Agents.BudgetAgent import BudgetDistributorAgent
 import json
@@ -24,11 +26,34 @@ def print_result(title: str, data: dict):
     print(json.dumps(data, indent=2, ensure_ascii=False))
     print("-" * 40)
 
+def print_quality_report(monitor: DataQualityMonitor):
+    """Imprime un reporte de calidad de datos."""
+    print_section("REPORTE DE CALIDAD DE DATOS")
+    
+    # Obtener tendencias de las últimas 24 horas
+    trends = monitor.get_quality_trends(hours=24)
+    print_result("Tendencias de Calidad (24h)", trends)
+    
+    # Obtener alertas activas
+    active_alerts = monitor.get_active_alerts()
+    if active_alerts:
+        print_result("Alertas Activas", {"total": len(active_alerts), "alerts": active_alerts})
+    else:
+        print("✅ No hay alertas activas")
+    
+    # Reporte completo
+    full_report = monitor.export_monitoring_report(hours=24)
+    print_result("Reporte Completo de Monitoreo", full_report)
+
 def initialize_system():
     print_section("INICIALIZANDO SISTEMA")
     
     # Inicializar componentes compartidos
     print("Inicializando componentes compartidos...")
+    
+    # Inicializar validador de calidad y monitor
+    quality_validator = DataQualityValidator()
+    quality_monitor = DataQualityMonitor(quality_validator)
     
     # Intentar cargar los grafos existentes
     try:
@@ -73,7 +98,7 @@ def initialize_system():
     bus.set_shared_data("decor_graph", graph_d)
 
     # Inicializar crawlers específicos para cada tipo
-    print("Inicializando crawlers...")
+    print("Inicializando crawlers con enriquecimiento dinámico...")
     crawler_v = AdvancedCrawlerAgent(
         name="VenueCrawler",
         graph_interface=graph_v,
@@ -147,13 +172,20 @@ def initialize_system():
             "catering": graph_c,
             "decor": graph_d
         },
-        "memory": memory_manager
+        "memory": memory_manager,
+        "quality_monitor": quality_monitor,
+        "crawlers": {
+            "venue": crawler_v,
+            "catering": crawler_c,
+            "decor": crawler_d
+        }
     }
 
 def main():
     # Inicializar el sistema
     system = initialize_system()
     planner = system["planner"]
+    quality_monitor = system["quality_monitor"]
     
     print_section("CREANDO SESIÓN")
     # Ejemplo de uso
@@ -168,9 +200,9 @@ def main():
             "guest_count": 100,
             "style": "classic",
             "venue": {
-                "obligatorios": ["price", "capacity", "location"],
+                "obligatorios": ["price", "capacity", "venue_type"],
                 "capacity": 100,
-                "location": "Los Angeles"
+                "venue_type": "country club"
             },
             "catering": {
                 "obligatorios": ["price", "meal_types", "dietary_options"],
@@ -212,6 +244,15 @@ def main():
     # Obtener beliefs finales
     beliefs = system["memory"].get_beliefs(session_id)
     print_result("Estado de creencias", beliefs.resumen())
+    
+    # Generar reporte de calidad de datos
+    print_quality_report(quality_monitor)
+    
+    # Mostrar estadísticas de calidad de los crawlers
+    print_section("ESTADÍSTICAS DE CALIDAD DE CRAWLERS")
+    for crawler_name, crawler in system["crawlers"].items():
+        quality_stats = crawler.get_quality_stats()
+        print_result(f"Estadísticas de {crawler_name}", quality_stats)
 
 if __name__ == "__main__":
     main()

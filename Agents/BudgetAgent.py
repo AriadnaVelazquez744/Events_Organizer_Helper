@@ -341,11 +341,12 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
                 # Penalización por desbalance
                 balance_penalty = 0
                 total = sum(state.values())
+                    
                 if abs(total - budget) > 0.01:  # Permitir un pequeño margen de error
                     balance_penalty = abs(total - budget) * 10
-                
-                final_cost = base_cost + constraint_penalty + balance_penalty
-                return final_cost
+                    
+                    final_cost = base_cost + constraint_penalty + balance_penalty
+                    return final_cost
             except Exception as e:
                 print(f"[BudgetDistributorAgent] Error en cálculo de costo: {str(e)}")
                 return float('inf')
@@ -450,7 +451,7 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
         print(f"[BudgetDistributorAgent] Estado final: {final_state}")
         print(f"[BudgetDistributorAgent] Costo final: {cost(final_state)}")
         return final_state
-
+    
     def explain_allocation(self, user_id: str, allocation: Dict[str, int]) -> str:
         """Genera una explicación detallada de la asignación."""
         pref = self.history.get(user_id, {})

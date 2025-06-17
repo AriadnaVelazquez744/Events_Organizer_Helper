@@ -258,6 +258,9 @@ class PlannerAgentBDI:
         if "venue" in criterios:
             venue_criteria = criterios["venue"].copy()
             venue_criteria["price"] = presupuesto_asignado.get("venue", 0)
+            # Mapear campos para RAG
+            venue_criteria["budget"] = venue_criteria["price"]
+            venue_criteria["guest_count"] = criterios.get("guest_count", 0)
             print(f"[PlannerAgent] Criterios de venue: {venue_criteria}")
             tasks.append(Task(
                 id=str(uuid.uuid4()),
@@ -268,6 +271,9 @@ class PlannerAgentBDI:
         if "catering" in criterios:
             catering_criteria = criterios["catering"].copy()
             catering_criteria["price"] = presupuesto_asignado.get("catering", 0)
+            # Mapear campos para RAG
+            catering_criteria["budget"] = catering_criteria["price"]
+            catering_criteria["guest_count"] = criterios.get("guest_count", 0)
             print(f"[PlannerAgent] Criterios de catering: {catering_criteria}")
             tasks.append(Task(
                 id=str(uuid.uuid4()),
@@ -278,6 +284,9 @@ class PlannerAgentBDI:
         if "decor" in criterios:
             decor_criteria = criterios["decor"].copy()
             decor_criteria["price"] = presupuesto_asignado.get("decor", 0)
+            # Mapear campos para RAG
+            decor_criteria["budget"] = decor_criteria["price"]
+            decor_criteria["guest_count"] = criterios.get("guest_count", 0)
             print(f"[PlannerAgent] Criterios de decor: {decor_criteria}")
             tasks.append(Task(
                 id=str(uuid.uuid4()),
@@ -324,7 +333,7 @@ class PlannerAgentBDI:
                 }
             ))
             print("[PlannerAgent] Se creó tarea de distribución de presupuesto")
-            
+
             # No crear tareas de búsqueda hasta que se complete la distribución
             self.task_queue[session_id].extend(tasks)
             print(f"[PlannerAgent] Se crearon {len(tasks)} tareas para la sesión {session_id}")
@@ -450,12 +459,12 @@ class PlannerAgentBDI:
                     filtered[field] = data[field]
         
         return filtered
-
+            
     def _check_completion(self, session_id: str):
         """Verifica si todas las tareas están completadas y genera la respuesta final."""
         # Obtener beliefs actualizados del SessionMemoryManager
         beliefs = self.memory_manager.get_beliefs(session_id)
-        
+
         # Verifica si todas las categorías están completadas
         completado = beliefs.get("completado", {})
         all_completed = all(completado.get(cat, False) for cat in ["venue", "catering", "decor"])
@@ -511,7 +520,7 @@ class PlannerAgentBDI:
                     "is_correction": self.active_sessions[session_id]["is_correction"]
                 },
                 "session_id": session_id
-            }
+                }
             
             print(f"[PlannerAgent] Generando respuesta final: {response}")
             return response

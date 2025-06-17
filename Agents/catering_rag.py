@@ -126,30 +126,59 @@ class CateringRAG:
 
     def get_menu_recommendation(self, budget: float, guest_count: int, 
                               dietary_requirements: List[str], style: str = "standard") -> Dict:
-        """Genera una recomendación de menú basada en los criterios proporcionados."""
-        # Filtra patrones por estilo y requisitos
-        valid_patterns = [
-            p for p in self.menu_patterns
-            if p.style == style and
-            all(req in p.dietary_options for req in dietary_requirements) and
-            p.guest_count_range[0] <= guest_count <= p.guest_count_range[1]
-        ]
-
-        if not valid_patterns:
-            return self._generate_custom_menu(budget, guest_count, dietary_requirements, style)
-
-        # Ordena por éxito y uso
-        valid_patterns.sort(key=lambda p: (p.success_rate, -p.usage_count), reverse=True)
-        best_pattern = valid_patterns[0]
-
-        # Calcula el costo estimado
-        estimated_cost = self._calculate_menu_cost(best_pattern, budget, guest_count)
-
+        """Obtiene recomendaciones de menú basadas en el presupuesto y requisitos."""
+        # Normalizar requisitos dietéticos a inglés
+        dietary_mapping = {
+            "vegan": "vegan",
+            "vegetariano": "vegetarian",
+            "sin_gluten": "gluten-free",
+            "gluten-free": "gluten-free",
+            "sin_lactosa": "lactose-free",
+            "lactose-free": "lactose-free",
+            "kosher": "kosher",
+            "halal": "halal"
+        }
+        
+        normalized_dietary = [dietary_mapping.get(req.lower(), req.lower()) for req in dietary_requirements]
+        
+        # Mapeo de estilos a cursos recomendados
+        style_courses = {
+            "standard": ["appetizer", "main_course", "dessert"],
+            "premium": ["welcome_drink", "appetizer", "soup", "main_course", "dessert", "coffee_service"],
+            "casual": ["appetizer", "main_course", "dessert"],
+            "formal": ["welcome_drink", "appetizer", "soup", "main_course", "side_dish", "dessert", "coffee_service"],
+            "buffet": ["appetizer", "main_course", "side_dish", "dessert"]
+        }
+        
+        # Obtener cursos recomendados basados en el estilo
+        recommended_courses = style_courses.get(style.lower(), style_courses["standard"])
+        
+        # Calcular costo estimado por persona
+        cost_per_person = budget / guest_count
+        
+        # Ajustar cursos basados en el presupuesto
+        if cost_per_person < 50:
+            recommended_courses = ["appetizer", "main_course", "dessert"]
+        elif cost_per_person < 100:
+            recommended_courses = ["welcome_drink", "appetizer", "main_course", "dessert"]
+        else:
+            recommended_courses = style_courses.get(style.lower(), style_courses["premium"])
+        
+        # Generar alternativas dietéticas
+        dietary_alternatives = self.suggest_dietary_alternatives(normalized_dietary)
+        
+        # Calcular costo estimado total
+        base_cost = cost_per_person * guest_count
+        dietary_cost_multiplier = 1.0 + (len(normalized_dietary) * 0.1)  # 10% extra por cada requisito dietético
+        estimated_cost = base_cost * dietary_cost_multiplier
+        
         return {
-            "style": best_pattern.style,
-            "courses": best_pattern.courses,
-            "dietary_options": best_pattern.dietary_options,
-            "estimated_cost": estimated_cost
+            "style": style,
+            "courses": recommended_courses,
+            "dietary_options": normalized_dietary,
+            "dietary_alternatives": dietary_alternatives,
+            "estimated_cost": estimated_cost,
+            "cost_per_person": cost_per_person
         }
 
     def _calculate_menu_cost(self, pattern: MenuPattern, budget: float, guest_count: int) -> float:
@@ -187,14 +216,45 @@ class CateringRAG:
         }
 
     def suggest_dietary_alternatives(self, restrictions: List[str]) -> Dict[str, Dict]:
-        """Sugiere alternativas para restricciones dietéticas."""
+        """Sugiere alternativas para cada restricción dietética."""
         alternatives = {}
+        
+        dietary_alternatives = {
+            "vegan": {
+                "alternatives": ["vegetarian", "plant-based"],
+                "cost_impact": 1.1
+            },
+            "vegetarian": {
+                "alternatives": ["vegan", "pescatarian"],
+                "cost_impact": 1.05
+            },
+            "gluten-free": {
+                "alternatives": ["gluten-reduced", "celiac-friendly"],
+                "cost_impact": 1.15
+            },
+            "lactose-free": {
+                "alternatives": ["dairy-free", "vegan"],
+                "cost_impact": 1.1
+            },
+            "kosher": {
+                "alternatives": ["vegetarian", "vegan"],
+                "cost_impact": 1.2
+            },
+            "halal": {
+                "alternatives": ["vegetarian", "seafood"],
+                "cost_impact": 1.15
+            }
+        }
+        
         for restriction in restrictions:
-            if restriction in self.dietary_restrictions:
+            if restriction.lower() in dietary_alternatives:
+                alternatives[restriction] = dietary_alternatives[restriction.lower()]
+            else:
                 alternatives[restriction] = {
-                    "alternatives": self.dietary_restrictions[restriction].alternatives,
-                    "cost_impact": self.dietary_restrictions[restriction].cost_impact
+                    "alternatives": ["standard"],
+                    "cost_impact": 1.0
                 }
+        
         return alternatives
 
     def update_success_pattern(self, menu_data: Dict, success: bool):
