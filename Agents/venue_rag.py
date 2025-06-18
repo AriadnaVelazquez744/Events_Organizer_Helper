@@ -114,7 +114,12 @@ class VenueRAG:
         }
         
         # Obtener características recomendadas basadas en el estilo
-        style_data = style_characteristics.get(style.lower(), style_characteristics["classic"])
+        style_lower = style.lower()
+        style_data = style_characteristics.get(style_lower, style_characteristics["classic"])
+        
+        print(f"[VenueRAG] Estilo solicitado: '{style}' (normalizado a '{style_lower}')")
+        print(f"[VenueRAG] Usando características para estilo: {style_lower}")
+        
         recommended_characteristics = {
             "atmosphere": style_data["atmosphere"],
             "venue_type": style_data["venue_type"],

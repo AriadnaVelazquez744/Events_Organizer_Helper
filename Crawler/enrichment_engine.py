@@ -75,6 +75,11 @@ class DynamicEnrichmentEngine:
             print("[ENRICHMENT] No se requiere enriquecimiento")
             return enriched_data
         
+        # Verificar que tenemos información mínima para enriquecer
+        if not title or title in ["Unknown", "Sin título", ""]:
+            print("[ENRICHMENT] No hay título válido para enriquecer")
+            return enriched_data
+        
         # 1. Intentar enriquecer desde la URL original
         if url and url.startswith("http"):
             print(f"[ENRICHMENT] Buscando en URL original: {url}")
@@ -85,8 +90,8 @@ class DynamicEnrichmentEngine:
                 enriched_data["timestamp"] = datetime.utcnow().isoformat()
                 print("[ENRICHMENT] Datos enriquecidos desde URL original")
         
-        # 2. Si aún faltan campos, buscar en Google
-        if missing_fields:
+        # 2. Si aún faltan campos y tenemos un título válido, buscar en Google
+        if missing_fields and title not in ["Unknown", "Sin título", ""]:
             current_quality = self.quality_validator.validate_data_quality(enriched_data, data_type)
             remaining_missing = current_quality.get("missing_fields", [])
             
@@ -104,8 +109,9 @@ class DynamicEnrichmentEngine:
             enriched_data["timestamp"] = datetime.utcnow().isoformat()
             print("[ENRICHMENT] Timestamp actualizado para frescura")
         
-        # Marcar como enriquecido
-        enriched_data["enrichment_applied"] = True
+        # Marcar como enriquecido solo si realmente se aplicó enriquecimiento
+        if enriched_data != data:
+            enriched_data["enrichment_applied"] = True
         
         # Validar calidad final
         final_quality = self.quality_validator.validate_data_quality(enriched_data, data_type)
@@ -261,29 +267,48 @@ Text: {{text}}"""
         try:
             print(f"[ENRICHMENT] Buscando en {source}: {title}")
             
+            # Verificar que el título sea válido
+            if not title or title in ["Unknown", "Sin título", ""]:
+                print("[ENRICHMENT] Título no válido para búsqueda")
+                return None
+            
             # Simular búsqueda en Google (en implementación real usaría API de Google)
             search_query = f"{title} {data_type} wedding"
             
-            # Por ahora, retornar datos simulados
+            # Por ahora, retornar datos simulados solo si parece ser un nombre real
             # En implementación real, haríamos scraping de resultados de búsqueda
+            if len(title) < 3 or title.isdigit():
+                print("[ENRICHMENT] Título demasiado corto o numérico, saltando simulación")
+                return None
+            
             simulated_data = {}
             
-            # Simular extracción de campos faltantes
+            # Simular extracción de campos faltantes solo si parece apropiado
             for field in missing_fields:
-                if field == "capacity":
+                if field == "capacity" and data_type == "venue":
+                    # Solo asignar capacidad si es un venue
                     simulated_data[field] = 150
-                elif field == "location":
+                elif field == "location" and title:
+                    # Usar una ubicación genérica
                     simulated_data[field] = "Chicago, IL"
-                elif field == "price":
-                    simulated_data[field] = {"space_rental": 3000, "per_person": 50, "other": []}
-                elif field == "service_levels":
+                elif field == "price" and data_type in ["venue", "catering", "decor"]:
+                    # Precio apropiado según el tipo
+                    if data_type == "venue":
+                        simulated_data[field] = {"space_rental": 3000, "per_person": 50, "other": []}
+                    elif data_type == "catering":
+                        simulated_data[field] = {"per_person": 45, "minimum": 50}
+                    elif data_type == "decor":
+                        simulated_data[field] = {"starting_at": 2500, "per_arrangement": 150}
+                elif field == "service_levels" and data_type == "decor":
                     simulated_data[field] = ["Full-Service Floral Design"]
+                elif field == "services" and data_type == "catering":
+                    simulated_data[field] = ["Full-Service Catering", "Bar Service"]
             
             if simulated_data:
                 print(f"[ENRICHMENT] Datos simulados extraídos: {list(simulated_data.keys())}")
                 return simulated_data
             else:
-                print("[ENRICHMENT] No se encontraron datos en fuente general")
+                print("[ENRICHMENT] No se encontraron datos apropiados para simular")
                 return None
                 
         except Exception as e:

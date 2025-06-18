@@ -452,52 +452,108 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
         print(f"[BudgetDistributorAgent] Costo final: {cost(final_state)}")
         return final_state
     
-    def explain_allocation(self, user_id: str, allocation: Dict[str, int]) -> str:
-        """Genera una explicación detallada de la asignación."""
-        pref = self.history.get(user_id, {})
-        if not pref:
-            return "No tengo historial suficiente para este usuario aún."
-            
-        # Ordena las categorías por prioridad
-        sorted_pref = sorted(pref.items(), key=lambda x: -x[1])
+    def explain_allocation(self, user_id: str, allocation: Dict[str, int], new_weights: Dict[str, float] = None) -> str:
+        """Genera una explicación detallada de la asignación incluyendo información del historial."""
+        user_history = self.history.get(user_id, {})
+        
+        if not user_history:
+            return "Esta es tu primera consulta. Las preferencias se han inferido de tus criterios actuales."
+        
+        # Calcular consistencia si se proporcionan nuevas preferencias
+        consistency_info = ""
+        if new_weights:
+            consistency = self._calculate_consistency(user_history, new_weights)
+            if consistency > 0.7:
+                consistency_info = f"\n\n📊 **Consistencia Alta ({consistency:.1f})**: Tus preferencias son muy similares a consultas anteriores."
+            elif consistency > 0.4:
+                consistency_info = f"\n\n📊 **Consistencia Media ({consistency:.1f})**: Tus preferencias han cambiado moderadamente."
+            else:
+                consistency_info = f"\n\n📊 **Consistencia Baja ({consistency:.1f})**: Tus preferencias han cambiado significativamente."
+        
+        # Ordena las categorías por prioridad del historial
+        sorted_history = sorted(user_history.items(), key=lambda x: -x[1])
         
         # Genera explicación detallada
-        explanation = "Basado en tus preferencias y los datos disponibles:\n"
-        for category, weight in sorted_pref:
+        explanation = f"Basado en tu historial de preferencias y los criterios actuales:{consistency_info}\n"
+        
+        explanation += "\n**Distribución del Presupuesto:**"
+        for category, weight in sorted_history:
             amount = allocation[category]
             percentage = (amount / sum(allocation.values())) * 100
-            explanation += f"\n- {category.title()}: ${amount:,} ({percentage:.1f}% del presupuesto)"
+            explanation += f"\n- **{category.title()}**: ${amount:,} ({percentage:.1f}% del presupuesto)"
             
             # Añade información sobre el rango de precios disponible
             if category in self.service_constraints:
                 constraints = self.service_constraints[category]
-                explanation += f"\n  Rango disponible: ${constraints.min_budget:,.2f} - ${constraints.max_budget:,.2f}"
+                explanation += f"\n  💰 Rango disponible: ${constraints.min_budget:,.2f} - ${constraints.max_budget:,.2f}"
             
+            # Añade información sobre la prioridad histórica
             if weight > 0.4:
-                explanation += " (Alta prioridad)"
+                explanation += " 🔥 (Alta prioridad histórica)"
             elif weight < 0.2:
-                explanation += " (Baja prioridad)"
-                
+                explanation += " ⚡ (Baja prioridad histórica)"
+            else:
+                explanation += " ⚖️ (Prioridad media histórica)"
+        
+        # Añadir información sobre el aprendizaje
+        explanation += f"\n\n💡 **Sistema de Aprendizaje**: "
+        explanation += "El sistema ha aprendido de tus consultas anteriores para proporcionar "
+        explanation += "distribuciones más precisas y consistentes con tus preferencias."
+        
         return explanation
 
     def run(self, user_id: str, total_budget: int, user_description: str) -> Dict[str, int]:
         """Ejecuta el proceso completo de distribución de presupuesto."""
         print(f"[BudgetDistributorAgent] Iniciando distribución de presupuesto para {total_budget}...")
         
-        # Obtener pesos iniciales (solo una vez)
-        print("[BudgetDistributorAgent] Inferiendo prioridades iniciales...")
-        weights = self.infer_priorities(user_description)
-        print(f"[BudgetDistributorAgent] Pesos inferidos: {weights}")
+        # 1. Obtener preferencias del historial del usuario
+        user_history = self.history.get(user_id, {})
+        print(f"[BudgetDistributorAgent] Historial del usuario: {user_history}")
+        
+        # 2. Inferir nuevas preferencias del texto del usuario
+        print("[BudgetDistributorAgent] Inferiendo nuevas prioridades...")
+        new_weights = self.infer_priorities(user_description)
+        print(f"[BudgetDistributorAgent] Nuevas preferencias inferidas: {new_weights}")
 
-        # Verificar que los pesos sean válidos
-        if not all(0 <= w <= 1 for w in weights.values()):
-            print("[BudgetDistributorAgent] Pesos inválidos detectados, usando distribución por defecto")
-            weights = self._get_default_weights()
+        # 3. Verificar que las nuevas preferencias sean válidas
+        if not all(0 <= w <= 1 for w in new_weights.values()):
+            print("[BudgetDistributorAgent] Nuevas preferencias inválidas, usando distribución por defecto")
+            new_weights = self._get_default_weights()
 
-        # Optimizar distribución usando los pesos fijos
-        print("[BudgetDistributorAgent] Iniciando optimización con pesos fijos...")
+        # 4. Fusionar con el historial del usuario
+        if user_history:
+            print("[BudgetDistributorAgent] Fusionando con historial del usuario...")
+            consistency = self._calculate_consistency(user_history, new_weights)
+            print(f"[BudgetDistributorAgent] Consistencia con historial: {consistency:.2f}")
+            
+            # Si hay alta consistencia, dar más peso al historial
+            if consistency > 0.7:
+                print("[BudgetDistributorAgent] Alta consistencia detectada, priorizando historial")
+                final_weights = self.merge_with_history(user_id, new_weights)
+            else:
+                print("[BudgetDistributorAgent] Baja consistencia, dando más peso a nuevas preferencias")
+                # Para baja consistencia, usar más peso a nuevas preferencias
+                learning_rate = 0.8  # 80% peso a nuevas preferencias
+                merged = {
+                    k: learning_rate * new_weights.get(k, 0) + 
+                       (1 - learning_rate) * user_history.get(k, 0) 
+                    for k in self.categories
+                }
+                final_weights = self._normalize_weights(merged)
+                self.history[user_id] = final_weights
+                self._save_memory()
+        else:
+            print("[BudgetDistributorAgent] Sin historial previo, usando nuevas preferencias")
+            final_weights = new_weights
+            self.history[user_id] = final_weights
+            self._save_memory()
+
+        print(f"[BudgetDistributorAgent] Pesos finales después de fusión: {final_weights}")
+
+        # 5. Optimizar distribución usando los pesos fusionados
+        print("[BudgetDistributorAgent] Iniciando optimización con pesos fusionados...")
         try:
-            distribution = self.optimize(weights, total_budget)
+            distribution = self.optimize(final_weights, total_budget)
             print(f"[BudgetDistributorAgent] Distribución final: {distribution}")
             
             # Verificar que la distribución sea válida
@@ -505,29 +561,25 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
                 print("[BudgetDistributorAgent] Distribución inválida, usando distribución proporcional")
                 distribution = {
                     category: int(total_budget * weight)
-                    for category, weight in weights.items()
+                    for category, weight in final_weights.items()
                 }
                 # Ajustar el residuo
                 diff = total_budget - sum(distribution.values())
                 if diff != 0:
-                    max_category = max(weights.items(), key=lambda x: x[1])[0]
+                    max_category = max(final_weights.items(), key=lambda x: x[1])[0]
                     distribution[max_category] += diff
         except Exception as e:
             print(f"[BudgetDistributorAgent] Error en optimización: {str(e)}")
             print("[BudgetDistributorAgent] Usando distribución proporcional simple")
             distribution = {
                 category: int(total_budget * weight)
-                for category, weight in weights.items()
+                for category, weight in final_weights.items()
             }
             # Ajustar el residuo
             diff = total_budget - sum(distribution.values())
             if diff != 0:
-                max_category = max(weights.items(), key=lambda x: x[1])[0]
+                max_category = max(final_weights.items(), key=lambda x: x[1])[0]
                 distribution[max_category] += diff
-
-        # Actualizar historial
-        self.history[user_id] = weights
-        self._save_memory()
 
         print(f"[BudgetDistributorAgent] Distribución final validada: {distribution}")
         print(f"[BudgetDistributorAgent] Suma total: {sum(distribution.values())}")
@@ -556,6 +608,12 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
                     user_description=json.dumps(criteria)  # Enviamos los criterios completos
                 )
                 
+                # Obtener las nuevas preferencias para la explicación
+                new_weights = self.infer_priorities(json.dumps(criteria))
+                
+                # Generar explicación con información del historial
+                explanation = self.explain_allocation(session_id, distribution, new_weights)
+                
                 # Enviar respuesta
                 return {
                     "origen": "BudgetDistributorAgent",
@@ -563,7 +621,9 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
                     "tipo": "agent_response",
                     "contenido": {
                         "task_id": task_id,
-                        "distribution": distribution
+                        "distribution": distribution,
+                        "explanation": explanation,
+                        "user_preferences": self.history.get(session_id, {})
                     },
                     "session_id": session_id
                 }

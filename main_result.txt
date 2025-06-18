@@ -1,0 +1,678 @@
+python main.py
+
+================================================================================
+============================ INICIALIZANDO SISTEMA =============================
+================================================================================
+
+Inicializando componentes compartidos...
+Intentando cargar grafos existentes...
+[GRAPH] Grafo cargado desde /home/lia/Escritorio/Proyectos/Simulación/Event Plan/Events_Organizer_Helper/Agents/venues_graph.json
+[GRAPH] Nodos con errores detectados: 0
+[GRAPH] Nodos y edges eliminados con éxito.
+[GRAPH] Grafo de venues cargado con 2958 nodos
+[GRAPH] Grafo cargado desde /home/lia/Escritorio/Proyectos/Simulación/Event Plan/Events_Organizer_Helper/Agents/catering_graph.json
+[GRAPH] Nodos con errores detectados: 0
+[GRAPH] Nodos y edges eliminados con éxito.
+[GRAPH] Grafo de catering cargado con 1906 nodos
+[GRAPH] Grafo cargado desde /home/lia/Escritorio/Proyectos/Simulación/Event Plan/Events_Organizer_Helper/Agents/decor_graph.json
+[GRAPH] Nodos con errores detectados: 0
+[GRAPH] Nodos y edges eliminados con éxito.
+[GRAPH] Grafo de decor cargado con 2590 nodos
+[MessageBus] Dato compartido 'venue_graph' actualizado
+[MessageBus] Dato compartido 'catering_graph' actualizado
+[MessageBus] Dato compartido 'decor_graph' actualizado
+Inicializando crawlers con enriquecimiento dinámico...
+Inicializando agentes especializados...
+[BudgetDistributorAgent] Intentando cargar grafo para venue
+[BudgetDistributorAgent] Ruta del archivo: /home/lia/Escritorio/Proyectos/Simulación/Event Plan/Events_Organizer_Helper/Agents/venues_graph.json
+[BudgetDistributorAgent] ¿Existe el archivo?: True
+[BudgetDistributorAgent] Grafo cargado exitosamente para venue
+[BudgetDistributorAgent] Intentando cargar grafo para catering
+[BudgetDistributorAgent] Ruta del archivo: /home/lia/Escritorio/Proyectos/Simulación/Event Plan/Events_Organizer_Helper/Agents/catering_graph.json
+[BudgetDistributorAgent] ¿Existe el archivo?: True
+[BudgetDistributorAgent] Grafo cargado exitosamente para catering
+[BudgetDistributorAgent] Intentando cargar grafo para decor
+[BudgetDistributorAgent] Ruta del archivo: /home/lia/Escritorio/Proyectos/Simulación/Event Plan/Events_Organizer_Helper/Agents/decor_graph.json
+[BudgetDistributorAgent] ¿Existe el archivo?: True
+[BudgetDistributorAgent] Grafo cargado exitosamente para decor
+Registrando agentes en el bus de mensajes...
+[MessageBus] Agente PlannerAgent registrado
+[MessageBus] Agente VenueAgent registrado
+[MessageBus] Agente CateringAgent registrado
+[MessageBus] Agente DecorAgent registrado
+[MessageBus] Agente BudgetDistributorAgent registrado
+Iniciando bus de mensajes...
+[MessageBus] Iniciando bus de mensajes...
+
+✅ Sistema inicializado correctamente
+
+================================================================================
+================================ CREANDO SESIÓN ================================
+================================================================================
+
+Sesión creada con ID: 837d43b8-de39-4992-a814-ce7939761ba2
+
+================================================================================
+============================== ENVIANDO PETICIÓN ===============================
+================================================================================
+
+Petición a procesar:
+{
+  "criterios": {
+    "presupuesto_total": 50000,
+    "guest_count": 100,
+    "style": "luxury",
+    "venue": {
+      "obligatorios": [
+        "price",
+        "capacity",
+        "venue_type"
+      ],
+      "capacity": 100,
+      "venue_type": "mansion"
+    },
+    "catering": {
+      "obligatorios": [
+        "price",
+        "meal_types",
+        "dietary_options"
+      ],
+      "meal_types": [
+        "buffet",
+        "plated"
+      ],
+      "dietary_options": [
+        "vegan",
+        "gluten-free"
+      ]
+    },
+    "decor": {
+      "obligatorios": [
+        "price",
+        "service_levels",
+        "floral_arrangements"
+      ],
+      "service_levels": [
+        "Full-Service Floral Design"
+      ],
+      "floral_arrangements": [
+        "Bouquets",
+        "Centerpieces",
+        "Ceremony decor"
+      ]
+    }
+  }
+}
+
+================================================================================
+============================= PROCESANDO PETICIÓN ==============================
+================================================================================
+
+[PlannerAgent] 🔄 Iniciando ciclo BDI para sesión 837d43b8-de39-4992-a814-ce7939761ba2
+[PlannerAgent] 🎯 Creando desires...
+[PlannerAgent] Creados 4 desires
+[PlannerAgent] 📋 Creando intentions...
+[PlannerAgent] Creando intentions para 4 desires
+[PlannerAgent] Procesando desire: complete_event_planning
+[PlannerAgent] Creando tareas para desire tipo: complete_event_planning
+[PlannerAgent] Parámetros del desire: {'event_type': 'wedding', 'guest_count': 100, 'budget': 50000, 'style': 'luxury'}
+[PlannerAgent] Creada tarea budget_distribution con ID: a5da8536-06a6-433d-bd53-174ac0bbbefc
+[PlannerAgent] Total de tareas creadas para desire complete_event_planning: 1
+[PlannerAgent] Creadas 1 tareas para desire complete_event_planning
+[PlannerAgent] Agregadas 1 tareas a la cola para sesión 837d43b8-de39-4992-a814-ce7939761ba2
+[PlannerAgent] Procesando desire: find_venue
+[PlannerAgent] Creando tareas para desire tipo: find_venue
+[PlannerAgent] Parámetros del desire: {'obligatorios': ['price', 'capacity', 'venue_type'], 'capacity': 100, 'venue_type': 'mansion'}
+[PlannerAgent] ⏳ Tarea de búsqueda find_venue será creada después de la distribución de presupuesto
+[PlannerAgent] Total de tareas creadas para desire find_venue: 0
+[PlannerAgent] Creadas 0 tareas para desire find_venue
+[PlannerAgent] ⚠️ No se crearon tareas para desire find_venue
+[PlannerAgent] Procesando desire: find_catering
+[PlannerAgent] Creando tareas para desire tipo: find_catering
+[PlannerAgent] Parámetros del desire: {'obligatorios': ['price', 'meal_types', 'dietary_options'], 'meal_types': ['buffet', 'plated'], 'dietary_options': ['vegan', 'gluten-free']}
+[PlannerAgent] ⏳ Tarea de búsqueda find_catering será creada después de la distribución de presupuesto
+[PlannerAgent] Total de tareas creadas para desire find_catering: 0
+[PlannerAgent] Creadas 0 tareas para desire find_catering
+[PlannerAgent] ⚠️ No se crearon tareas para desire find_catering
+[PlannerAgent] Procesando desire: find_decor
+[PlannerAgent] Creando tareas para desire tipo: find_decor
+[PlannerAgent] Parámetros del desire: {'obligatorios': ['price', 'service_levels', 'floral_arrangements'], 'service_levels': ['Full-Service Floral Design'], 'floral_arrangements': ['Bouquets', 'Centerpieces', 'Ceremony decor']}
+[PlannerAgent] ⏳ Tarea de búsqueda find_decor será creada después de la distribución de presupuesto
+[PlannerAgent] Total de tareas creadas para desire find_decor: 0
+[PlannerAgent] Creadas 0 tareas para desire find_decor
+[PlannerAgent] ⚠️ No se crearon tareas para desire find_decor
+[PlannerAgent] Total de intentions creadas: 4
+[PlannerAgent] Total de tareas en cola: 1
+[PlannerAgent] Creadas 4 intentions
+[PlannerAgent] 🚀 Iniciando procesamiento de tareas...
+[PlannerAgent] Enviando tarea budget_distribution al agente BudgetDistributorAgent
+[PlannerAgent] Datos compartidos disponibles: ['venue_graph', 'catering_graph', 'decor_graph']
+[MessageBus] Enviando mensaje de PlannerAgent a BudgetDistributorAgent
+[MessageBus] Procesando mensaje para BudgetDistributorAgent
+[BudgetDistributorAgent] Procesando tarea de distribución de presupuesto
+[BudgetDistributorAgent] Criterios recibidos: {
+  "event_type": "wedding",
+  "guest_count": 100,
+  "budget": 50000,
+  "style": "luxury"
+}
+[BudgetDistributorAgent] Iniciando distribución de presupuesto para 50000...
+[BudgetDistributorAgent] Historial del usuario: {}
+[BudgetDistributorAgent] Inferiendo nuevas prioridades...
+[BudgetDistributorAgent] Intentando inferir prioridades del texto del usuario...
+[BudgetDistributorAgent] Enviando prompt a la API...
+[BudgetDistributorAgent] Prompt: 
+Based on these wedding planning criteria:
+
+Venue Requirements:
+- Capacity: 0 guests
+- Location: Not specified
+- Required Features: 
+
+Catering Requirements:
+- Meal Types: 
+- Dietary Options: 
+- Required Features: 
+
+Decor Requirements:
+- Service Level: 
+- Floral Arrangements: 
+- Required Features: 
+
+Total Budget: $0
+Guest Count: 100
+Style: luxury
+
+Assign importance weights to these categories:
+venue, catering, decor
+
+IMPORTANT: Your response must be ONLY a valid JSON object with this exact structure:
+{ "venue": value, "catering": value, "decor": value }
+
+The weights should:
+- Sum to 1.0
+- Reflect relative importance based on the specific requirements
+- Consider the complexity and scope of each category's requirements
+- Take into account the total budget and guest count
+
+DO NOT include any additional text or explanation. ONLY return the JSON object.
+
+[BudgetDistributorAgent] Respuesta recibida: { "venue": 0.4, "catering": 0.3, "decor": 0.3 }
+[BudgetDistributorAgent] Pesos parseados: {'venue': 0.4, 'catering': 0.3, 'decor': 0.3}
+[BudgetDistributorAgent] Normalizando pesos...
+[BudgetDistributorAgent] Pesos normalizados: {'venue': 0.4, 'catering': 0.3, 'decor': 0.3}
+[BudgetDistributorAgent] Nuevas preferencias inferidas: {'venue': 0.4, 'catering': 0.3, 'decor': 0.3}
+[BudgetDistributorAgent] Sin historial previo, usando nuevas preferencias
+[BudgetDistributorAgent] Pesos finales después de fusión: {'venue': 0.4, 'catering': 0.3, 'decor': 0.3}
+[BudgetDistributorAgent] Iniciando optimización con pesos fusionados...
+[BudgetDistributorAgent] Iniciando optimización con Simulated Annealing
+[BudgetDistributorAgent] Usando pesos fijos: {'venue': 0.4, 'catering': 0.3, 'decor': 0.3}
+[BudgetDistributorAgent] Presupuesto total: 50000
+[BudgetDistributorAgent] Estado inicial: {'venue': 20000.0, 'catering': 15000.0, 'decor': 7500.0}
+[BudgetDistributorAgent] Costo inicial: 74990.47698584893
+[BudgetDistributorAgent] No se encontraron mejoras en los últimos ciclos, terminando...
+[BudgetDistributorAgent] Estado final: {'venue': 27499, 'catering': 14988, 'decor': 7513}
+[BudgetDistributorAgent] Costo final: None
+[BudgetDistributorAgent] Distribución final: {'venue': 27499, 'catering': 14988, 'decor': 7513}
+[BudgetDistributorAgent] Distribución final validada: {'venue': 27499, 'catering': 14988, 'decor': 7513}
+[BudgetDistributorAgent] Suma total: 50000
+[BudgetDistributorAgent] Intentando inferir prioridades del texto del usuario...
+[BudgetDistributorAgent] Enviando prompt a la API...
+[BudgetDistributorAgent] Prompt: 
+Based on these wedding planning criteria:
+
+Venue Requirements:
+- Capacity: 0 guests
+- Location: Not specified
+- Required Features: 
+
+Catering Requirements:
+- Meal Types: 
+- Dietary Options: 
+- Required Features: 
+
+Decor Requirements:
+- Service Level: 
+- Floral Arrangements: 
+- Required Features: 
+
+Total Budget: $0
+Guest Count: 100
+Style: luxury
+
+Assign importance weights to these categories:
+venue, catering, decor
+
+IMPORTANT: Your response must be ONLY a valid JSON object with this exact structure:
+{ "venue": value, "catering": value, "decor": value }
+
+The weights should:
+- Sum to 1.0
+- Reflect relative importance based on the specific requirements
+- Consider the complexity and scope of each category's requirements
+- Take into account the total budget and guest count
+
+DO NOT include any additional text or explanation. ONLY return the JSON object.
+
+[BudgetDistributorAgent] Respuesta recibida: { "venue": 0.4, "catering": 0.3, "decor": 0.3 }
+[BudgetDistributorAgent] Pesos parseados: {'venue': 0.4, 'catering': 0.3, 'decor': 0.3}
+[BudgetDistributorAgent] Normalizando pesos...
+[BudgetDistributorAgent] Pesos normalizados: {'venue': 0.4, 'catering': 0.3, 'decor': 0.3}
+[MessageBus] Respuesta recibida para task a5da8536-06a6-433d-bd53-174ac0bbbefc
+[PlannerAgent] Tarea budget_distribution completada con éxito
+[PlannerAgent] Actualizado belief presupuesto_asignado y su estado de completado
+[PlannerAgent] Distribución de presupuesto completada, creando tareas de búsqueda...
+[PlannerAgent] Limpiadas 0 tareas de búsqueda existentes
+[PlannerAgent] 🔍 Creando tareas de búsqueda para sesión 837d43b8-de39-4992-a814-ce7939761ba2
+[PlannerAgent] 💰 Presupuestos asignados: {'venue': 27499, 'catering': 14988, 'decor': 7513}
+[PlannerAgent] 🏰 Criterios de venue: {'obligatorios': ['price', 'capacity', 'venue_type'], 'capacity': 100, 'venue_type': 'mansion', 'price': 27499, 'budget': 27499, 'guest_count': 100, 'style': 'luxury'}
+[PlannerAgent] ✅ Creada tarea venue_search con ID: 54690c88-d52b-41b3-80cf-b8026a0042f8
+[PlannerAgent] 🍽️ Criterios de catering: {'obligatorios': ['price', 'meal_types', 'dietary_options'], 'meal_types': ['buffet', 'plated'], 'dietary_options': ['vegan', 'gluten-free'], 'price': 14988, 'budget': 14988, 'guest_count': 100, 'style': 'luxury'}
+[PlannerAgent] ✅ Creada tarea catering_search con ID: fe38015d-b8a7-44d3-b099-125b2944cdf3
+[PlannerAgent] 🌸 Criterios de decor: {'obligatorios': ['price', 'service_levels', 'floral_arrangements'], 'service_levels': ['Full-Service Floral Design'], 'floral_arrangements': ['Bouquets', 'Centerpieces', 'Ceremony decor'], 'price': 7513, 'budget': 7513, 'guest_count': 100, 'style': 'luxury'}
+[PlannerAgent] ✅ Creada tarea decor_search con ID: 816cbf9e-3f9e-4a85-91ae-b772804027da
+[PlannerAgent] 🎯 Se crearon 3 tareas de búsqueda para la sesión 837d43b8-de39-4992-a814-ce7939761ba2
+[PlannerAgent] 📊 Total de tareas en cola: 3
+[PlannerAgent] 📋 Tarea: venue_search (ID: 54690c88...) - Presupuesto: $27,499
+[PlannerAgent] 📋 Tarea: catering_search (ID: fe38015d...) - Presupuesto: $14,988
+[PlannerAgent] 📋 Tarea: decor_search (ID: 816cbf9e...) - Presupuesto: $7,513
+[PlannerAgent] Enviando tarea venue_search al agente VenueAgent
+[PlannerAgent] Datos compartidos disponibles: ['venue_graph', 'catering_graph', 'decor_graph']
+[MessageBus] Enviando mensaje de PlannerAgent a VenueAgent
+[MessageBus] Procesando mensaje para VenueAgent
+[VenueAgent] Usando grafo compartido del bus
+[VenueAgent] Procesando tarea de búsqueda de venue (task_id: 54690c88-d52b-41b3-80cf-b8026a0042f8)
+[VenueAgent] Iniciando búsqueda de venues...
+[VenueAgent] Agregando regla para price con valor esperado: 27499
+[VenueAgent] Agregando regla para capacity con valor esperado: 100
+[VenueAgent] Agregando regla para venue_type con valor esperado: mansion
+[VenueAgent] Obteniendo recomendaciones del RAG...
+[VenueAgent] Criterios para RAG: budget=27499, guest_count=100
+[VenueRAG] Estilo solicitado: 'luxury' (normalizado a 'luxury')
+[VenueRAG] Usando características para estilo: luxury
+[VenueAgent] Aplicando recomendaciones del RAG...
+[VenueAgent] Recomendaciones del RAG: {
+  "style": "luxury",
+  "location": "",
+  "capacity_range": [
+    80,
+    120
+  ],
+  "price_range": [
+    21999.2,
+    32998.799999999996
+  ],
+  "atmosphere": [
+    "Luxurious",
+    "Opulent",
+    "Exclusive",
+    "Elegant",
+    "Sophisticated"
+  ],
+  "venue_type": [
+    "Luxury Hotel",
+    "Mansion",
+    "Private Estate",
+    "Resort",
+    "Country Club"
+  ],
+  "services": [
+    "Luxury Venue",
+    "VIP Services",
+    "Concierge",
+    "Premium Catering",
+    "Event coordinator"
+  ],
+  "supported_events": [
+    "Wedding Ceremony",
+    "Wedding Reception",
+    "Luxury Events"
+  ],
+  "restrictions": [
+    "Minimum Guest Count",
+    "Premium Pricing"
+  ]
+}
+[VenueAgent] Criterios actualizados con RAG - Atmosphere: ['Luxurious', 'Opulent', 'Exclusive', 'Elegant', 'Sophisticated']
+[VenueAgent] Criterios actualizados con RAG - Venue Type: ['Luxury Hotel', 'Mansion', 'Private Estate', 'Resort', 'Country Club']
+[VenueAgent] Criterios actualizados con RAG - Services: ['Luxury Venue', 'VIP Services', 'Concierge', 'Premium Catering', 'Event coordinator']
+[VenueAgent] Criterios actualizados con RAG - Supported Events: ['Wedding Ceremony', 'Wedding Reception', 'Luxury Events']
+[VenueAgent] Usando URLs por defecto: ['https://www.zola.com/wedding-vendors/search/wedding-venues?page=1']
+[VenueAgent] Verificando datos existentes en el grafo...
+[VenueAgent] Nodos tipo 'venue' encontrados en el grafo: 605
+[VenueAgent] Procesando nodos tipo 'venue'...
+[VenueAgent] Se encontraron 605 candidatos iniciales
+[VenueAgent] 121 venues válidos tras reglas obligatorias
+[VenueAgent] Actualizando patrones de éxito en RAG...
+[VenueAgent] Datos del patrón a actualizar: {
+  "style": "luxury",
+  "location": "",
+  "capacity_range": [
+    80,
+    120
+  ],
+  "price_range": [
+    21999.2,
+    32998.799999999996
+  ],
+  "atmosphere": [
+    "Luxurious",
+    "Opulent",
+    "Exclusive",
+    "Elegant",
+    "Sophisticated"
+  ],
+  "venue_type": [
+    "Luxury Hotel",
+    "Mansion",
+    "Private Estate",
+    "Resort",
+    "Country Club"
+  ],
+  "services": [
+    "Luxury Venue",
+    "VIP Services",
+    "Concierge",
+    "Premium Catering",
+    "Event coordinator"
+  ],
+  "supported_events": [
+    "Wedding Ceremony",
+    "Wedding Reception",
+    "Luxury Events"
+  ],
+  "restrictions": [
+    "Minimum Guest Count",
+    "Premium Pricing"
+  ]
+}
+[VenueAgent] Patrón de éxito actualizado
+[VenueAgent] Se retornan los 50 mejores resultados
+[MessageBus] Respuesta recibida para task 54690c88-d52b-41b3-80cf-b8026a0042f8
+[PlannerAgent] Tarea venue_search completada con éxito
+[PlannerAgent] Actualizado belief venue y su estado de completado
+[PlannerAgent] Enviando tarea catering_search al agente CateringAgent
+[PlannerAgent] Datos compartidos disponibles: ['venue_graph', 'catering_graph', 'decor_graph']
+[MessageBus] Enviando mensaje de PlannerAgent a CateringAgent
+[MessageBus] Procesando mensaje para CateringAgent
+[CateringAgent] Procesando tarea de búsqueda de catering
+[CateringAgent] Iniciando búsqueda de catering...
+[CateringAgent] Obteniendo recomendaciones del RAG...
+[CateringAgent] Criterios para RAG: budget=14988, guest_count=100
+[CateringRAG] Estilo solicitado: 'luxury' (normalizado a 'luxury')
+[CateringRAG] Usando cursos para estilo: luxury
+[CateringAgent] Aplicando recomendaciones del RAG...
+[CateringAgent] Recomendaciones del RAG: {
+  "style": "luxury",
+  "courses": [
+    "welcome_drink",
+    "appetizer",
+    "soup",
+    "main_course",
+    "dessert",
+    "coffee_service"
+  ],
+  "dietary_options": [
+    "vegan",
+    "gluten-free"
+  ],
+  "dietary_alternatives": {
+    "vegan": {
+      "alternatives": [
+        "vegetarian",
+        "plant-based"
+      ],
+      "cost_impact": 1.1
+    },
+    "gluten-free": {
+      "alternatives": [
+        "gluten-reduced",
+        "celiac-friendly"
+      ],
+      "cost_impact": 1.15
+    }
+  },
+  "estimated_cost": 17985.6,
+  "cost_per_person": 149.88
+}
+[CateringAgent] Alternativas dietéticas sugeridas: {
+  "vegan": {
+    "alternatives": [
+      "vegetarian",
+      "plant-based"
+    ],
+    "cost_impact": 1.1
+  },
+  "gluten-free": {
+    "alternatives": [
+      "gluten-reduced",
+      "celiac-friendly"
+    ],
+    "cost_impact": 1.15
+  }
+}
+[CateringAgent] Verificando datos existentes en el grafo...
+[CateringAgent] Se encontraron 344 caterings en el grafo
+[CateringAgent] Procesando nodos tipo 'catering'...
+[CateringAgent] Se encontraron 344 candidatos iniciales
+[CateringAgent] 174 caterings válidos tras reglas obligatorias
+[CateringAgent] Actualizando patrones de éxito en RAG...
+[CateringAgent] Datos del patrón a actualizar: {
+  "style": "luxury",
+  "courses": [
+    "welcome_drink",
+    "appetizer",
+    "soup",
+    "main_course",
+    "dessert",
+    "coffee_service"
+  ],
+  "dietary_options": [
+    "vegan",
+    "gluten-free"
+  ],
+  "estimated_cost": 17985.6,
+  "guest_count": 100
+}
+[CateringAgent] Patrón de éxito actualizado
+[CateringAgent] Se retornan los 50 mejores resultados
+[MessageBus] Respuesta recibida para task fe38015d-b8a7-44d3-b099-125b2944cdf3
+[PlannerAgent] Tarea catering_search completada con éxito
+[PlannerAgent] Actualizado belief catering y su estado de completado
+[PlannerAgent] Enviando tarea decor_search al agente DecorAgent
+[PlannerAgent] Datos compartidos disponibles: ['venue_graph', 'catering_graph', 'decor_graph']
+[MessageBus] Enviando mensaje de PlannerAgent a DecorAgent
+[MessageBus] Procesando mensaje para DecorAgent
+[DecorAgent] Procesando tarea de búsqueda de decoración
+[DecorAgent] Iniciando búsqueda de decoración...
+[DecorAgent] Obteniendo recomendaciones del RAG...
+[DecorRAG] Estilo solicitado: 'luxury' (normalizado a 'luxury')
+[DecorRAG] Usando servicios para estilo: luxury
+[DecorAgent] Aplicando recomendaciones del RAG...
+[DecorAgent] Verificando datos existentes en el grafo...
+[DecorAgent] Se encontraron 192 decoradores en el grafo
+[DecorAgent] Procesando nodos tipo 'decor'...
+[DecorAgent] Se encontraron 192 candidatos iniciales
+[DecorAgent] 143 decoradores válidos tras reglas obligatorias
+[DecorAgent] Se retornan los 50 mejores resultados
+[MessageBus] Respuesta recibida para task 816cbf9e-3f9e-4a85-91ae-b772804027da
+[PlannerAgent] Tarea decor_search completada con éxito
+[PlannerAgent] Actualizado belief decor y su estado de completado
+[PlannerAgent] No hay más tareas pendientes para la sesión 837d43b8-de39-4992-a814-ce7939761ba2
+[PlannerAgent] Todas las tareas completadas para la sesión 837d43b8-de39-4992-a814-ce7939761ba2
+[PlannerAgent] Generando respuesta final: {'origen': 'PlannerAgent', 'destino': 'user', 'tipo': 'final_response', 'contenido': {'resumen': {'completado': {'venue': True, 'catering': True, 'decor': True, 'presupuesto_asignado': True}, 'conflictos': 0, 'presupuesto_usado': 8385.0, 'estado': 'completado', 'ultima_actualizacion': '2025-06-17T19:39:06.377050'}, 'resultados': {'venue': {'tipo': 'venue', 'nombre': 'Nazareth Hall', 'precio': 8000.0, 'capacidad': 300, 'ubicacion': 'Grand Rapids, OH 43522'}, 'catering': {'tipo': 'catering', 'nombre': 'Platinum Party Planners & Catering', 'precio': 185.0, 'capacidad': None, 'ubicacion': None}, 'decor': {'tipo': 'decor', 'nombre': 'About Designs', 'precio': 200.0, 'capacidad': None, 'ubicacion': None}}, 'session_id': '837d43b8-de39-4992-a814-ce7939761ba2', 'is_correction': False}, 'session_id': '837d43b8-de39-4992-a814-ce7939761ba2'}
+
+================================================================================
+================================== RESULTADOS ==================================
+================================================================================
+
+
+Respuesta del sistema:
+----------------------------------------
+{
+  "origen": "PlannerAgent",
+  "destino": "user",
+  "tipo": "acknowledgment",
+  "contenido": {
+    "message": "Petición recibida y en proceso",
+    "session_id": "837d43b8-de39-4992-a814-ce7939761ba2"
+  },
+  "session_id": "837d43b8-de39-4992-a814-ce7939761ba2"
+}
+----------------------------------------
+
+================================================================================
+================================= ESTADO FINAL =================================
+================================================================================
+
+
+Información de la sesión:
+----------------------------------------
+{
+  "user_id": "user_1",
+  "created_at": "2025-06-17T19:39:00.412285",
+  "last_activity": "2025-06-17T19:39:06.616793",
+  "status": "active"
+}
+----------------------------------------
+
+Estado de creencias:
+----------------------------------------
+{
+  "completado": {
+    "venue": true,
+    "catering": true,
+    "decor": true,
+    "presupuesto_asignado": true
+  },
+  "conflictos": 0,
+  "presupuesto_usado": 8385.0,
+  "estado": "completado",
+  "ultima_actualizacion": "2025-06-17T19:39:06.377050"
+}
+----------------------------------------
+
+================================================================================
+========================= REPORTE DE CALIDAD DE DATOS ==========================
+================================================================================
+
+
+Tendencias de Calidad (24h):
+----------------------------------------
+{
+  "message": "No hay datos recientes para análisis"
+}
+----------------------------------------
+✅ No hay alertas activas
+
+Reporte Completo de Monitoreo:
+----------------------------------------
+{
+  "report_timestamp": "2025-06-17T23:39:07.089787",
+  "time_period_hours": 24,
+  "summary": {
+    "total_alerts": 0,
+    "high_severity_alerts": 0,
+    "overall_quality_score": 0.0
+  },
+  "trends": {
+    "message": "No hay datos recientes para análisis"
+  },
+  "active_alerts": [],
+  "recommendations": [
+    "Calidad general baja. Considerar mejorar fuentes de datos o enriquecimiento"
+  ]
+}
+----------------------------------------
+
+================================================================================
+===================== ESTADÍSTICAS DE CALIDAD DE CRAWLERS ======================
+================================================================================
+
+
+Estadísticas de venue:
+----------------------------------------
+{
+  "total_nodes": 605,
+  "quality_distribution": {
+    "excellent": 0,
+    "good": 0,
+    "fair": 604,
+    "poor": 1
+  },
+  "enrichment_stats": {
+    "enriched_nodes": 0,
+    "average_improvement": 0.0
+  },
+  "by_type": {
+    "venue": {
+      "count": 605,
+      "average_score": 0.3999008264462849,
+      "enriched_count": 0
+    }
+  }
+}
+----------------------------------------
+
+Estadísticas de catering:
+----------------------------------------
+{
+  "total_nodes": 415,
+  "quality_distribution": {
+    "excellent": 0,
+    "good": 0,
+    "fair": 411,
+    "poor": 4
+  },
+  "enrichment_stats": {
+    "enriched_nodes": 0,
+    "average_improvement": 0.0
+  },
+  "by_type": {
+    "catering": {
+      "count": 344,
+      "average_score": 0.4000000000000025,
+      "enriched_count": 0
+    },
+    "venue": {
+      "count": 71,
+      "average_score": 0.3774647887323939,
+      "enriched_count": 0
+    }
+  }
+}
+----------------------------------------
+
+Estadísticas de decor:
+----------------------------------------
+{
+  "total_nodes": 210,
+  "quality_distribution": {
+    "excellent": 0,
+    "good": 0,
+    "fair": 210,
+    "poor": 0
+  },
+  "enrichment_stats": {
+    "enriched_nodes": 0,
+    "average_improvement": 0.0
+  },
+  "by_type": {
+    "decor": {
+      "count": 192,
+      "average_score": 0.4000000000000001,
+      "enriched_count": 0
+    },
+    "venue": {
+      "count": 12,
+      "average_score": 0.39999999999999997,
+      "enriched_count": 0
+    },
+    "catering": {
+      "count": 6,
+      "average_score": 0.39999999999999997,
+      "enriched_count": 0
+    }
+  }
+}
+----------------------------------------

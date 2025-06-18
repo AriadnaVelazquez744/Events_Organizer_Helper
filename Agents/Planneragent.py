@@ -17,6 +17,26 @@ class Task:
     status: str = "pending"
     result: Optional[Dict] = None
     error: Optional[str] = None
+    retry_count: int = 0  # Contador de reintentos
+
+@dataclass
+class Desire:
+    """Representa un deseo/objetivo del agente."""
+    id: str
+    type: str
+    priority: float
+    parameters: Dict[str, Any]
+    status: str = "active"
+    created_at: str = ""
+
+@dataclass
+class Intention:
+    """Representa una intención/plan del agente."""
+    id: str
+    desire_id: str
+    tasks: List[str]  # Lista de task IDs
+    status: str = "active"
+    created_at: str = ""
 
 class PlannerAgentBDI:
     def __init__(self, name: str, bus, memory_manager: SessionMemoryManager):
@@ -26,6 +46,8 @@ class PlannerAgentBDI:
         self.active_sessions: Dict[str, Dict] = {}  # session_id -> session_data
         self.task_queue: Dict[str, List[Task]] = {}  # session_id -> [tasks]
         self.current_task: Dict[str, Task] = {}  # session_id -> current_task
+        self.desires: Dict[str, List[Desire]] = {}  # session_id -> [desires]
+        self.intentions: Dict[str, List[Intention]] = {}  # session_id -> [intentions]
         self.rag = PlannerRAG()  # Inicializa el sistema RAG
         
     def create_session(self, user_id: str) -> str:
@@ -44,6 +66,8 @@ class PlannerAgentBDI:
             "created_at": datetime.now().isoformat()
         }
         self.task_queue[session_id] = []
+        self.desires[session_id] = []
+        self.intentions[session_id] = []
         
         return session_id
 
@@ -135,11 +159,13 @@ class PlannerAgentBDI:
             }
 
     def _handle_user_request(self, session_id: str, request: Dict[str, Any]):
-        """Procesa una nueva petición del usuario."""
+        """Procesa una nueva petición del usuario usando el ciclo BDI completo."""
         session = self.active_sessions[session_id]
         beliefs = session["beliefs"]
 
-        # Actualiza criterios
+        print(f"[PlannerAgent] 🔄 Iniciando ciclo BDI para sesión {session_id}")
+        
+        # 1. BELIEFS: Actualizar beliefs con la nueva información
         if "criterios" in request:
             beliefs.set("criterios", request["criterios"])
             
@@ -156,10 +182,23 @@ class PlannerAgentBDI:
                     "presupuesto_asignado": budget_distribution
                 })
 
-        # Crea tareas basadas en los criterios
-        self._create_tasks(session_id, request)
+        # 2. DESIRES: Crear desires basados en la petición
+        print("[PlannerAgent] 🎯 Creando desires...")
+        desires = self._create_desires_from_request(session_id, request)
+        self.desires[session_id] = desires
+        print(f"[PlannerAgent] Creados {len(desires)} desires")
 
-        # Inicia el procesamiento de tareas
+        # 3. INTENTIONS: Crear intentions basados en los desires
+        print("[PlannerAgent] 📋 Creando intentions...")
+        intentions = self._create_intentions_from_desires(session_id, desires)
+        self.intentions[session_id] = intentions
+        print(f"[PlannerAgent] Creadas {len(intentions)} intentions")
+
+        # 4. Actualizar beliefs sobre el estado del sistema
+        self._update_beliefs_from_environment(session_id)
+
+        # 5. Iniciar el procesamiento de tareas
+        print("[PlannerAgent] 🚀 Iniciando procesamiento de tareas...")
         self._process_next_task(session_id)
 
     def _handle_correction_request(self, session_id: str, correction: Dict[str, Any]):
@@ -193,9 +232,10 @@ class PlannerAgentBDI:
             return
 
         if message["tipo"] == "error":
-            current_task.status = "error"
-            current_task.error = message["contenido"]
             print(f"[PlannerAgent] Error en tarea {current_task.type}: {message['contenido']}")
+            
+            # Manejo inteligente de errores con estrategias de corrección
+            self._handle_task_error(session_id, current_task, message["contenido"])
         else:
             current_task.status = "completed"
             current_task.result = message["contenido"]
@@ -232,15 +272,165 @@ class PlannerAgentBDI:
                     print("[PlannerAgent] Distribución de presupuesto completada, creando tareas de búsqueda...")
                     # Obtener los criterios originales
                     criterios = self.memory_manager.get_beliefs(session_id).get("criterios", {})
+                    
+                    # Limpiar tareas de búsqueda existentes (si las hay) para evitar duplicados
+                    existing_tasks = self.task_queue[session_id]
+                    search_task_types = ["venue_search", "catering_search", "decor_search"]
+                    filtered_tasks = [task for task in existing_tasks if task.type not in search_task_types]
+                    self.task_queue[session_id] = filtered_tasks
+                    
+                    print(f"[PlannerAgent] Limpiadas {len(existing_tasks) - len(filtered_tasks)} tareas de búsqueda existentes")
+                    
                     # Crear tareas de búsqueda con los presupuestos asignados
                     self._create_search_tasks(session_id, criterios)
 
         # Procesa la siguiente tarea
         self._process_next_task(session_id)
 
+    def _handle_task_error(self, session_id: str, failed_task: Task, error_content: Any):
+        """Maneja errores de tareas con estrategias de corrección inteligentes."""
+        print(f"[PlannerAgent] 🚨 Manejando error en tarea {failed_task.type}")
+        
+        # Obtener beliefs actuales
+        beliefs = self.memory_manager.get_beliefs(session_id)
+        
+        # Registrar el error en los beliefs
+        error_history = beliefs.get("error_history", [])
+        error_record = {
+            "task_type": failed_task.type,
+            "error": str(error_content),
+            "timestamp": datetime.now().isoformat(),
+            "retry_count": failed_task.retry_count if hasattr(failed_task, 'retry_count') else 0
+        }
+        error_history.append(error_record)
+        
+        # Actualizar beliefs con el historial de errores
+        self.memory_manager.update_beliefs(session_id, {
+            "error_history": error_history,
+            "last_error": error_record
+        })
+        
+        # Estrategias de corrección basadas en el tipo de tarea
+        correction_strategies = self._get_correction_strategies(failed_task.type, error_content)
+        
+        if correction_strategies:
+            print(f"[PlannerAgent] Aplicando estrategias de corrección: {correction_strategies}")
+            
+            # Crear tareas de corrección
+            correction_tasks = self._create_correction_tasks_from_strategies(
+                session_id, failed_task, correction_strategies
+            )
+            
+            # Insertar tareas de corrección al inicio de la cola (prioridad alta)
+            self.task_queue[session_id] = correction_tasks + self.task_queue[session_id]
+            
+            # Marcar la tarea original como "retry_pending" en lugar de "error"
+            failed_task.status = "retry_pending"
+            
+        else:
+            # Si no hay estrategias de corrección, marcar como error permanente
+            failed_task.status = "error"
+            failed_task.error = error_content
+            print(f"[PlannerAgent] ⚠️ No se encontraron estrategias de corrección para {failed_task.type}")
+
+    def _get_correction_strategies(self, task_type: str, error_content: Any) -> List[Dict[str, Any]]:
+        """Obtiene estrategias de corrección basadas en el tipo de tarea y el error."""
+        strategies = []
+        
+        # Usar RAG para obtener estrategias de corrección
+        if hasattr(self, 'rag') and self.rag:
+            rag_strategies = self.rag.suggest_error_correction(task_type, error_content)
+            if rag_strategies:
+                strategies.extend(rag_strategies)
+        
+        # Estrategias específicas por tipo de tarea
+        if task_type == "budget_distribution":
+            strategies.extend([
+                {
+                    "type": "budget_adjustment",
+                    "description": "Ajustar criterios de presupuesto",
+                    "parameters": {"adjustment_factor": 0.9}
+                },
+                {
+                    "type": "budget_redistribution",
+                    "description": "Redistribuir presupuesto con restricciones más flexibles",
+                    "parameters": {"flexible_constraints": True}
+                }
+            ])
+        
+        elif task_type in ["venue_search", "catering_search", "decor_search"]:
+            category = task_type.replace("_search", "")
+            strategies.extend([
+                {
+                    "type": f"{category}_relax_constraints",
+                    "description": f"Relajar restricciones de {category}",
+                    "parameters": {"relax_factor": 0.8}
+                },
+                {
+                    "type": f"{category}_alternative_search",
+                    "description": f"Buscar alternativas de {category}",
+                    "parameters": {"use_alternatives": True}
+                },
+                {
+                    "type": f"{category}_budget_increase",
+                    "description": f"Aumentar presupuesto para {category}",
+                    "parameters": {"budget_increase": 0.2}
+                }
+            ])
+        
+        return strategies
+
+    def _create_correction_tasks_from_strategies(self, session_id: str, failed_task: Task, strategies: List[Dict[str, Any]]) -> List[Task]:
+        """Crea tareas de corrección basadas en las estrategias."""
+        correction_tasks = []
+        
+        for strategy in strategies:
+            task_id = str(uuid.uuid4())
+            
+            # Crear parámetros de corrección
+            correction_parameters = failed_task.parameters.copy()
+            correction_parameters.update(strategy.get("parameters", {}))
+            correction_parameters["correction_strategy"] = strategy
+            correction_parameters["original_task_id"] = failed_task.id
+            
+            # Determinar el tipo de tarea de corrección
+            correction_task_type = self._map_correction_strategy_to_task_type(strategy["type"])
+            
+            correction_task = Task(
+                id=task_id,
+                type=correction_task_type,
+                parameters=correction_parameters,
+                status="pending"
+            )
+            
+            correction_tasks.append(correction_task)
+            print(f"[PlannerAgent] Creada tarea de corrección: {correction_task_type}")
+        
+        return correction_tasks
+
+    def _map_correction_strategy_to_task_type(self, strategy_type: str) -> str:
+        """Mapea estrategias de corrección a tipos de tarea."""
+        strategy_mapping = {
+            "budget_adjustment": "budget_distribution",
+            "budget_redistribution": "budget_distribution",
+            "venue_relax_constraints": "venue_search",
+            "venue_alternative_search": "venue_search",
+            "venue_budget_increase": "venue_search",
+            "catering_relax_constraints": "catering_search",
+            "catering_alternative_search": "catering_search",
+            "catering_budget_increase": "catering_search",
+            "decor_relax_constraints": "decor_search",
+            "decor_alternative_search": "decor_search",
+            "decor_budget_increase": "decor_search"
+        }
+        
+        return strategy_mapping.get(strategy_type, "unknown_correction")
+
     def _create_search_tasks(self, session_id: str, criterios: Dict[str, Any]):
         """Crea las tareas de búsqueda basadas en los criterios."""
         tasks = []
+        
+        print(f"[PlannerAgent] 🔍 Creando tareas de búsqueda para sesión {session_id}")
         
         # Obtener la distribución de presupuesto
         presupuesto_asignado = self.memory_manager.get_beliefs(session_id).get("presupuesto_asignado", {})
@@ -252,7 +442,7 @@ class PlannerAgentBDI:
         if isinstance(presupuesto_asignado, dict) and "distribution" in presupuesto_asignado:
             presupuesto_asignado = presupuesto_asignado["distribution"]
         
-        print(f"[PlannerAgent] Presupuestos asignados: {presupuesto_asignado}")
+        print(f"[PlannerAgent] 💰 Presupuestos asignados: {presupuesto_asignado}")
         
         # Crear tareas de búsqueda para cada categoría
         if "venue" in criterios:
@@ -261,12 +451,17 @@ class PlannerAgentBDI:
             # Mapear campos para RAG
             venue_criteria["budget"] = venue_criteria["price"]
             venue_criteria["guest_count"] = criterios.get("guest_count", 0)
-            print(f"[PlannerAgent] Criterios de venue: {venue_criteria}")
-            tasks.append(Task(
+            # Pasar el estilo desde los criterios principales
+            venue_criteria["style"] = criterios.get("style", "classic")
+            print(f"[PlannerAgent] 🏰 Criterios de venue: {venue_criteria}")
+            
+            venue_task = Task(
                 id=str(uuid.uuid4()),
                 type="venue_search",
                 parameters=venue_criteria
-            ))
+            )
+            tasks.append(venue_task)
+            print(f"[PlannerAgent] ✅ Creada tarea venue_search con ID: {venue_task.id}")
 
         if "catering" in criterios:
             catering_criteria = criterios["catering"].copy()
@@ -274,12 +469,17 @@ class PlannerAgentBDI:
             # Mapear campos para RAG
             catering_criteria["budget"] = catering_criteria["price"]
             catering_criteria["guest_count"] = criterios.get("guest_count", 0)
-            print(f"[PlannerAgent] Criterios de catering: {catering_criteria}")
-            tasks.append(Task(
+            # Pasar el estilo desde los criterios principales
+            catering_criteria["style"] = criterios.get("style", "classic")
+            print(f"[PlannerAgent] 🍽️ Criterios de catering: {catering_criteria}")
+            
+            catering_task = Task(
                 id=str(uuid.uuid4()),
                 type="catering_search",
                 parameters=catering_criteria
-            ))
+            )
+            tasks.append(catering_task)
+            print(f"[PlannerAgent] ✅ Creada tarea catering_search con ID: {catering_task.id}")
 
         if "decor" in criterios:
             decor_criteria = criterios["decor"].copy()
@@ -287,16 +487,26 @@ class PlannerAgentBDI:
             # Mapear campos para RAG
             decor_criteria["budget"] = decor_criteria["price"]
             decor_criteria["guest_count"] = criterios.get("guest_count", 0)
-            print(f"[PlannerAgent] Criterios de decor: {decor_criteria}")
-            tasks.append(Task(
+            # Pasar el estilo desde los criterios principales
+            decor_criteria["style"] = criterios.get("style", "classic")
+            print(f"[PlannerAgent] 🌸 Criterios de decor: {decor_criteria}")
+            
+            decor_task = Task(
                 id=str(uuid.uuid4()),
                 type="decor_search",
                 parameters=decor_criteria
-            ))
+            )
+            tasks.append(decor_task)
+            print(f"[PlannerAgent] ✅ Creada tarea decor_search con ID: {decor_task.id}")
 
+        # Agregar tareas a la cola
         self.task_queue[session_id].extend(tasks)
-        print(f"[PlannerAgent] Se crearon {len(tasks)} tareas de búsqueda para la sesión {session_id}")
-        print(f"[PlannerAgent] Presupuestos asignados: {presupuesto_asignado}")
+        print(f"[PlannerAgent] 🎯 Se crearon {len(tasks)} tareas de búsqueda para la sesión {session_id}")
+        print(f"[PlannerAgent] 📊 Total de tareas en cola: {len(self.task_queue[session_id])}")
+        
+        # Mostrar resumen de tareas creadas
+        for task in tasks:
+            print(f"[PlannerAgent] 📋 Tarea: {task.type} (ID: {task.id[:8]}...) - Presupuesto: ${task.parameters.get('budget', 0):,}")
 
     def _create_tasks(self, session_id: str, request: Dict[str, Any]):
         """Crea las tareas necesarias basadas en la petición."""
@@ -540,6 +750,229 @@ class PlannerAgentBDI:
                 affected.append(element)
                 
         return affected
+
+    def _create_desires_from_request(self, session_id: str, request: Dict[str, Any]) -> List[Desire]:
+        """Crea desires basados en la petición del usuario."""
+        desires = []
+        criterios = request.get("criterios", {})
+        
+        # Desire principal: completar la planificación del evento
+        main_desire = Desire(
+            id=str(uuid.uuid4()),
+            type="complete_event_planning",
+            priority=1.0,
+            parameters={
+                "event_type": "wedding",
+                "guest_count": criterios.get("guest_count", 0),
+                "budget": criterios.get("presupuesto_total", 0),
+                "style": criterios.get("style", "classic")
+            },
+            created_at=datetime.now().isoformat()
+        )
+        desires.append(main_desire)
+        
+        # Desires específicos por categoría
+        if "venue" in criterios:
+            venue_desire = Desire(
+                id=str(uuid.uuid4()),
+                type="find_venue",
+                priority=0.9,
+                parameters=criterios["venue"],
+                created_at=datetime.now().isoformat()
+            )
+            desires.append(venue_desire)
+        
+        if "catering" in criterios:
+            catering_desire = Desire(
+                id=str(uuid.uuid4()),
+                type="find_catering",
+                priority=0.8,
+                parameters=criterios["catering"],
+                created_at=datetime.now().isoformat()
+            )
+            desires.append(catering_desire)
+        
+        if "decor" in criterios:
+            decor_desire = Desire(
+                id=str(uuid.uuid4()),
+                type="find_decor",
+                priority=0.7,
+                parameters=criterios["decor"],
+                created_at=datetime.now().isoformat()
+            )
+            desires.append(decor_desire)
+        
+        return desires
+
+    def _create_intentions_from_desires(self, session_id: str, desires: List[Desire]) -> List[Intention]:
+        """Crea intentions basados en los desires activos."""
+        intentions = []
+        
+        print(f"[PlannerAgent] Creando intentions para {len(desires)} desires")
+        
+        for desire in desires:
+            if desire.status == "active":
+                print(f"[PlannerAgent] Procesando desire: {desire.type}")
+                
+                # Crear tareas basadas en el tipo de desire
+                tasks = self._create_tasks_for_desire(desire)
+                print(f"[PlannerAgent] Creadas {len(tasks)} tareas para desire {desire.type}")
+                
+                # Crear intention
+                intention = Intention(
+                    id=str(uuid.uuid4()),
+                    desire_id=desire.id,
+                    tasks=[task.id for task in tasks],
+                    created_at=datetime.now().isoformat()
+                )
+                intentions.append(intention)
+                
+                # Agregar tareas a la cola
+                if tasks:
+                    self.task_queue[session_id].extend(tasks)
+                    print(f"[PlannerAgent] Agregadas {len(tasks)} tareas a la cola para sesión {session_id}")
+                else:
+                    print(f"[PlannerAgent] ⚠️ No se crearon tareas para desire {desire.type}")
+        
+        print(f"[PlannerAgent] Total de intentions creadas: {len(intentions)}")
+        print(f"[PlannerAgent] Total de tareas en cola: {len(self.task_queue[session_id])}")
+        
+        return intentions
+
+    def _create_tasks_for_desire(self, desire: Desire) -> List[Task]:
+        """Crea tareas específicas para un desire."""
+        tasks = []
+        
+        print(f"[PlannerAgent] Creando tareas para desire tipo: {desire.type}")
+        print(f"[PlannerAgent] Parámetros del desire: {desire.parameters}")
+        
+        if desire.type == "complete_event_planning":
+            # Tarea de distribución de presupuesto
+            budget_task = Task(
+                id=str(uuid.uuid4()),
+                type="budget_distribution",
+                parameters={
+                    "budget": desire.parameters.get("budget", 0),
+                    "criterios": desire.parameters
+                }
+            )
+            tasks.append(budget_task)
+            print(f"[PlannerAgent] Creada tarea budget_distribution con ID: {budget_task.id}")
+        
+        # NOTA: Las tareas de búsqueda (venue_search, catering_search, decor_search) 
+        # NO se crean aquí. Se crearán después de completar la distribución de presupuesto
+        # para asegurar que tengan el presupuesto asignado correctamente.
+        elif desire.type in ["find_venue", "find_catering", "find_decor"]:
+            print(f"[PlannerAgent] ⏳ Tarea de búsqueda {desire.type} será creada después de la distribución de presupuesto")
+            # No crear tareas aquí - se crearán después de budget_distribution
+        
+        else:
+            print(f"[PlannerAgent] ⚠️ Tipo de desire no reconocido: {desire.type}")
+        
+        print(f"[PlannerAgent] Total de tareas creadas para desire {desire.type}: {len(tasks)}")
+        return tasks
+
+    def _update_beliefs_from_environment(self, session_id: str):
+        """Actualiza beliefs basado en el estado actual del entorno."""
+        session = self.active_sessions[session_id]
+        beliefs = session["beliefs"]
+        
+        # Obtener estado actual de tareas
+        pending_tasks = len([t for t in self.task_queue[session_id] if t.status == "pending"])
+        completed_tasks = len([t for t in self.task_queue[session_id] if t.status == "completed"])
+        failed_tasks = len([t for t in self.task_queue[session_id] if t.status == "error"])
+        
+        # Actualizar beliefs sobre el progreso
+        beliefs.set("task_progress", {
+            "pending": pending_tasks,
+            "completed": completed_tasks,
+            "failed": failed_tasks,
+            "total": len(self.task_queue[session_id])
+        })
+        
+        # Actualizar beliefs sobre el estado general
+        if failed_tasks > 0:
+            beliefs.set("system_status", "error_recovery")
+        elif pending_tasks == 0 and completed_tasks > 0:
+            beliefs.set("system_status", "completed")
+        else:
+            beliefs.set("system_status", "in_progress")
+
+    def _reconsider_intentions(self, session_id: str):
+        """Reconsidera las intentions basado en los beliefs actuales."""
+        beliefs = self.memory_manager.get_beliefs(session_id)
+        current_intentions = self.intentions.get(session_id, [])
+        
+        # Verificar si hay errores que requieren reconsideración
+        error_history = beliefs.get("error_history", [])
+        if error_history:
+            last_error = error_history[-1]
+            
+            # Si hay errores recientes, reconsiderar intentions
+            if self._should_reconsider_intentions(last_error):
+                print(f"[PlannerAgent] 🔄 Reconsiderando intentions debido a errores")
+                
+                # Desactivar intentions problemáticas
+                for intention in current_intentions:
+                    if intention.status == "active":
+                        # Verificar si la intention está relacionada con el error
+                        if self._intention_related_to_error(intention, last_error):
+                            intention.status = "suspended"
+                            print(f"[PlannerAgent] Intention {intention.id} suspendida")
+                
+                # Crear nuevas intentions de corrección
+                correction_desires = self._create_correction_desires(session_id, last_error)
+                correction_intentions = self._create_intentions_from_desires(session_id, correction_desires)
+                self.intentions[session_id].extend(correction_intentions)
+
+    def _should_reconsider_intentions(self, last_error: Dict[str, Any]) -> bool:
+        """Determina si se deben reconsiderar las intentions basado en el error."""
+        # Reconsiderar si hay errores críticos o múltiples errores
+        error_type = last_error.get("task_type", "")
+        error_message = str(last_error.get("error", "")).lower()
+        
+        critical_errors = ["budget_distribution", "timeout", "connection_error"]
+        return any(critical in error_type or critical in error_message for critical in critical_errors)
+
+    def _intention_related_to_error(self, intention: Intention, error: Dict[str, Any]) -> bool:
+        """Verifica si una intention está relacionada con un error específico."""
+        error_task_type = error.get("task_type", "")
+        
+        # Verificar si alguna tarea de la intention es del mismo tipo que el error
+        for task_id in intention.tasks:
+            # Buscar la tarea en la cola
+            for session_tasks in self.task_queue.values():
+                for task in session_tasks:
+                    if task.id == task_id and task.type == error_task_type:
+                        return True
+        
+        return False
+
+    def _create_correction_desires(self, session_id: str, error: Dict[str, Any]) -> List[Desire]:
+        """Crea desires de corrección basados en el error."""
+        correction_desires = []
+        error_task_type = error.get("task_type", "")
+        
+        if error_task_type == "budget_distribution":
+            correction_desires.append(Desire(
+                id=str(uuid.uuid4()),
+                type="fix_budget_distribution",
+                priority=0.95,  # Alta prioridad para correcciones
+                parameters={"error_context": error},
+                created_at=datetime.now().isoformat()
+            ))
+        
+        elif error_task_type in ["venue_search", "catering_search", "decor_search"]:
+            category = error_task_type.replace("_search", "")
+            correction_desires.append(Desire(
+                id=str(uuid.uuid4()),
+                type=f"fix_{category}_search",
+                priority=0.9,
+                parameters={"error_context": error, "category": category},
+                created_at=datetime.now().isoformat()
+            ))
+        
+        return correction_desires
 
 class MessageBus:
     def __init__(self):

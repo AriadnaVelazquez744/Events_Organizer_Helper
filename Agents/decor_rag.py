@@ -139,7 +139,12 @@ class DecorRAG:
         }
 
         # Obtener servicios recomendados basados en el estilo
-        style_data = style_services.get(style.lower(), style_services["classic"])
+        style_lower = style.lower()
+        style_data = style_services.get(style_lower, style_services["classic"])
+        
+        print(f"[DecorRAG] Estilo solicitado: '{style}' (normalizado a '{style_lower}')")
+        print(f"[DecorRAG] Usando servicios para estilo: {style_lower}")
+        
         recommended_services = {
             "service_levels": style_data["service_levels"],
             "pre_wedding_services": style_data["pre_wedding_services"],
@@ -174,7 +179,7 @@ class DecorRAG:
 
         return {
             "style": style,
-            "recommended_services": recommended_services,
+            **recommended_services,
             "estimated_cost": estimated_cost,
             "cost_per_person": cost_per_person
         }

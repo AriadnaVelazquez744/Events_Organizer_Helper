@@ -193,5 +193,135 @@
     "venue": 0.4,
     "catering": 0.3,
     "decor": 0.3
+  },
+  "b79175b0-4890-40b0-becd-cd9aa96a85a4": {
+    "venue": 0.4,
+    "catering": 0.35,
+    "decor": 0.25
+  },
+  "c16f1983-306b-4d4f-bbc9-e57eacde4763": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "97b6056d-9dca-4658-9a78-6d8714ffc8e7": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "ad8a42e1-4582-4724-a23a-7710c0114a34": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "07cea9b6-9c02-4748-96b1-3e097cd12334": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "1983566d-d640-4adf-b510-478d9203143a": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "16fd5e50-f1d4-4075-8267-f8a676aa6b0e": {
+    "venue": 0.33,
+    "catering": 0.33,
+    "decor": 0.34
+  },
+  "8ca4a08e-85a0-40d4-b475-57330e96b9f8": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "test_persistence_user": {
+    "venue": 0.39,
+    "catering": 0.3,
+    "decor": 0.30999999999999994
+  },
+  "67011265-ee8a-4295-a834-6c1e0cb08da3": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "f906d24e-809b-4839-939f-9c066b03efcb": {
+    "venue": 0.6,
+    "catering": 0.2,
+    "decor": 0.2
+  },
+  "7a3312ad-38d6-43dc-8d7a-a8aa6a3db786": {
+    "venue": 0.6,
+    "catering": 0.2,
+    "decor": 0.2
+  },
+  "32f2127d-f1fd-494b-88d9-02e23646f2a4": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "169d21c3-8b55-4ba6-9071-bef0ecc63e6e": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "aef969d2-8d3c-4516-ad05-4f8d8d232c19": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "9aa51ce9-c5b2-4185-b762-be473c5dbf99": {
+    "venue": 0.4,
+    "catering": 0.35,
+    "decor": 0.25
+  },
+  "fd0a77d7-8e6c-4f9a-a3a5-c1a2d92c1467": {
+    "venue": 0.6,
+    "catering": 0.2,
+    "decor": 0.2
+  },
+  "89b51044-aeff-45b9-a48c-fc3377e93d79": {
+    "venue": 0.6,
+    "catering": 0.3,
+    "decor": 0.1
+  },
+  "dab637c0-c33a-45ef-8737-ffafc3032244": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "d895b9d5-8398-4d26-9759-1425d7f42f6c": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "b9748e8a-36d0-45e5-8a34-1f23ede4f59c": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "c6f11dd2-54ca-4fbe-bab6-c4df05f43cf8": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "705f3836-b20d-499f-a3bb-c2d6d432619c": {
+    "venue": 0.6,
+    "catering": 0.2,
+    "decor": 0.2
+  },
+  "837d43b8-de39-4992-a814-ce7939761ba2": {
+    "venue": 0.4,
+    "catering": 0.3,
+    "decor": 0.3
+  },
+  "test_user_001": {
+    "venue": 0.35,
+    "catering": 0.3,
+    "decor": 0.35
+  },
+  "test_user_variation": {
+    "venue": 0.36,
+    "catering": 0.3,
+    "decor": 0.33999999999999997
   }
 }

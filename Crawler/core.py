@@ -29,7 +29,7 @@ class AdvancedCrawlerAgent:
         self.enrichment_config = {
             "enabled": True,
             "auto_enrich": True,
-            "quality_threshold": 0.7,
+            "quality_threshold": 0.5,
             "max_enrichment_attempts": 3
         }
 

@@ -65,8 +65,8 @@
         0
       ],
       "success_rate": 1.0,
-      "last_used": "2025-06-16T14:09:02.800002",
-      "usage_count": 33
+      "last_used": "2025-06-17T19:27:49.868846",
+      "usage_count": 41
     },
     {
       "style": "standard",
@@ -111,8 +111,77 @@
         200
       ],
       "success_rate": 1.0,
-      "last_used": "2025-06-17T04:05:44.660935",
-      "usage_count": 18
+      "last_used": "2025-06-17T17:34:31.510444",
+      "usage_count": 22
+    },
+    {
+      "style": "luxury",
+      "courses": [
+        "welcome_drink",
+        "appetizer",
+        "soup",
+        "main_course",
+        "dessert",
+        "coffee_service"
+      ],
+      "dietary_options": [
+        "vegan",
+        "gluten-free"
+      ],
+      "price_range": [
+        14309.760000000002,
+        21464.64
+      ],
+      "guest_count_range": [
+        100,
+        200
+      ],
+      "success_rate": 1.0,
+      "last_used": "2025-06-17T19:39:05.635585",
+      "usage_count": 12
+    },
+    {
+      "style": "standard",
+      "courses": [],
+      "dietary_options": [
+        "vegetariano"
+      ],
+      "price_range": [
+        0.0,
+        0.0
+      ],
+      "guest_count_range": [
+        0,
+        0
+      ],
+      "success_rate": 1.0,
+      "last_used": "2025-06-17T19:02:17.005594",
+      "usage_count": 2
+    },
+    {
+      "style": "elegante",
+      "courses": [
+        "welcome_drink",
+        "appetizer",
+        "soup",
+        "main_course",
+        "dessert",
+        "coffee_service"
+      ],
+      "dietary_options": [
+        "vegetariano"
+      ],
+      "price_range": [
+        13205.280000000002,
+        19807.920000000002
+      ],
+      "guest_count_range": [
+        100,
+        200
+      ],
+      "success_rate": 1.0,
+      "last_used": "2025-06-17T19:02:17.638082",
+      "usage_count": 2
     }
   ]
 }

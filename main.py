@@ -198,11 +198,11 @@ def main():
         "criterios": {
             "presupuesto_total": 50000,
             "guest_count": 100,
-            "style": "classic",
+            "style": "luxury",
             "venue": {
                 "obligatorios": ["price", "capacity", "venue_type"],
                 "capacity": 100,
-                "venue_type": "country club"
+                "venue_type": "mansion"
             },
             "catering": {
                 "obligatorios": ["price", "meal_types", "dietary_options"],

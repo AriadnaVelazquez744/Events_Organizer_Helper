@@ -312,7 +312,7 @@ class VenueAgent:
                 matched_atmosphere = set(atmosphere_lower) & set(recommended_lower)
                 atmosphere_score = len(matched_atmosphere) / len(criteria["recommended_atmosphere"])
                 rag_score += atmosphere_score * 0.10
-                print(f"[VenueAgent] Score de atmosphere: {len(matched_atmosphere)}/{len(criteria['recommended_atmosphere'])} ({atmosphere_score:.2f})")
+                #print(f"[VenueAgent] Score de atmosphere: {len(matched_atmosphere)}/{len(criteria['recommended_atmosphere'])} ({atmosphere_score:.2f})")
             else:
                 print(f"[VenueAgent] DEBUG: Venue {data.get('title', 'Sin título')} no tiene campo 'atmosphere'. Campos disponibles: {list(data.keys())}")
 
@@ -330,7 +330,7 @@ class VenueAgent:
                 matched_venue_type = set(venue_type_lower) & set(recommended_lower)
                 venue_type_score = len(matched_venue_type) / len(criteria["recommended_venue_type"])
                 rag_score += venue_type_score * 0.10
-                print(f"[VenueAgent] Score de venue_type: {len(matched_venue_type)}/{len(criteria['recommended_venue_type'])} ({venue_type_score:.2f})")
+                #print(f"[VenueAgent] Score de venue_type: {len(matched_venue_type)}/{len(criteria['recommended_venue_type'])} ({venue_type_score:.2f})")
             else:
                 print(f"[VenueAgent] DEBUG: Venue {data.get('title', 'Sin título')} no tiene campo 'venue_type'. Campos disponibles: {list(data.keys())}")
 
@@ -348,7 +348,7 @@ class VenueAgent:
                 matched_services = set(services_lower) & set(recommended_lower)
                 services_score = len(matched_services) / len(criteria["recommended_services"])
                 rag_score += services_score * 0.10
-                print(f"[VenueAgent] Score de services: {len(matched_services)}/{len(criteria['recommended_services'])} ({services_score:.2f})")
+                #print(f"[VenueAgent] Score de services: {len(matched_services)}/{len(criteria['recommended_services'])} ({services_score:.2f})")
             else:
                 print(f"[VenueAgent] DEBUG: Venue {data.get('title', 'Sin título')} no tiene campo 'services'. Campos disponibles: {list(data.keys())}")
 
@@ -360,7 +360,7 @@ class VenueAgent:
                 matched_events = set(e.lower() for e in supported_events) & set(e.lower() for e in criteria["recommended_supported_events"])
                 events_score = len(matched_events) / len(criteria["recommended_supported_events"])
                 rag_score += events_score * 0.05
-                print(f"[VenueAgent] Score de supported_events: {len(matched_events)}/{len(criteria['recommended_supported_events'])} ({events_score:.2f})")
+                #print(f"[VenueAgent] Score de supported_events: {len(matched_events)}/{len(criteria['recommended_supported_events'])} ({events_score:.2f})")
 
         # Score de restrictions recomendadas (5%)
         if "recommended_restrictions" in criteria and criteria["recommended_restrictions"]:
@@ -370,7 +370,7 @@ class VenueAgent:
                 matched_restrictions = set(r.lower() for r in restrictions) & set(r.lower() for r in criteria["recommended_restrictions"])
                 restrictions_score = len(matched_restrictions) / len(criteria["recommended_restrictions"])
                 rag_score += restrictions_score * 0.05
-                print(f"[VenueAgent] Score de restrictions: {len(matched_restrictions)}/{len(criteria['recommended_restrictions'])} ({restrictions_score:.2f})")
+                #print(f"[VenueAgent] Score de restrictions: {len(matched_restrictions)}/{len(criteria['recommended_restrictions'])} ({restrictions_score:.2f})")
 
         # Normalizar score del RAG solo si rag_max_score > 0
         if rag_max_score > 0:
@@ -386,7 +386,7 @@ class VenueAgent:
             rag_score
         )
 
-        print(f"[VenueAgent] Score final para {data.get('title', 'Sin título')}: {final_score:.2f}")
+        #print(f"[VenueAgent] Score final para {data.get('title', 'Sin título')}: {final_score:.2f}")
         return min(final_score, 1.0)
 
     def find_venues(self, criteria: Dict[str, Any], urls: List[str] = None) -> List[Dict[str, Any]]:

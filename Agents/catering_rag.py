@@ -151,7 +151,11 @@ class CateringRAG:
         }
         
         # Obtener cursos recomendados basados en el estilo
-        recommended_courses = style_courses.get(style.lower(), style_courses["standard"])
+        style_lower = style.lower()
+        recommended_courses = style_courses.get(style_lower, style_courses["standard"])
+        
+        print(f"[CateringRAG] Estilo solicitado: '{style}' (normalizado a '{style_lower}')")
+        print(f"[CateringRAG] Usando cursos para estilo: {style_lower}")
         
         # Calcular costo estimado por persona
         cost_per_person = budget / guest_count
@@ -162,7 +166,7 @@ class CateringRAG:
         elif cost_per_person < 100:
             recommended_courses = ["welcome_drink", "appetizer", "main_course", "dessert"]
         else:
-            recommended_courses = style_courses.get(style.lower(), style_courses["premium"])
+            recommended_courses = style_courses.get(style_lower, style_courses["premium"])
         
         # Generar alternativas dietéticas
         dietary_alternatives = self.suggest_dietary_alternatives(normalized_dietary)

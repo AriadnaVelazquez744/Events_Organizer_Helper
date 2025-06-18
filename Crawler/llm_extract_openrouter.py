@@ -59,7 +59,7 @@ def llm_extract_openrouter(
     if "{text}" not in prompt_template:
         print("[LLM EXTRACT] Error: prompt_template debe contener {text}")
         return {}
-    
+
     prompt = prompt_template.format(text=relevant_text, url=url)
     
     payload = {
@@ -95,14 +95,14 @@ def llm_extract_openrouter(
             content = content.replace("```json", "").replace("```", "").strip()
         elif content.startswith("```"):
             content = content.replace("```", "").strip()
-        
+            
         # Intentar extraer JSON de la respuesta
         try:
             parsed = extract_json_from_response(content)
             if parsed and isinstance(parsed, dict):
                 return parsed
             else:
-                # Si extract_json_from_response falla, intentar parsear directamente
+                    # Si extract_json_from_response falla, intentar parsear directamente
                 return json.loads(content)
         except json.JSONDecodeError as e:
             print(f"[LLM EXTRACT] Error parsing JSON: {str(e)}")

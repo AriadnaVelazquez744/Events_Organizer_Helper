@@ -1,0 +1,34 @@
+{
+  "results": {
+    "bdi_cycle": {
+      "session_id": "d895b9d5-8398-4d26-9759-1425d7f42f6c",
+      "desires_count": 4,
+      "intentions_count": 4,
+      "tasks_count": 0,
+      "beliefs_updated": true
+    },
+    "error_handling": {
+      "session_id": "b9748e8a-36d0-45e5-8a34-1f23ede4f59c",
+      "errors_recorded": 1,
+      "correction_tasks": 4
+    },
+    "intention_reconsideration": {
+      "session_id": "c6f11dd2-54ca-4fbe-bab6-c4df05f43cf8",
+      "initial_intentions": 4,
+      "final_intentions": 5,
+      "correction_desires": 0
+    },
+    "rag_integration": {
+      "rag_available": true,
+      "correction_strategies": 1,
+      "error_patterns": 4
+    }
+  },
+  "analysis": {
+    "total_lines": 164,
+    "errors": 0,
+    "successes": 6,
+    "info": 13
+  },
+  "timestamp": "2025-06-17T19:25:49.563628"
+}

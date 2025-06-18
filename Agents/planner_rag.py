@@ -199,4 +199,104 @@ class PlannerRAG:
                 total = len(set(case1[key]) | set(case2[key]))
                 similarities.append(common / total if total > 0 else 0.0)
 
-        return np.mean(similarities) if similarities else 0.0 
+        return np.mean(similarities) if similarities else 0.0
+
+    def suggest_error_correction(self, task_type: str, error_content: Any) -> List[Dict[str, Any]]:
+        """Sugiere estrategias de corrección basadas en el tipo de tarea y el error."""
+        strategies = []
+        error_str = str(error_content).lower()
+        
+        # Estrategias específicas por tipo de tarea
+        if task_type == "budget_distribution":
+            if "timeout" in error_str or "timeout" in error_str:
+                strategies.append({
+                    "type": "budget_redistribution",
+                    "description": "Redistribuir presupuesto con restricciones más flexibles",
+                    "parameters": {"flexible_constraints": True, "timeout_handling": True}
+                })
+            elif "constraint" in error_str or "restriction" in error_str:
+                strategies.append({
+                    "type": "budget_adjustment",
+                    "description": "Ajustar criterios de presupuesto",
+                    "parameters": {"adjustment_factor": 0.9, "relax_constraints": True}
+                })
+            else:
+                strategies.append({
+                    "type": "budget_retry",
+                    "description": "Reintentar distribución de presupuesto",
+                    "parameters": {"retry_with_backoff": True}
+                })
+        
+        elif task_type in ["venue_search", "catering_search", "decor_search"]:
+            category = task_type.replace("_search", "")
+            
+            if "no results" in error_str or "empty" in error_str:
+                strategies.extend([
+                    {
+                        "type": f"{category}_relax_constraints",
+                        "description": f"Relajar restricciones de {category}",
+                        "parameters": {"relax_factor": 0.8, "expand_search": True}
+                    },
+                    {
+                        "type": f"{category}_alternative_search",
+                        "description": f"Buscar alternativas de {category}",
+                        "parameters": {"use_alternatives": True, "fallback_options": True}
+                    }
+                ])
+            elif "timeout" in error_str:
+                strategies.append({
+                    "type": f"{category}_timeout_handling",
+                    "description": f"Manejar timeout en búsqueda de {category}",
+                    "parameters": {"timeout_retry": True, "reduced_scope": True}
+                })
+            elif "budget" in error_str or "price" in error_str:
+                strategies.append({
+                    "type": f"{category}_budget_increase",
+                    "description": f"Aumentar presupuesto para {category}",
+                    "parameters": {"budget_increase": 0.2, "flexible_pricing": True}
+                })
+            else:
+                strategies.append({
+                    "type": f"{category}_retry",
+                    "description": f"Reintentar búsqueda de {category}",
+                    "parameters": {"retry_with_backoff": True, "improved_query": True}
+                })
+        
+        # Estrategias generales para cualquier error
+        if not strategies:
+            strategies.append({
+                "type": "general_retry",
+                "description": "Reintentar tarea con parámetros ajustados",
+                "parameters": {"retry_count": 1, "backoff_delay": 2}
+            })
+        
+        return strategies
+
+    def get_error_patterns(self) -> Dict[str, List[str]]:
+        """Obtiene patrones de errores conocidos y sus soluciones."""
+        return {
+            "timeout_errors": [
+                "increase_timeout",
+                "reduce_scope",
+                "use_caching",
+                "parallel_processing"
+            ],
+            "constraint_errors": [
+                "relax_constraints",
+                "adjust_parameters",
+                "use_alternatives",
+                "increase_budget"
+            ],
+            "connection_errors": [
+                "retry_with_backoff",
+                "use_fallback",
+                "check_connectivity",
+                "reduce_load"
+            ],
+            "data_errors": [
+                "validate_input",
+                "use_defaults",
+                "clean_data",
+                "request_correction"
+            ]
+        }
