@@ -58,7 +58,7 @@ def initialize_system():
     # Intentar cargar los grafos existentes
     try:
         print("Intentando cargar grafos existentes...")
-        graph_v = KnowledgeGraphInterface("/home/lia/Escritorio/Proyectos/Simulación/Event Plan/Events_Organizer_Helper/Agents/venues_graph.json")
+        graph_v = KnowledgeGraphInterface("Agents/venues_graph.json")
         graph_v.clean_errors()
         print(f"[GRAPH] Grafo de venues cargado con {len(graph_v.nodes)} nodos")
     except Exception as e:
@@ -68,7 +68,7 @@ def initialize_system():
         graph_v.clean_errors()
         
     try:
-        graph_c = KnowledgeGraphInterface("/home/lia/Escritorio/Proyectos/Simulación/Event Plan/Events_Organizer_Helper/Agents/catering_graph.json")
+        graph_c = KnowledgeGraphInterface("Agents/catering_graph.json")
         graph_c.clean_errors()
         print(f"[GRAPH] Grafo de catering cargado con {len(graph_c.nodes)} nodos")
     except Exception as e:
@@ -78,7 +78,7 @@ def initialize_system():
         graph_c.clean_errors()
 
     try:
-        graph_d = KnowledgeGraphInterface("/home/lia/Escritorio/Proyectos/Simulación/Event Plan/Events_Organizer_Helper/Agents/decor_graph.json")
+        graph_d = KnowledgeGraphInterface("Agents/decor_graph.json")
         graph_d.clean_errors()
         print(f"[GRAPH] Grafo de decor cargado con {len(graph_d.nodes)} nodos")
     except Exception as e:
