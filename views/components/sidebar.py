@@ -9,7 +9,7 @@ def show_sidebar():
     
     with st.expander("How to use the planner"):
         st.markdown("""
-        1. Type your event planning needs in the text area
+        1. Type your event planning needs in the text area, basic requirements for proper processing are available budget and number of guests 
         2. The system will process your request and respond
         3. You can provide additional information when asked
         4. Use the sidebar to manage your session
@@ -18,8 +18,8 @@ def show_sidebar():
     with st.expander("Example queries"):
         st.markdown("""
         - "I need to plan a wedding for 100 people"
-        - "What venues are available for a corporate event?"
-        - "Help me plan the catering for my birthday party"
+        - "I want a wedding for 300 that counts with a vegan catering in a farm, my budget is 30000$"
+        - "I want a classic wedding with a budget of 15000$"
         """)
     
     # Budget Input Section
