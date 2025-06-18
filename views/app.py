@@ -16,8 +16,35 @@ st.set_page_config(
     page_title="Events Organizer Helper",
     page_icon="🎉",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': None
+    }
 )
+
+# Hide the default navigation and page labels
+st.markdown("""
+    <style>
+        #MainMenu {visibility: hidden;}
+        header {visibility: hidden;}
+        footer {visibility: hidden;}
+        .stDeployButton {display: none;}
+        section[data-testid="stSidebar"] > div:first-child {
+            padding-top: 0;
+        }
+        section[data-testid="stSidebar"] > div:first-child > div {
+            padding-top: 0;
+        }
+        section[data-testid="stSidebar"] > div:first-child > div > div {
+            padding-top: 0;
+        }
+        section[data-testid="stSidebar"] > div:first-child > div > div > div {
+            padding-top: 0;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Initialize session state
 if 'current_page' not in st.session_state:

@@ -5,14 +5,23 @@ def show_chat_interface():
     chat_container = st.container()
     
     with chat_container:
-        # Display messages in reverse order (newest first)
-        for message in reversed(st.session_state.messages):
+        # Display messages in chronological order (oldest first)
+        for message in st.session_state.messages:
             if message["role"] == "user":
                 # User message (right-aligned)
                 st.markdown(
                     f"""
                     <div style='text-align: right; margin: 10px;'>
-                        <div style='background-color: #e3f2fd; padding: 10px; border-radius: 10px; display: inline-block; max-width: 70%;'>
+                        <div style='
+                            background-color: #4CAF50;
+                            color: white;
+                            padding: 12px 20px;
+                            border-radius: 20px;
+                            display: inline-block;
+                            max-width: 70%;
+                            margin-left: auto;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        '>
                             {message["content"]}
                         </div>
                     </div>
@@ -24,7 +33,14 @@ def show_chat_interface():
                 st.markdown(
                     f"""
                     <div style='text-align: left; margin: 10px;'>
-                        <div style='background-color: #f5f5f5; padding: 10px; border-radius: 10px; display: inline-block; max-width: 70%;'>
+                        <div style='
+                            background-color: #f5f5f5;
+                            padding: 12px 20px;
+                            border-radius: 20px;
+                            display: inline-block;
+                            max-width: 70%;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        '>
                             {message["content"]}
                         </div>
                     </div>
