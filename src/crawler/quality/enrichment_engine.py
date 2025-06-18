@@ -4,8 +4,8 @@ from bs4 import BeautifulSoup
 import re
 import time
 from urllib.parse import quote_plus, urljoin
-from crawler.quality.quality_validator import DataQualityValidator
-from crawler.extraction.llm_extract_openrouter import llm_extract_openrouter
+from src.crawler.quality.quality_validator import DataQualityValidator
+from src.crawler.extraction.llm_extract_openrouter import llm_extract_openrouter
 import json
 from datetime import datetime
 

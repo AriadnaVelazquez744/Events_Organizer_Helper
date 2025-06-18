@@ -1187,8 +1187,8 @@
     ],
     "outlinks": [],
     "success_rate": 1.0,
-    "last_used": "2025-06-17T19:25:36.757394",
-    "usage_count": 1
+    "last_used": "2025-06-18T16:34:59.084511",
+    "usage_count": 2
   },
   "imposible_lugar_inexistente_400_392.8": {
     "style": "imposible",
@@ -1363,6 +1363,758 @@
     "outlinks": [],
     "success_rate": 1.0,
     "last_used": "2025-06-17T19:39:05.390472",
+    "usage_count": 1
+  },
+  "luxury__80_22078.4": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22078.4,
+      33117.6
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T15:17:18.566378",
+    "usage_count": 1
+  },
+  "luxury__80_22096.0": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22096.0,
+      33144.0
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T15:33:02.848977",
+    "usage_count": 1
+  },
+  "luxury__80_21985.600000000002": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21985.600000000002,
+      32978.4
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T15:35:31.696993",
+    "usage_count": 1
+  },
+  "luxury__80_22012.800000000003": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22012.800000000003,
+      33019.2
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T15:38:22.014039",
+    "usage_count": 1
+  },
+  "luxury__80_22040.800000000003": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22040.800000000003,
+      33061.2
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T15:48:10.339062",
+    "usage_count": 1
+  },
+  "luxury__80_21970.4": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21970.4,
+      32955.6
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T15:55:26.571087",
+    "usage_count": 1
+  },
+  "luxury__80_22001.600000000002": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22001.600000000002,
+      33002.4
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T16:17:56.747599",
+    "usage_count": 1
+  },
+  "luxury__80_22026.4": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22026.4,
+      33039.6
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T16:21:04.460930",
+    "usage_count": 1
+  },
+  "luxury__80_22057.600000000002": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22057.600000000002,
+      33086.4
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T16:32:02.729001",
+    "usage_count": 1
+  },
+  "luxury__80_22023.2": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22023.2,
+      33034.799999999996
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T16:33:38.460973",
+    "usage_count": 1
+  },
+  "luxury__80_21935.2": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21935.2,
+      32902.799999999996
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T16:36:33.719768",
+    "usage_count": 1
+  },
+  "luxury__80_21996.0": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21996.0,
+      32994.0
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T16:37:14.353356",
+    "usage_count": 1
+  },
+  "luxury__80_21978.4": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21978.4,
+      32967.6
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T16:56:52.701956",
+    "usage_count": 1
+  },
+  "luxury__80_21960.0": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21960.0,
+      32940.0
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T16:57:47.551091",
+    "usage_count": 1
+  },
+  "luxury__80_21868.800000000003": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      21868.800000000003,
+      32803.2
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T16:59:03.809770",
+    "usage_count": 1
+  },
+  "luxury__80_22083.2": {
+    "style": "luxury",
+    "title": "",
+    "capacity_range": [
+      80,
+      120
+    ],
+    "location": "",
+    "price_range": [
+      22083.2,
+      33124.799999999996
+    ],
+    "atmosphere": [
+      "Luxurious",
+      "Opulent",
+      "Exclusive",
+      "Elegant",
+      "Sophisticated"
+    ],
+    "venue_type": [
+      "Luxury Hotel",
+      "Mansion",
+      "Private Estate",
+      "Resort",
+      "Country Club"
+    ],
+    "services": [
+      "Luxury Venue",
+      "VIP Services",
+      "Concierge",
+      "Premium Catering",
+      "Event coordinator"
+    ],
+    "restrictions": [
+      "Minimum Guest Count",
+      "Premium Pricing"
+    ],
+    "supported_events": [
+      "Wedding Ceremony",
+      "Wedding Reception",
+      "Luxury Events"
+    ],
+    "outlinks": [],
+    "success_rate": 1.0,
+    "last_used": "2025-06-18T17:11:08.742966",
     "usage_count": 1
   }
 }

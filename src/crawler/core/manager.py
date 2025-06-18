@@ -1,7 +1,7 @@
 
 # crawler/manager.py
 from typing import List
-from crawler.core.core import AdvancedCrawlerAgent
+from src.crawler.core.core import AdvancedCrawlerAgent
 
 class CrawlerManager:
     def __init__(self, agents: List[AdvancedCrawlerAgent]):

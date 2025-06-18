@@ -3,11 +3,11 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from urllib.parse import quote_plus
-from crawler.core.core import AdvancedCrawlerAgent
+from src.crawler.core.core import AdvancedCrawlerAgent
 from typing import List, Dict, Any, Union, Optional
-from crawler.extraction.expert import ExpertSystemInterface
-from crawler.extraction.graph import KnowledgeGraphInterface
-from agents.catering.catering_rag import CateringRAG
+from src.crawler.extraction.expert import ExpertSystemInterface
+from src.crawler.extraction.graph import KnowledgeGraphInterface
+from src.agents.catering.catering_rag import CateringRAG
 import json
 
 class CateringAgent:

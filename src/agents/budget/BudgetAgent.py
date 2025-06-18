@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass
 from dotenv import load_dotenv
 from openai import OpenAI
-from agents.planner.planner_rag import PlannerRAG
+from src.agents.planner.planner_rag import PlannerRAG
 
 load_dotenv()
 
@@ -44,7 +44,9 @@ class BudgetDistributorAgent:
         
         # Obtener el directorio actual del script
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        graph_file = os.path.join(current_dir, file_mapping.get(category, f"{category}_graph.json"))
+        parent_dir = os.path.dirname(current_dir)
+        inter = os.path.join(parent_dir, category)
+        graph_file = os.path.join(inter, file_mapping.get(category, f"{category}_graph.json"))
         
         print(f"[BudgetDistributorAgent] Intentando cargar grafo para {category}")
         print(f"[BudgetDistributorAgent] Ruta del archivo: {graph_file}")
@@ -146,15 +148,45 @@ class BudgetDistributorAgent:
             
         return constraints
         
-    def _load_memory(self) -> Dict[str, Dict[str, float]]:
-        if os.path.exists(self.memory_file):
-            with open(self.memory_file, "r") as f:
-                return json.load(f)
-        return {}
+    def _load_memory(self) -> dict:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        memory_path = os.path.join(current_dir, self.memory_file)
+        if os.path.exists(memory_path):
+            with open(memory_path, "r") as f:
+                print(f"[BudgetDistributorAgent] Cargando historial de preferencias desde: {memory_path}")
+                try:
+                    data = json.load(f)
+                    # Asegura la estructura
+                    if not isinstance(data, dict):
+                        data = {"usuarios": {}, "sesiones": {}}
+                    if "usuarios" not in data:
+                        data["usuarios"] = {}
+                    if "sesiones" not in data:
+                        data["sesiones"] = {}
+                    return data
+                except Exception as e:
+                    print(f"[BudgetDistributorAgent] Error cargando historial: {e}")
+                    return {"usuarios": {}, "sesiones": {}}
+        print(f"[BudgetDistributorAgent] No se encontró historial de preferencias en: {memory_path}")
+        return {"usuarios": {}, "sesiones": {}}
 
     def _save_memory(self):
-        with open(self.memory_file, "w") as f:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        memory_path = os.path.join(current_dir, self.memory_file)
+        with open(memory_path, "w") as f:
             json.dump(self.history, f, indent=2)
+
+    def get_user_id(self, session_id: str) -> str:
+        # Si no existe, retorna el session_id como fallback
+        return self.history.get("sesiones", {}).get(session_id, session_id)
+
+    def save_preferences(self, user_id: str, session_id: str, prefs: dict):
+        self.history.setdefault("usuarios", {})[user_id] = prefs
+        self.history.setdefault("sesiones", {})[session_id] = user_id
+        self._save_memory()
+
+    def get_preferences(self, user_id: str) -> dict:
+        return self.history.get("usuarios", {}).get(user_id, {})
 
     def infer_priorities(self, user_text: str) -> Dict[str, float]:
         """Infiere prioridades usando LLM con un prompt más estructurado."""
@@ -502,37 +534,36 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
         
         return explanation
 
-    def run(self, user_id: str, total_budget: int, user_description: str) -> Dict[str, int]:
+    def run(self, user_id: str, total_budget: int, user_description: str, session_id: str = None) -> Dict[str, int]:
         """Ejecuta el proceso completo de distribución de presupuesto."""
         print(f"[BudgetDistributorAgent] Iniciando distribución de presupuesto para {total_budget}...")
-        
+        # Si session_id está presente, obtener el user_id real
+        # if session_id:
+        #     user_id = self.get_user_id(session_id)
+        print(f"[BudgetDistributorAgent] user_id usado: {user_id}")
+        print(f"[BudgetDistributorAgent] Claves en historial de usuarios: {list(self.history.get('usuarios', {}).keys())}")
         # 1. Obtener preferencias del historial del usuario
-        user_history = self.history.get(user_id, {})
+        user_history = self.get_preferences(user_id)
         print(f"[BudgetDistributorAgent] Historial del usuario: {user_history}")
-        
         # 2. Inferir nuevas preferencias del texto del usuario
         print("[BudgetDistributorAgent] Inferiendo nuevas prioridades...")
         new_weights = self.infer_priorities(user_description)
         print(f"[BudgetDistributorAgent] Nuevas preferencias inferidas: {new_weights}")
-
         # 3. Verificar que las nuevas preferencias sean válidas
         if not all(0 <= w <= 1 for w in new_weights.values()):
             print("[BudgetDistributorAgent] Nuevas preferencias inválidas, usando distribución por defecto")
             new_weights = self._get_default_weights()
-
         # 4. Fusionar con el historial del usuario
         if user_history:
             print("[BudgetDistributorAgent] Fusionando con historial del usuario...")
             consistency = self._calculate_consistency(user_history, new_weights)
             print(f"[BudgetDistributorAgent] Consistencia con historial: {consistency:.2f}")
-            
             # Si hay alta consistencia, dar más peso al historial
             if consistency > 0.7:
                 print("[BudgetDistributorAgent] Alta consistencia detectada, priorizando historial")
                 final_weights = self.merge_with_history(user_id, new_weights)
             else:
                 print("[BudgetDistributorAgent] Baja consistencia, dando más peso a nuevas preferencias")
-                # Para baja consistencia, usar más peso a nuevas preferencias
                 learning_rate = 0.8  # 80% peso a nuevas preferencias
                 merged = {
                     k: learning_rate * new_weights.get(k, 0) + 
@@ -540,30 +571,23 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
                     for k in self.categories
                 }
                 final_weights = self._normalize_weights(merged)
-                self.history[user_id] = final_weights
-                self._save_memory()
+                self.save_preferences(user_id, session_id or user_id, final_weights)
         else:
             print("[BudgetDistributorAgent] Sin historial previo, usando nuevas preferencias")
             final_weights = new_weights
-            self.history[user_id] = final_weights
-            self._save_memory()
-
+            self.save_preferences(user_id, session_id or user_id, final_weights)
         print(f"[BudgetDistributorAgent] Pesos finales después de fusión: {final_weights}")
-
         # 5. Optimizar distribución usando los pesos fusionados
         print("[BudgetDistributorAgent] Iniciando optimización con pesos fusionados...")
         try:
             distribution = self.optimize(final_weights, total_budget)
             print(f"[BudgetDistributorAgent] Distribución final: {distribution}")
-            
-            # Verificar que la distribución sea válida
             if not distribution or sum(distribution.values()) != total_budget:
                 print("[BudgetDistributorAgent] Distribución inválida, usando distribución proporcional")
                 distribution = {
                     category: int(total_budget * weight)
                     for category, weight in final_weights.items()
                 }
-                # Ajustar el residuo
                 diff = total_budget - sum(distribution.values())
                 if diff != 0:
                     max_category = max(final_weights.items(), key=lambda x: x[1])[0]
@@ -575,46 +599,38 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
                 category: int(total_budget * weight)
                 for category, weight in final_weights.items()
             }
-            # Ajustar el residuo
             diff = total_budget - sum(distribution.values())
             if diff != 0:
                 max_category = max(final_weights.items(), key=lambda x: x[1])[0]
                 distribution[max_category] += diff
-
         print(f"[BudgetDistributorAgent] Distribución final validada: {distribution}")
         print(f"[BudgetDistributorAgent] Suma total: {sum(distribution.values())}")
-        
         return distribution
 
     def receive(self, message: Dict[str, Any]):
         """Procesa mensajes entrantes."""
         if message["tipo"] == "task":
+            print(message)
             task_id = message["contenido"]["task_id"]
             parameters = message["contenido"]["parameters"]
             session_id = message["session_id"]
-            
+            user_id = message["user_id"]
+            print(f"user_id extraído {user_id}")  # <--- Extraer user_id real
             try:
                 print(f"[BudgetDistributorAgent] Procesando tarea de distribución de presupuesto")
-                # Extraer el presupuesto total y los criterios
                 total_budget = parameters.get("budget", 0)
                 criteria = parameters.get("criterios", {})
-                
                 print(f"[BudgetDistributorAgent] Criterios recibidos: {json.dumps(criteria, indent=2)}")
-                
                 # Ejecutar la distribución del presupuesto
                 distribution = self.run(
-                    user_id=session_id,
+                    user_id=user_id,
                     total_budget=total_budget,
-                    user_description=json.dumps(criteria)  # Enviamos los criterios completos
+                    user_description=json.dumps(criteria),
+                    session_id=session_id
                 )
-                
                 # Obtener las nuevas preferencias para la explicación
                 new_weights = self.infer_priorities(json.dumps(criteria))
-                
-                # Generar explicación con información del historial
-                explanation = self.explain_allocation(session_id, distribution, new_weights)
-                
-                # Enviar respuesta
+                explanation = self.explain_allocation(user_id, distribution, new_weights)
                 return {
                     "origen": "BudgetDistributorAgent",
                     "destino": message["origen"],
@@ -623,7 +639,7 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
                         "task_id": task_id,
                         "distribution": distribution,
                         "explanation": explanation,
-                        "user_preferences": self.history.get(session_id, {})
+                        "user_preferences": self.get_preferences(user_id)
                     },
                     "session_id": session_id
                 }

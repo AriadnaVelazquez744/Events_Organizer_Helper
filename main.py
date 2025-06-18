@@ -1,15 +1,15 @@
-from agents.planner.Planneragent import PlannerAgentBDI, MessageBus
-from agents.decor.decor_manager import DecorAgent
-from agents.catering.catering_manager import CateringAgent
-from agents.venue.venue_manager import VenueAgent
-from crawler.core.core import AdvancedCrawlerAgent
-from crawler.extraction.graph import KnowledgeGraphInterface
-from crawler.extraction.expert import ExpertSystemInterface
-from crawler.core.policy import CrawlPolicy
-from crawler.quality.monitoring import DataQualityMonitor
-from crawler.quality.quality_validator import DataQualityValidator
-from agents.session_memory import SessionMemoryManager
-from agents.budget.BudgetAgent import BudgetDistributorAgent
+from src.agents.planner.Planneragent import PlannerAgentBDI, MessageBus
+from src.agents.decor.decor_manager import DecorAgent
+from src.agents.catering.catering_manager import CateringAgent
+from src.agents.venue.venue_manager import VenueAgent
+from src.crawler.core.core import AdvancedCrawlerAgent
+from src.crawler.extraction.graph import KnowledgeGraphInterface
+from src.crawler.extraction.expert import ExpertSystemInterface
+from src.crawler.core.policy import CrawlPolicy
+from src.crawler.quality.monitoring import DataQualityMonitor
+from src.crawler.quality.quality_validator import DataQualityValidator
+from src.agents.session_memory import SessionMemoryManager
+from src.agents.budget.BudgetAgent import BudgetDistributorAgent
 import json
 from datetime import datetime
 
@@ -58,7 +58,7 @@ def initialize_system():
     # Intentar cargar los grafos existentes
     try:
         print("Intentando cargar grafos existentes...")
-        graph_v = KnowledgeGraphInterface("src/agents/venues/venues_graph.json")
+        graph_v = KnowledgeGraphInterface("./src/agents/venue/venues_graph.json")
         graph_v.clean_errors()
         print(f"[GRAPH] Grafo de venues cargado con {len(graph_v.nodes)} nodos")
     except Exception as e:
@@ -68,7 +68,7 @@ def initialize_system():
         graph_v.clean_errors()
         
     try:
-        graph_c = KnowledgeGraphInterface("src/agents/catering/catering_graph.json")
+        graph_c = KnowledgeGraphInterface("./src/agents/catering/catering_graph.json")
         graph_c.clean_errors()
         print(f"[GRAPH] Grafo de catering cargado con {len(graph_c.nodes)} nodos")
     except Exception as e:
@@ -78,7 +78,7 @@ def initialize_system():
         graph_c.clean_errors()
 
     try:
-        graph_d = KnowledgeGraphInterface("src/agents/decor/decor_graph.json")
+        graph_d = KnowledgeGraphInterface("./src/agents/decor/decor_graph.json")
         graph_d.clean_errors()
         print(f"[GRAPH] Grafo de decor cargado con {len(graph_d.nodes)} nodos")
     except Exception as e:
@@ -180,6 +180,49 @@ def initialize_system():
             "decor": crawler_d
         }
     }
+    
+class Comunication:
+    
+    def send_query(request:str, user_id:str):
+        system = initialize_system()
+        planner = system["planner"]
+        quality_monitor = system["quality_monitor"]
+        
+        session_id = planner.create_session(user_id)
+        print(f"Sesión creada con ID: {session_id}")
+        
+        print_section("ENVIANDO PETICIÓN")
+        # Ejemplo de petición
+        print("Petición a procesar:")
+        print(json.dumps(request, indent=2, ensure_ascii=False))
+        
+        print_section("PROCESANDO PETICIÓN")
+        # Enviar petición al planner
+        response = planner.receive({
+            "origen": "user",
+            "destino": "PlannerAgent",
+            "tipo": "user_request",
+            "contenido": request,
+            "session_id": session_id
+        })
+        
+        print_section("RESULTADOS")
+        if response:
+            print_result("Respuesta del sistema", response)
+            return response
+        else:
+            print("❌ No se recibió respuesta del sistema")
+        
+        print_section("ESTADO FINAL")
+        # Obtener estado final de la sesión
+        session_info = system["memory"].get_session_info(session_id)
+        print_result("Información de la sesión", session_info)
+        
+        # Obtener beliefs finales
+        beliefs = system["memory"].get_beliefs(session_id)
+        print_result("Estado de creencias", beliefs.resumen())
+        
+        
 
 def main():
     # Inicializar el sistema

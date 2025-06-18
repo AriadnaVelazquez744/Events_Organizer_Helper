@@ -4,11 +4,11 @@ import requests
 import re
 
 from urllib.parse import quote_plus
-from crawler.core.core import AdvancedCrawlerAgent
+from src.crawler.core.core import AdvancedCrawlerAgent
 from typing import List, Dict, Any, Union, Optional
-from crawler.extraction.expert import ExpertSystemInterface
-from crawler.extraction.graph import KnowledgeGraphInterface
-from agents.decor.decor_rag import DecorRAG
+from src.crawler.extraction.expert import ExpertSystemInterface
+from src.crawler.extraction.graph import KnowledgeGraphInterface
+from src.agents.decor.decor_rag import DecorRAG
 
 class DecorAgent:
     def __init__(self, name: str, crawler: AdvancedCrawlerAgent, graph: KnowledgeGraphInterface, expert: ExpertSystemInterface):

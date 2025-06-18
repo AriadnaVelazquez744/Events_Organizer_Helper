@@ -5,9 +5,9 @@ import uuid
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
-from agents.beliefs_schema import BeliefState
-from agents.session_memory import SessionMemoryManager
-from agents.planner.planner_rag import PlannerRAG
+from src.agents.beliefs_schema import BeliefState
+from src.agents.session_memory import SessionMemoryManager
+from src.agents.planner.planner_rag import PlannerRAG
 
 @dataclass
 class Task:
@@ -592,6 +592,10 @@ class PlannerAgentBDI:
         shared_data = self.bus.get_shared_data()
         print(f"[PlannerAgent] Datos compartidos disponibles: {list(shared_data.keys())}")
         
+        # Obtener user_id de la sesión activa
+        session = self.active_sessions[session_id]
+        user_id = session.get("user_id", session_id)
+        
         # Envía la tarea al agente correspondiente y espera la respuesta
         message = {
             "origen": self.name,
@@ -600,9 +604,11 @@ class PlannerAgentBDI:
             "contenido": {
                 "task_id": task.id,
                 "parameters": task.parameters,
-                "graph_data": shared_data  # Incluir todos los datos compartidos
+                "graph_data": shared_data,  # Incluir todos los datos compartidos
+                 # <--- AGREGADO
             },
-            "session_id": session_id
+            "session_id": session_id,
+            "user_id": user_id 
         }
         
         response = self.bus.send_and_wait(message)
@@ -700,7 +706,7 @@ class PlannerAgentBDI:
                         "capacidad": primer_resultado.get("original_data", {}).get("capacity"),
                         "ubicacion": primer_resultado.get("original_data", {}).get("location")
                     }
-                    resultados[categoria] = resultado_filtrado
+                    resultados[categoria] = primer_resultado
                     
                     # Actualizar presupuesto usado
                     presupuesto_usado += resultado_filtrado["precio"]
@@ -815,7 +821,7 @@ class PlannerAgentBDI:
                 print(f"[PlannerAgent] Procesando desire: {desire.type}")
                 
                 # Crear tareas basadas en el tipo de desire
-                tasks = self._create_tasks_for_desire(desire)
+                tasks = self._create_tasks_for_desire(desire, session_id)
                 print(f"[PlannerAgent] Creadas {len(tasks)} tareas para desire {desire.type}")
                 
                 # Crear intention
@@ -839,7 +845,7 @@ class PlannerAgentBDI:
         
         return intentions
 
-    def _create_tasks_for_desire(self, desire: Desire) -> List[Task]:
+    def _create_tasks_for_desire(self, desire: Desire, session_id:str) -> List[Task]:
         """Crea tareas específicas para un desire."""
         tasks = []
         
@@ -847,13 +853,14 @@ class PlannerAgentBDI:
         print(f"[PlannerAgent] Parámetros del desire: {desire.parameters}")
         
         if desire.type == "complete_event_planning":
-            # Tarea de distribución de presupuesto
+            # Recupera los criterios completos del belief de la sesión
+            criterios_completos = self.active_sessions[session_id]["beliefs"].get("criterios", {})
             budget_task = Task(
                 id=str(uuid.uuid4()),
                 type="budget_distribution",
                 parameters={
                     "budget": desire.parameters.get("budget", 0),
-                    "criterios": desire.parameters
+                    "criterios": criterios_completos
                 }
             )
             tasks.append(budget_task)
