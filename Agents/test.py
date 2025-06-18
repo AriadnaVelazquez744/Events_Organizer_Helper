@@ -7,11 +7,11 @@ import requests
 # Añade la carpeta base del proyecto al path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from Crawler.core import AdvancedCrawlerAgent
-from Crawler.graph import KnowledgeGraphInterface
-from Crawler.expert import ExpertSystemInterface
+from crawler.core.core import AdvancedCrawlerAgent
+from crawler.extraction.graph import KnowledgeGraphInterface
+from crawler.extraction.expert import ExpertSystemInterface
 from venue_manager import VenueAgent
-from Crawler.policy import CrawlPolicy
+from crawler.core.policy import CrawlPolicy
 
 # 1. Inicialización de componentes
 graph = KnowledgeGraphInterface("venues_graph.json")

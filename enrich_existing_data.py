@@ -6,9 +6,9 @@ que tengan baja calidad de datos.
 
 import json
 import os
-from Crawler.quality_validator import DataQualityValidator
-from Crawler.enrichment_engine import DynamicEnrichmentEngine
-from Crawler.graph import KnowledgeGraphInterface
+from crawler.quality.quality_validator import DataQualityValidator
+from crawler.quality.enrichment_engine import DynamicEnrichmentEngine
+from crawler.extraction.graph import KnowledgeGraphInterface
 
 def enrich_existing_data():
     """Enriquece todos los datos existentes en el grafo que necesiten mejora."""

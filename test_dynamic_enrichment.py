@@ -6,9 +6,9 @@ Demuestra cómo el sistema detecta y corrige automáticamente datos incompletos 
 
 import json
 from datetime import datetime, timedelta, timezone
-from Crawler.quality_validator import DataQualityValidator
-from Crawler.enrichment_engine import DynamicEnrichmentEngine
-from Crawler.monitoring import DataQualityMonitor
+from crawler.quality.quality_validator import DataQualityValidator
+from crawler.quality.enrichment_engine import DynamicEnrichmentEngine
+from crawler.quality.monitoring import DataQualityMonitor
 
 def test_incomplete_venue_data():
     """Prueba con datos de venue incompletos."""

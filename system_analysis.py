@@ -188,8 +188,8 @@ class SystemAnalyzer:
             # Intentar importar componentes principales
             from Agents.Planneragent import PlannerAgentBDI, MessageBus
             from Agents.session_memory import SessionMemoryManager
-            from Crawler.quality_validator import DataQualityValidator
-            from Crawler.monitoring import DataQualityMonitor
+            from crawler.quality.quality_validator import DataQualityValidator
+            from crawler.quality.monitoring import DataQualityMonitor
             
             # Verificar que se pueden crear instancias
             bus = MessageBus()
@@ -229,8 +229,8 @@ class SystemAnalyzer:
         print_section("ANÁLISIS DEL SISTEMA DE ENRIQUECIMIENTO")
         
         try:
-            from Crawler.quality_validator import DataQualityValidator
-            from Crawler.enrichment_engine import DynamicEnrichmentEngine
+            from crawler.quality.quality_validator import DataQualityValidator
+            from crawler.quality.enrichment_engine import DynamicEnrichmentEngine
             
             validator = DataQualityValidator()
             engine = DynamicEnrichmentEngine(validator)

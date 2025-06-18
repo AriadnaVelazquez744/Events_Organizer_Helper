@@ -2,12 +2,12 @@ from Agents.Planneragent import PlannerAgentBDI, MessageBus
 from Agents.decor_manager import DecorAgent
 from Agents.catering_manager import CateringAgent
 from Agents.venue_manager import VenueAgent
-from Crawler.core import AdvancedCrawlerAgent
-from Crawler.graph import KnowledgeGraphInterface
-from Crawler.expert import ExpertSystemInterface
-from Crawler.policy import CrawlPolicy
-from Crawler.monitoring import DataQualityMonitor
-from Crawler.quality_validator import DataQualityValidator
+from crawler.core.core import AdvancedCrawlerAgent
+from crawler.extraction.graph import KnowledgeGraphInterface
+from crawler.extraction.expert import ExpertSystemInterface
+from crawler.core.policy import CrawlPolicy
+from crawler.quality.monitoring import DataQualityMonitor
+from crawler.quality.quality_validator import DataQualityValidator
 from Agents.session_memory import SessionMemoryManager
 from Agents.BudgetAgent import BudgetDistributorAgent
 import json

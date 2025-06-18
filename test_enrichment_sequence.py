@@ -5,8 +5,8 @@ Script de prueba para verificar la secuencia de enriquecimiento:
 2. Fuente secundaria: Google
 """
 
-from Crawler.quality_validator import DataQualityValidator
-from Crawler.enrichment_engine import DynamicEnrichmentEngine
+from crawler.quality.quality_validator import DataQualityValidator
+from crawler.quality.enrichment_engine import DynamicEnrichmentEngine
 
 def test_enrichment_sequence():
     """Prueba la secuencia de enriquecimiento con datos que necesitan mejora."""

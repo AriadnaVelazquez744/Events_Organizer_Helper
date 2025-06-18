@@ -2,10 +2,10 @@
 import re
 from urllib.parse import urlparse, urljoin
 from typing import Callable, List, Dict, Any
-from Crawler.scrapper import scrape_page
-from Crawler.policy import CrawlPolicy
-from Crawler.quality_validator import DataQualityValidator
-from Crawler.enrichment_engine import DynamicEnrichmentEngine
+from crawler.extraction.scrapper import scrape_page
+from crawler.core.policy import CrawlPolicy
+from crawler.quality.quality_validator import DataQualityValidator
+from crawler.quality.enrichment_engine import DynamicEnrichmentEngine
 from datetime import datetime
 
 class AdvancedCrawlerAgent:

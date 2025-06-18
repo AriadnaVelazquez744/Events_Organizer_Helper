@@ -3,8 +3,8 @@
 Script de prueba simple para verificar el enriquecimiento corregido.
 """
 
-from Crawler.quality_validator import DataQualityValidator
-from Crawler.enrichment_engine import DynamicEnrichmentEngine
+from crawler.quality.quality_validator import DataQualityValidator
+from crawler.quality.enrichment_engine import DynamicEnrichmentEngine
 
 def test_enrichment_with_good_data():
     """Prueba enriquecimiento con datos que tienen información útil."""

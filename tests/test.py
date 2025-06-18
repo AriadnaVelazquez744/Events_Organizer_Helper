@@ -1,8 +1,8 @@
 
 # test/test_real_crawler.py
-from core import AdvancedCrawlerAgent
-from graph import KnowledgeGraphInterface
-from expert import ExpertSystemInterface
+from crawler.core.core import AdvancedCrawlerAgent
+from crawler.extraction.graph import KnowledgeGraphInterface
+from crawler.extraction.expert import ExpertSystemInterface
 import time
 
 def rule_detect_example_domain(knowledge):

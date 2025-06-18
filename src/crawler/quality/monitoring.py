@@ -2,7 +2,7 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime, timedelta
 import json
 import time
-from Crawler.quality_validator import DataQualityValidator
+from crawler.quality.quality_validator import DataQualityValidator
 
 class DataQualityMonitor:
     def __init__(self, quality_validator: DataQualityValidator):

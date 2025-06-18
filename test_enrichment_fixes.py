@@ -4,8 +4,8 @@ Script de prueba para verificar el sistema de validaci√≥n y enriquecimiento din√
 """
 
 import json
-from Crawler.quality_validator import DataQualityValidator
-from Crawler.enrichment_engine import DynamicEnrichmentEngine
+from crawler.quality.quality_validator import DataQualityValidator
+from crawler.quality.enrichment_engine import DynamicEnrichmentEngine
 
 def test_quality_validator():
     """Prueba el validador de calidad con datos reales."""

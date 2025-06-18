@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 import requests
 import re
-from Crawler.llm_extract_openrouter import llm_extract_openrouter
+from crawler.extraction.llm_extract_openrouter import llm_extract_openrouter
 
 def setup_driver():
     options = Options()

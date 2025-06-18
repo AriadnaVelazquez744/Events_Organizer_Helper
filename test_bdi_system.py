@@ -96,10 +96,10 @@ def setup_agents(bus):
     from Agents.venue_manager import VenueAgent
     from Agents.catering_manager import CateringAgent
     from Agents.decor_manager import DecorAgent
-    from Crawler.core import AdvancedCrawlerAgent
-    from Crawler.graph import KnowledgeGraphInterface
-    from Crawler.expert import ExpertSystemInterface
-    from Crawler.policy import CrawlPolicy
+    from crawler.core.core import AdvancedCrawlerAgent
+    from crawler.extraction.graph import KnowledgeGraphInterface
+    from crawler.extraction.expert import ExpertSystemInterface
+    from crawler.core.policy import CrawlPolicy
     
     # Inicializar componentes compartidos
     expert = ExpertSystemInterface()
