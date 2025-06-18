@@ -11,8 +11,10 @@ from typing import Dict, List, Any, Tuple
 import json
 import os
 import time
-from experimental_framework import BaseExperiment, ExperimentConfig, ExperimentResult
-from experimental_framework import StatisticalValidator, EffectSizeCalculator, PowerAnalyzer
+
+from scipy import stats
+from framework.experimental_framework import BaseExperiment, ExperimentConfig, ExperimentResult
+from framework.experimental_framework import StatisticalValidator, EffectSizeCalculator, PowerAnalyzer
 from scipy.stats import poisson, expon as exponential, gamma
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
@@ -23,8 +25,8 @@ from scipy.stats import f_oneway, kruskal, pearsonr, spearmanr
 class IntegrationEffectivenessExperiment(BaseExperiment):
     """Experimento para analizar la efectividad de integración del sistema."""
     
-    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any]):
-        super().__init__(config, system_components)
+    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any], output_dir: str = None):
+        super().__init__(config, system_components, output_dir)
         self.message_types = ['task', 'response', 'broadcast', 'error', 'correction']
         self.agent_types = ['planner', 'venue', 'catering', 'decor', 'budget']
         self.session_states = ['active', 'completed', 'error', 'timeout']
@@ -855,8 +857,9 @@ def run_integration_experiments(system_components: Dict[str, Any]) -> List[Exper
         max_sample_size=500
     )
     
-    # Crear y ejecutar experimento
-    experiment = IntegrationEffectivenessExperiment(config, system_components)
+    # Crear y ejecutar experimento con directorio de salida específico
+    output_dir = os.path.join("results", "integration_effectiveness")
+    experiment = IntegrationEffectivenessExperiment(config, system_components, output_dir)
     results = experiment.run()
     
     # Generar visualizaciones

@@ -10,8 +10,8 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any, Tuple
 import json
 import os
-from experimental_framework import BaseExperiment, ExperimentConfig, ExperimentResult
-from experimental_framework import StatisticalValidator, EffectSizeCalculator, PowerAnalyzer
+from framework.experimental_framework import BaseExperiment, ExperimentConfig, ExperimentResult
+from framework.experimental_framework import StatisticalValidator, EffectSizeCalculator, PowerAnalyzer
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.model_selection import cross_val_score, KFold
 from sklearn.ensemble import RandomForestClassifier
@@ -22,8 +22,8 @@ from scipy.stats import f_oneway, kruskal, pearsonr, spearmanr
 class RAGPrecisionExperiment(BaseExperiment):
     """Experimento para analizar la precisión de sistemas RAG."""
     
-    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any]):
-        super().__init__(config, system_components)
+    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any], output_dir: str = None):
+        super().__init__(config, system_components, output_dir)
         self.rag_types = ['venue', 'catering', 'decor']
         self.query_categories = ['budget', 'capacity', 'style', 'location', 'services']
         
@@ -592,8 +592,9 @@ def run_rag_experiments(system_components: Dict[str, Any]) -> List[ExperimentRes
         max_sample_size=500
     )
     
-    # Crear y ejecutar experimento
-    experiment = RAGPrecisionExperiment(config, system_components)
+    # Crear y ejecutar experimento con directorio de salida específico
+    output_dir = os.path.join("results", "rag_precision")
+    experiment = RAGPrecisionExperiment(config, system_components, output_dir)
     results = experiment.run()
     
     # Generar visualizaciones

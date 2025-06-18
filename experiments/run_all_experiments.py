@@ -17,15 +17,15 @@ import seaborn as sns
 from pathlib import Path
 
 # Importar experimentos
-from experiment_2_bdi_effectiveness import run_bdi_experiments
-from experiment_3_rag_precision import run_rag_experiments
-from experiment_5_system_performance import run_performance_experiments
-from experiment_6_integration_effectiveness import run_integration_experiments
+from experiments.experiment_2_bdi_effectiveness import run_bdi_experiments
+from experiments.experiment_3_rag_precision import run_rag_experiments
+from experiments.experiment_5_system_performance import run_performance_experiments
+from experiments.experiment_6_integration_effectiveness import run_integration_experiments
 
 class ExperimentRunner:
     """Ejecutor principal de todos los experimentos."""
     
-    def __init__(self, output_dir: str = "experiment_results"):
+    def __init__(self, output_dir: str = "results"):
         self.output_dir = output_dir
         self.results_summary = {}
         self.execution_times = {}

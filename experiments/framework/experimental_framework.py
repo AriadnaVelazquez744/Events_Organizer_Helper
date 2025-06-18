@@ -313,7 +313,7 @@ class DataCollector:
 class ExperimentReporter:
     """Generador de reportes de experimentos."""
     
-    def __init__(self, output_dir: str = "experiment_results"):
+    def __init__(self, output_dir: str = "results"):
         self.output_dir = output_dir
         os.makedirs(output_dir, exist_ok=True)
     
@@ -400,14 +400,19 @@ class ExperimentReporter:
 class BaseExperiment:
     """Clase base para todos los experimentos."""
     
-    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any]):
+    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any], output_dir: str = None):
         self.config = config
         self.components = system_components
+        self.output_dir = output_dir or "results"
+        
+        # Crear directorio de salida si no existe
+        os.makedirs(self.output_dir, exist_ok=True)
+        
         self.data_collector = DataCollector(system_components)
         self.validator = StatisticalValidator()
         self.effect_calculator = EffectSizeCalculator()
         self.power_analyzer = PowerAnalyzer()
-        self.reporter = ExperimentReporter()
+        self.reporter = ExperimentReporter(self.output_dir)
         
         # Configurar semilla aleatoria
         np.random.seed(config.random_seed)
@@ -463,6 +468,9 @@ class BaseExperiment:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"{self.config.name}_{timestamp}_data.json"
         
+        # Asegurar que el archivo se guarde en el directorio de salida
+        filepath = os.path.join(self.output_dir, filename)
+        
         data_to_save = {
             'experiment_config': self.config.__dict__,
             'data_buffer': self.data_buffer,
@@ -473,10 +481,10 @@ class BaseExperiment:
         # Serializar datos para JSON
         serialized_data = self._serialize_data_for_json(data_to_save)
         
-        with open(filename, 'w', encoding='utf-8') as f:
+        with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(serialized_data, f, indent=2, ensure_ascii=False)
         
-        print(f"[BaseExperiment] Datos guardados en: {filename}")
+        print(f"[BaseExperiment] Datos guardados en: {filepath}")
     
     def generate_visualizations(self, save_path: str = None):
         """Genera visualizaciones de los resultados."""
@@ -487,6 +495,9 @@ class BaseExperiment:
         if not save_path:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             save_path = f"{self.config.name}_{timestamp}_plots.png"
+        
+        # Asegurar que el archivo se guarde en el directorio de salida
+        filepath = os.path.join(self.output_dir, save_path)
         
         # Crear figura con múltiples subplots
         fig, axes = plt.subplots(2, 2, figsize=(15, 12))
@@ -530,10 +541,10 @@ class BaseExperiment:
                 axes[1, 1].set_title(f'{num_col} por {cat_col}')
         
         plt.tight_layout()
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.savefig(filepath, dpi=300, bbox_inches='tight')
         plt.close()
         
-        print(f"[BaseExperiment] Visualizaciones guardadas en: {save_path}")
+        print(f"[BaseExperiment] Visualizaciones guardadas en: {filepath}")
 
 # Configuración global para experimentos
 EXPERIMENT_CONFIGS = {

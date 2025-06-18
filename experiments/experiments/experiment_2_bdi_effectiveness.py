@@ -10,8 +10,10 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any, Tuple
 import json
 import os
-from experimental_framework import BaseExperiment, ExperimentConfig, ExperimentResult
-from experimental_framework import StatisticalValidator, EffectSizeCalculator, PowerAnalyzer
+
+from scipy import stats
+from framework.experimental_framework import BaseExperiment, ExperimentConfig, ExperimentResult
+from framework.experimental_framework import StatisticalValidator, EffectSizeCalculator, PowerAnalyzer
 import statsmodels.api as sm
 from scipy.stats import f_oneway, kruskal, pearsonr, spearmanr, sem
 from sklearn.preprocessing import StandardScaler
@@ -19,10 +21,11 @@ from sklearn.preprocessing import StandardScaler
 class BDIEffectivenessExperiment(BaseExperiment):
     """Experimento para analizar la efectividad del ciclo BDI."""
     
-    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any]):
+    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any], output_dir: str):
         super().__init__(config, system_components)
         self.complexity_levels = ['low', 'medium', 'high']
         self.agent_types = ['venue', 'catering', 'decor', 'budget']
+        self.output_dir = output_dir
         
     def run(self) -> List[ExperimentResult]:
         """Ejecuta el experimento completo de efectividad BDI."""
@@ -474,8 +477,9 @@ def run_bdi_experiments(system_components: Dict[str, Any]) -> List[ExperimentRes
         max_sample_size=500
     )
     
-    # Crear y ejecutar experimento
-    experiment = BDIEffectivenessExperiment(config, system_components)
+    # Crear y ejecutar experimento con directorio de salida específico
+    output_dir = os.path.join("results", "bdi_effectiveness")
+    experiment = BDIEffectivenessExperiment(config, system_components, output_dir)
     results = experiment.run()
     
     # Generar visualizaciones

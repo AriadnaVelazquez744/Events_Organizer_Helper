@@ -12,8 +12,8 @@ import json
 import os
 import psutil
 import time
-from experimental_framework import BaseExperiment, ExperimentConfig, ExperimentResult
-from experimental_framework import StatisticalValidator, EffectSizeCalculator, PowerAnalyzer
+from framework.experimental_framework import BaseExperiment, ExperimentConfig, ExperimentResult
+from framework.experimental_framework import StatisticalValidator, EffectSizeCalculator, PowerAnalyzer
 from scipy.stats import chi2_contingency, ks_2samp
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
@@ -24,8 +24,8 @@ from scipy.stats import f_oneway, kruskal, pearsonr, spearmanr
 class SystemPerformanceExperiment(BaseExperiment):
     """Experimento para analizar el rendimiento del sistema."""
     
-    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any]):
-        super().__init__(config, system_components)
+    def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any], output_dir: str = None):
+        super().__init__(config, system_components, output_dir)
         self.load_scenarios = ['low', 'medium', 'high', 'extreme']
         self.budget_ranges = ['low', 'medium', 'high', 'luxury']
         
@@ -643,8 +643,9 @@ def run_performance_experiments(system_components: Dict[str, Any]) -> List[Exper
         max_sample_size=500
     )
     
-    # Crear y ejecutar experimento
-    experiment = SystemPerformanceExperiment(config, system_components)
+    # Crear y ejecutar experimento con directorio de salida específico
+    output_dir = os.path.join("results", "system_performance")
+    experiment = SystemPerformanceExperiment(config, system_components, output_dir)
     results = experiment.run()
     
     # Generar visualizaciones
