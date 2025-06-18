@@ -1,0 +1,110 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Reporte de Experimento: RAG_Precision_Complete</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                .header { background-color: #f0f0f0; padding: 20px; border-radius: 5px; }
+                .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007acc; }
+                .result { background-color: #f9f9f9; padding: 10px; margin: 10px 0; border-radius: 3px; }
+                .significant { background-color: #d4edda; border-left-color: #28a745; }
+                .not-significant { background-color: #f8d7da; border-left-color: #dc3545; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>Reporte de Experimento: RAG_Precision_Complete</h1>
+                <p>Generado el: 2025-06-18 03:52:37</p>
+            </div>
+            
+            <div class="section">
+                <h2>Resumen de Datos</h2>
+                <table>
+                    <tr><th>Métrica</th><th>Valor</th></tr>
+                    <tr><td>Total de muestras</td><td>300</td></tr>
+                    <tr><td>Duración del experimento</td><td>300 consultas simuladas</td></tr>
+                    <tr><td>Experimentos realizados</td><td>5</td></tr>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>Resultados de Experimentos</h2>
+        
+                <div class="result significant">
+                    <h3>Experimento 1: RAG Precision Analysis</h3>
+                    <p><strong>Conclusión:</strong> Existe diferencia significativa en precisión entre tipos de RAG (F=19.646, p=0.0000). Precisión general: 0.676, Recall: 0.635, F1: 0.658</p>
+                    <p><strong>Estadístico de prueba:</strong> 19.6463</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.1168 (large)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.5229</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar RAG de decor que muestra menor precisión</li><li>Implementar estrategias de mejora específicas por tipo</li><li>Monitorear tendencias de precisión por tipo de RAG</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 2: RAG Type Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis por tipo completado. Correlación precisión-estabilidad: r=0.031 (p=0.5869). Modelo de regresión significativo (R²=0.651)</p>
+                    <p><strong>Estadístico de prueba:</strong> 137.4049</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.0315 (small)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.0845</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar estabilidad para mejorar precisión</li><li>Implementar estrategias específicas por tipo de RAG</li><li>Monitorear correlaciones identificadas</li>
+                    </ul>
+                </div>
+            
+                <div class="result not-significant">
+                    <h3>Experimento 3: Pattern Adaptability Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de adaptabilidad completado. Correlación adaptabilidad-rendimiento: r=0.015 (p=0.7924)</p>
+                    <p><strong>Estadístico de prueba:</strong> 1.0359</p>
+                    <p><strong>P-valor:</strong> 0.5957</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.0153 (small)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.0580</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar frecuencia de actualización de patrones</li><li>Implementar aprendizaje adaptativo por tipo de RAG</li><li>Monitorear tendencias temporales de adaptabilidad</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 4: Query Complexity Correlation</h3>
+                    <p><strong>Conclusión:</strong> Correlación complejidad-preción: r=-0.795 (p=0.0000). Correlación complejidad-confianza: r=-0.340 (p=0.0000). Modelo predictivo significativo (R²=0.544)</p>
+                    <p><strong>Estadístico de prueba:</strong> 117.6764</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.7953 (large)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Implementar estrategias específicas para consultas complejas</li><li>Optimizar algoritmos para mantener precisión en consultas complejas</li><li>Desarrollar modelos predictivos de rendimiento</li>
+                    </ul>
+                </div>
+            
+                <div class="result not-significant">
+                    <h3>Experimento 5: Temporal Stability Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de estabilidad temporal completado. Estabilidad general: 0.983</p>
+                    <p><strong>Estadístico de prueba:</strong> 0.9331</p>
+                    <p><strong>P-valor:</strong> 0.3945</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.0599 (small)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.1787</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Implementar monitoreo continuo de estabilidad temporal</li><li>Desarrollar estrategias de estabilización por tipo de RAG</li><li>Optimizar algoritmos para mantener consistencia temporal</li>
+                    </ul>
+                </div>
+            
+            </div>
+        </body>
+        </html>
+        

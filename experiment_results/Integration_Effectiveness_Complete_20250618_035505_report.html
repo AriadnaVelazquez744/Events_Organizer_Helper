@@ -1,0 +1,110 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Reporte de Experimento: Integration_Effectiveness_Complete</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                .header { background-color: #f0f0f0; padding: 20px; border-radius: 5px; }
+                .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007acc; }
+                .result { background-color: #f9f9f9; padding: 10px; margin: 10px 0; border-radius: 3px; }
+                .significant { background-color: #d4edda; border-left-color: #28a745; }
+                .not-significant { background-color: #f8d7da; border-left-color: #dc3545; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>Reporte de Experimento: Integration_Effectiveness_Complete</h1>
+                <p>Generado el: 2025-06-18 03:55:05</p>
+            </div>
+            
+            <div class="section">
+                <h2>Resumen de Datos</h2>
+                <table>
+                    <tr><th>Métrica</th><th>Valor</th></tr>
+                    <tr><td>Total de muestras</td><td>600</td></tr>
+                    <tr><td>Duración del experimento</td><td>600 eventos de integración simulados</td></tr>
+                    <tr><td>Experimentos realizados</td><td>5</td></tr>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>Resultados de Experimentos</h2>
+        
+                <div class="result significant">
+                    <h3>Experimento 1: MessageBus Effectiveness Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de MessageBus completado. Tasa de éxito: 0.959. Diferencia significativa en eficiencia entre tipos (F=13.992, p=0.0000). Correlación throughput-latencia: r=-0.810 (p=0.0000). Modelo predictivo de latencia significativo (R²=0.302)</p>
+                    <p><strong>Estadístico de prueba:</strong> 13.9922</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.8100 (large)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar tipos de mensaje con menor eficiencia</li><li>Implementar balanceo de carga para reducir latencia</li><li>Monitorear correlaciones throughput-latencia</li>
+                    </ul>
+                </div>
+            
+                <div class="result not-significant">
+                    <h3>Experimento 2: Session Memory Effectiveness Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de memoria de sesión completado. Modelo predictivo de efectividad significativo (R²=0.297)</p>
+                    <p><strong>Estadístico de prueba:</strong> nan</p>
+                    <p><strong>P-valor:</strong> nan</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.0838 (small)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.1319</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar persistencia para sesiones con errores</li><li>Implementar estrategias de recuperación mejoradas</li><li>Monitorear correlaciones entre métricas de memoria</li>
+                    </ul>
+                </div>
+            
+                <div class="result not-significant">
+                    <h3>Experimento 3: Communication Patterns Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de patrones de comunicación completado. Silhouette score: 0.629</p>
+                    <p><strong>Estadístico de prueba:</strong> -0.6000</p>
+                    <p><strong>P-valor:</strong> 0.2848</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.6000 (large)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar patrones de comunicación identificados</li><li>Balancear carga de comunicación entre agentes</li><li>Implementar clustering para optimización de patrones</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 4: Communication Latency Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de latencia completado. P50: 0.796s, P95: 2.373s. Diferencia significativa en latencia entre tipos (H=182.937, p=0.0000). Correlación latencia-tamaño: r=0.208 (p=0.0000)</p>
+                    <p><strong>Estadístico de prueba:</strong> 182.9368</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.2079 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.9963</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar latencia para tipos de mensaje lentos</li><li>Implementar compresión para mensajes grandes</li><li>Monitorear percentiles de latencia críticos</li>
+                    </ul>
+                </div>
+            
+                <div class="result not-significant">
+                    <h3>Experimento 5: Memory Persistence Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de persistencia completado</p>
+                    <p><strong>Estadístico de prueba:</strong> nan</p>
+                    <p><strong>P-valor:</strong> nan</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.0652 (small)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.0990</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar persistencia para sesiones grandes</li><li>Implementar estrategias de persistencia por duración</li><li>Desarrollar modelos predictivos de persistencia</li>
+                    </ul>
+                </div>
+            
+            </div>
+        </body>
+        </html>
+        

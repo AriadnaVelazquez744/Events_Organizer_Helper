@@ -1,0 +1,20 @@
+Experimento,Análisis,P-Valor,Tamaño_Efecto,Significancia_Efecto,Potencia,Tamaño_Muestra,Significativo,Supuestos_Cumplidos
+BDI_Effectiveness,BDI Effectiveness Analysis,0.0023699222706877773,0.0595243528370945,medium,0.13345783598931463,200,Sí,No
+BDI_Effectiveness,Intention Reconsideration Analysis,0.8406530713317305,0.32289621897397874,medium,0.9951216706504539,200,No,Sí
+BDI_Effectiveness,BDI Correlations Analysis,9.43116101055843e-22,0.6097711491465306,large,1.0,200,Sí,Sí
+BDI_Effectiveness,BDI Regression Analysis,0.44846702894319546,0.023953336108822554,medium,0.0631183308969081,200,No,Sí
+RAG_Precision,RAG Precision Analysis,9.70069876710785e-09,0.11684063698529122,large,0.5228709074251645,300,Sí,Sí
+RAG_Precision,RAG Type Analysis,4.007941511701155e-66,0.031497234854581634,small,0.08450745917178336,300,Sí,Sí
+RAG_Precision,Pattern Adaptability Analysis,0.5957383210528424,0.015258391759908441,small,0.05798734480187381,300,No,Sí
+RAG_Precision,Query Complexity Correlation,3.497368774207298e-50,0.7953323925821396,large,1.0,300,Sí,Sí
+RAG_Precision,Temporal Stability Analysis,0.3944951600401858,0.059909843514455066,small,0.17869562763739924,300,No,Sí
+System_Performance,System Scalability Analysis,1.8666232469399557e-41,0.38444172951503586,large,1.0,400,Sí,No
+System_Performance,Budget Distribution Analysis,2.2182991482528118e-21,0.2993684651380293,medium,1.0,400,Sí,Sí
+System_Performance,Resource Usage Analysis,8.468682531928896e-20,0.24247921576345816,medium,0.9979984261950153,400,Sí,Sí
+System_Performance,Throughput Performance Analysis,1.0640646031246158e-21,0.23772411077569233,medium,0.997307430835417,400,Sí,Sí
+System_Performance,Latency Performance Analysis,1.2729880936990939e-23,0.4727797048731554,medium,1.0,400,Sí,Sí
+Integration_Effectiveness,MessageBus Effectiveness Analysis,8.001964559880332e-11,0.8099650318601274,large,1.0,500,Sí,Sí
+Integration_Effectiveness,Session Memory Effectiveness Analysis,,0.08381035126485366,small,0.13188034337473892,100,No,Sí
+Integration_Effectiveness,Communication Patterns Analysis,0.28475697986529375,0.6,large,1.0,500,No,Sí
+Integration_Effectiveness,Communication Latency Analysis,1.7448645393450218e-38,0.2079079356317425,medium,0.9963192572812105,500,Sí,Sí
+Integration_Effectiveness,Memory Persistence Analysis,,0.06522117434455528,small,0.09899516925660172,100,No,Sí
