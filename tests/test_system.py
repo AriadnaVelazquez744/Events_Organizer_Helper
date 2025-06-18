@@ -1,9 +1,9 @@
 import json
 from datetime import datetime
-from Planneragent import PlannerAgentBDI, MessageBus
-from session_memory import SessionMemoryManager
-from beliefs_schema import BeliefState, Conflict
-from llm_formatter import (
+from agents.planner.Planneragent import PlannerAgentBDI, MessageBus
+from agents.session_memory import SessionMemoryManager
+from agents.beliefs_schema import BeliefState, Conflict
+from agents.llm_formatter import (
     generar_resumen_natural,
     formatear_correccion,
     formatear_conflicto,

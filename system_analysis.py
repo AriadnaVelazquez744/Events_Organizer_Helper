@@ -186,8 +186,8 @@ class SystemAnalyzer:
         
         try:
             # Intentar importar componentes principales
-            from Agents.Planneragent import PlannerAgentBDI, MessageBus
-            from Agents.session_memory import SessionMemoryManager
+            from agents.planner.Planneragent import PlannerAgentBDI, MessageBus
+            from agents.session_memory import SessionMemoryManager
             from crawler.quality.quality_validator import DataQualityValidator
             from crawler.quality.monitoring import DataQualityMonitor
             
@@ -208,10 +208,10 @@ class SystemAnalyzer:
         
         # Verificar que los agentes pueden recibir mensajes
         try:
-            from Agents.venue_manager import VenueAgent
-            from Agents.catering_manager import CateringAgent
-            from Agents.decor_manager import DecorAgent
-            from Agents.BudgetAgent import BudgetDistributorAgent
+            from agents.venue.venue_manager import VenueAgent
+            from agents.catering.catering_manager import CateringAgent
+            from agents.decor.decor_manager import DecorAgent
+            from agents.budget.BudgetAgent import BudgetDistributorAgent
             
             # Verificar que tienen método receive
             agents = [VenueAgent, CateringAgent, DecorAgent, BudgetDistributorAgent]

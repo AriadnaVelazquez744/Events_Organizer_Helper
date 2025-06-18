@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from typing import Dict, Any, Optional
 from collections import defaultdict
-from Agents.beliefs_schema import BeliefState
+from agents.beliefs_schema import BeliefState
 
 class SessionMemoryManager:
     def __init__(self, storage_file: str = "session_memory.json"):

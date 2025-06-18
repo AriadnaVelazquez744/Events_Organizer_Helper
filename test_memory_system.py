@@ -6,7 +6,7 @@ Tests learning, consistency, and persistence across multiple queries
 
 import json
 import os
-from Agents.BudgetAgent import BudgetDistributorAgent
+from agents.budget.BudgetAgent import BudgetDistributorAgent
 
 def create_test_criteria():
     """Crea criterios de prueba más diferenciados para generar variaciones."""

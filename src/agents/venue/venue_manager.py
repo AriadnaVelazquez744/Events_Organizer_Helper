@@ -7,7 +7,7 @@ from crawler.core.core import AdvancedCrawlerAgent
 from typing import List, Dict, Any, Union, Optional
 from crawler.extraction.expert import ExpertSystemInterface
 from crawler.extraction.graph import KnowledgeGraphInterface
-from Agents.venue_rag import VenueRAG
+from agents.venue.venue_rag import VenueRAG
 import json
 
 class VenueAgent:

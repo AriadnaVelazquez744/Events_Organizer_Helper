@@ -14,9 +14,9 @@ import sys
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from Agents.Planneragent import PlannerAgentBDI, MessageBus
-from Agents.session_memory import SessionMemoryManager
-from Agents.beliefs_schema import BeliefState
+from agents.planner.Planneragent import PlannerAgentBDI, MessageBus
+from agents.session_memory import SessionMemoryManager
+from agents.beliefs_schema import BeliefState
 
 class TestLogger:
     def __init__(self, log_file="test_results.log"):
@@ -92,10 +92,10 @@ def create_error_request():
 
 def setup_agents(bus):
     """Configura y registra todos los agentes necesarios en el bus."""
-    from Agents.BudgetAgent import BudgetDistributorAgent
-    from Agents.venue_manager import VenueAgent
-    from Agents.catering_manager import CateringAgent
-    from Agents.decor_manager import DecorAgent
+    from agents.budget.BudgetAgent import BudgetDistributorAgent
+    from agents.venue.venue_manager import VenueAgent
+    from agents.catering.catering_manager import CateringAgent
+    from agents.decor.decor_manager import DecorAgent
     from crawler.core.core import AdvancedCrawlerAgent
     from crawler.extraction.graph import KnowledgeGraphInterface
     from crawler.extraction.expert import ExpertSystemInterface
@@ -107,7 +107,7 @@ def setup_agents(bus):
     
     # Cargar grafos
     try:
-        graph_v = KnowledgeGraphInterface("Agents/venues_graph.json")
+        graph_v = KnowledgeGraphInterface("src/agents/venues/venues_graph.json")
         graph_v.clean_errors()
         logger.log(f"[GRAPH] Grafo de venues cargado con {len(graph_v.nodes)} nodos")
     except Exception as e:
@@ -116,7 +116,7 @@ def setup_agents(bus):
         graph_v.clean_errors()
         
     try:
-        graph_c = KnowledgeGraphInterface("Agents/catering_graph.json")
+        graph_c = KnowledgeGraphInterface("src/agents/catering/catering_graph.json")
         graph_c.clean_errors()
         logger.log(f"[GRAPH] Grafo de catering cargado con {len(graph_c.nodes)} nodos")
     except Exception as e:
@@ -125,7 +125,7 @@ def setup_agents(bus):
         graph_c.clean_errors()
 
     try:
-        graph_d = KnowledgeGraphInterface("Agents/decor_graph.json")
+        graph_d = KnowledgeGraphInterface("src/agents/decor/decor_graph.json")
         graph_d.clean_errors()
         logger.log(f"[GRAPH] Grafo de decor cargado con {len(graph_d.nodes)} nodos")
     except Exception as e:
@@ -293,7 +293,7 @@ def test_error_handling():
     planner._handle_user_request(session_id, request)
     
     # Simular error en una tarea
-    from Agents.Planneragent import Task
+    from agents.planner.Planneragent import Task
     error_task = Task(
         id="test_error_task",
         type="venue_search",
@@ -353,7 +353,7 @@ def test_intention_reconsideration():
     logger.log(f"\n📋 Intentions iniciales: {initial_intentions}")
     
     # Simular error crítico
-    from Agents.Planneragent import Task
+    from agents.planner.Planneragent import Task
     critical_error_task = Task(
         id="test_critical_error",
         type="budget_distribution",

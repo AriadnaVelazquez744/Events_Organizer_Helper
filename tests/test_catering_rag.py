@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime
-from catering_rag import CateringRAG, MenuPattern, DietaryRestriction
+from agents.catering.catering_rag import CateringRAG, MenuPattern, DietaryRestriction
 
 class TestCateringRAG(unittest.TestCase):
     def setUp(self):

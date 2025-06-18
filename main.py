@@ -1,15 +1,15 @@
-from Agents.Planneragent import PlannerAgentBDI, MessageBus
-from Agents.decor_manager import DecorAgent
-from Agents.catering_manager import CateringAgent
-from Agents.venue_manager import VenueAgent
+from agents.planner.Planneragent import PlannerAgentBDI, MessageBus
+from agents.decor.decor_manager import DecorAgent
+from agents.catering.catering_manager import CateringAgent
+from agents.venue.venue_manager import VenueAgent
 from crawler.core.core import AdvancedCrawlerAgent
 from crawler.extraction.graph import KnowledgeGraphInterface
 from crawler.extraction.expert import ExpertSystemInterface
 from crawler.core.policy import CrawlPolicy
 from crawler.quality.monitoring import DataQualityMonitor
 from crawler.quality.quality_validator import DataQualityValidator
-from Agents.session_memory import SessionMemoryManager
-from Agents.BudgetAgent import BudgetDistributorAgent
+from agents.session_memory import SessionMemoryManager
+from agents.budget.BudgetAgent import BudgetDistributorAgent
 import json
 from datetime import datetime
 
@@ -58,7 +58,7 @@ def initialize_system():
     # Intentar cargar los grafos existentes
     try:
         print("Intentando cargar grafos existentes...")
-        graph_v = KnowledgeGraphInterface("Agents/venues_graph.json")
+        graph_v = KnowledgeGraphInterface("src/agents/venues/venues_graph.json")
         graph_v.clean_errors()
         print(f"[GRAPH] Grafo de venues cargado con {len(graph_v.nodes)} nodos")
     except Exception as e:
@@ -68,7 +68,7 @@ def initialize_system():
         graph_v.clean_errors()
         
     try:
-        graph_c = KnowledgeGraphInterface("Agents/catering_graph.json")
+        graph_c = KnowledgeGraphInterface("src/agents/catering/catering_graph.json")
         graph_c.clean_errors()
         print(f"[GRAPH] Grafo de catering cargado con {len(graph_c.nodes)} nodos")
     except Exception as e:
@@ -78,7 +78,7 @@ def initialize_system():
         graph_c.clean_errors()
 
     try:
-        graph_d = KnowledgeGraphInterface("Agents/decor_graph.json")
+        graph_d = KnowledgeGraphInterface("src/agents/decor/decor_graph.json")
         graph_d.clean_errors()
         print(f"[GRAPH] Grafo de decor cargado con {len(graph_d.nodes)} nodos")
     except Exception as e:

@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime
-from planner_rag import PlannerRAG, BudgetDistribution
+from agents.planner.planner_rag import PlannerRAG, BudgetDistribution
 
 class TestPlannerRAG(unittest.TestCase):
     def setUp(self):

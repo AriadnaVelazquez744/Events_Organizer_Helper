@@ -8,7 +8,7 @@ from crawler.core.core import AdvancedCrawlerAgent
 from typing import List, Dict, Any, Union, Optional
 from crawler.extraction.expert import ExpertSystemInterface
 from crawler.extraction.graph import KnowledgeGraphInterface
-from Agents.decor_rag import DecorRAG
+from agents.decor.decor_rag import DecorRAG
 
 class DecorAgent:
     def __init__(self, name: str, crawler: AdvancedCrawlerAgent, graph: KnowledgeGraphInterface, expert: ExpertSystemInterface):

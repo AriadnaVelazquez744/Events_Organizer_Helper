@@ -1,5 +1,5 @@
 import unittest
-from decor_rag import DecorRAG, MenuPattern
+from agents.decor.decor_rag import DecorRAG, MenuPattern
 from datetime import datetime
 
 class TestDecorRAG(unittest.TestCase):

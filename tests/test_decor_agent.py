@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from crawler.core.core import AdvancedCrawlerAgent
 from crawler.extraction.graph import KnowledgeGraphInterface
 from crawler.extraction.expert import ExpertSystemInterface
-from decor_manager import DecorAgent
+from agents.decor.decor_manager import DecorAgent
 from crawler.core.policy import CrawlPolicy
 
 # 1. Inicialización de componentes

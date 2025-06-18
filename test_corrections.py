@@ -7,12 +7,12 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from Agents.Planneragent import PlannerAgentBDI, MessageBus
-from Agents.session_memory import SessionMemoryManager
-from Agents.BudgetAgent import BudgetDistributorAgent
-from Agents.venue_manager import VenueAgent
-from Agents.catering_manager import CateringAgent
-from Agents.decor_manager import DecorAgent
+from agents.planner.Planneragent import PlannerAgentBDI, MessageBus
+from agents.session_memory import SessionMemoryManager
+from agents.budget.BudgetAgent import BudgetDistributorAgent
+from agents.venue.venue_manager import VenueAgent
+from agents.catering.catering_manager import CateringAgent
+from agents.decor.decor_manager import DecorAgent
 from crawler.core.core import AdvancedCrawlerAgent
 from crawler.extraction.graph import KnowledgeGraphInterface
 from crawler.extraction.expert import ExpertSystemInterface
@@ -26,7 +26,7 @@ def setup_agents(bus):
     
     # Cargar grafos
     try:
-        graph_v = KnowledgeGraphInterface("Agents/venues_graph.json")
+        graph_v = KnowledgeGraphInterface("src/agents/venues/venues_graph.json")
         graph_v.clean_errors()
         print(f"[GRAPH] Grafo de venues cargado con {len(graph_v.nodes)} nodos")
     except Exception as e:
@@ -35,7 +35,7 @@ def setup_agents(bus):
         graph_v.clean_errors()
         
     try:
-        graph_c = KnowledgeGraphInterface("Agents/catering_graph.json")
+        graph_c = KnowledgeGraphInterface("src/agents/catering/catering_graph.json")
         graph_c.clean_errors()
         print(f"[GRAPH] Grafo de catering cargado con {len(graph_c.nodes)} nodos")
     except Exception as e:
@@ -44,7 +44,7 @@ def setup_agents(bus):
         graph_c.clean_errors()
 
     try:
-        graph_d = KnowledgeGraphInterface("Agents/decor_graph.json")
+        graph_d = KnowledgeGraphInterface("src/agents/decor/decor_graph.json")
         graph_d.clean_errors()
         print(f"[GRAPH] Grafo de decor cargado con {len(graph_d.nodes)} nodos")
     except Exception as e:
