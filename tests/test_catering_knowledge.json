@@ -1,0 +1,25 @@
+{
+  "menu_patterns": [
+    {
+      "style": "test_style",
+      "courses": [
+        "entrada",
+        "principal"
+      ],
+      "dietary_options": [
+        "regular"
+      ],
+      "price_range": [
+        4000.0,
+        6000.0
+      ],
+      "guest_count_range": [
+        50,
+        100
+      ],
+      "success_rate": 1.0,
+      "last_used": "2025-06-15T02:48:16.837943",
+      "usage_count": 1
+    }
+  ]
+}

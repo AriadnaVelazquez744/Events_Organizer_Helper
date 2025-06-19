@@ -1,0 +1,92 @@
+{
+  "decor_patterns": [
+    {
+      "style": "classic",
+      "decorations": [
+        "flores",
+        "velas",
+        "centros",
+        "arreglos",
+        "candelabros"
+      ],
+      "paper_goods": [
+        "invitaciones",
+        "men\u00fas",
+        "tarjetas",
+        "etiquetas"
+      ],
+      "rentals": [
+        "mesas",
+        "sillas",
+        "manteles",
+        "cubiertos",
+        "cristaler\u00eda"
+      ],
+      "price_range": [
+        50.0,
+        100.0
+      ],
+      "guest_count_range": [
+        50,
+        200
+      ],
+      "success_rate": 0.8,
+      "last_used": "2025-06-15T03:04:00.448653",
+      "usage_count": 0
+    },
+    {
+      "style": "premium",
+      "decorations": [
+        "flores premium",
+        "velas arom\u00e1ticas",
+        "centros artesanales",
+        "arreglos exclusivos",
+        "candelabros vintage",
+        "iluminaci\u00f3n especial"
+      ],
+      "paper_goods": [
+        "invitaciones personalizadas",
+        "men\u00fas gourmet",
+        "tarjetas premium",
+        "etiquetas doradas",
+        "programas de evento"
+      ],
+      "rentals": [
+        "mesas premium",
+        "sillas de dise\u00f1o",
+        "manteles de lujo",
+        "cubiertos premium",
+        "cristaler\u00eda fina",
+        "vajilla exclusiva"
+      ],
+      "price_range": [
+        100.0,
+        200.0
+      ],
+      "guest_count_range": [
+        30,
+        150
+      ],
+      "success_rate": 0.9,
+      "last_used": "2025-06-15T03:04:00.448661",
+      "usage_count": 0
+    },
+    {
+      "style": "classic",
+      "decorations": [],
+      "paper_goods": [],
+      "rentals": [],
+      "price_range": [
+        0.0,
+        0.0
+      ],
+      "guest_count_range": [
+        0.0,
+        0.0
+      ],
+      "success_rate": 1.0,
+      "last_used": "2025-06-15T05:41:07.911044",
+      "usage_count": 6
+    }
+  ]
+}

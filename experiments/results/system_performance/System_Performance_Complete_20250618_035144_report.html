@@ -1,0 +1,110 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Reporte de Experimento: System_Performance_Complete</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                .header { background-color: #f0f0f0; padding: 20px; border-radius: 5px; }
+                .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007acc; }
+                .result { background-color: #f9f9f9; padding: 10px; margin: 10px 0; border-radius: 3px; }
+                .significant { background-color: #d4edda; border-left-color: #28a745; }
+                .not-significant { background-color: #f8d7da; border-left-color: #dc3545; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>Reporte de Experimento: System_Performance_Complete</h1>
+                <p>Generado el: 2025-06-18 03:51:44</p>
+            </div>
+            
+            <div class="section">
+                <h2>Resumen de Datos</h2>
+                <table>
+                    <tr><th>Métrica</th><th>Valor</th></tr>
+                    <tr><td>Total de muestras</td><td>400</td></tr>
+                    <tr><td>Duración del experimento</td><td>400 operaciones simuladas</td></tr>
+                    <tr><td>Experimentos realizados</td><td>5</td></tr>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>Resultados de Experimentos</h2>
+        
+                <div class="result significant">
+                    <h3>Experimento 1: System Scalability Analysis</h3>
+                    <p><strong>Conclusión:</strong> Existe diferencia significativa en escalabilidad entre escenarios (F=82.439, p=0.0000)</p>
+                    <p><strong>Estadístico de prueba:</strong> 82.4395</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.3844 (large)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> No</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar rendimiento para cargas extremas</li><li>Implementar escalado horizontal para sesiones concurrentes</li><li>Optimizar algoritmos de grafos para grandes volúmenes</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 2: Budget Distribution Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de distribución de presupuesto completado. Diferencia significativa en eficiencia entre rangos (F=37.559, p=0.0000). Correlación eficiencia-satisfacción: r=0.299 (p=0.0000). Modelo predictivo de satisfacción significativo (R²=0.241)</p>
+                    <p><strong>Estadístico de prueba:</strong> 37.5594</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.2994 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar algoritmos de distribución para presupuestos altos</li><li>Implementar feedback de usuario para mejorar distribución</li><li>Desarrollar modelos predictivos de satisfacción</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 3: Resource Usage Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de uso de recursos completado. Correlación memoria-CPU: r=0.242 (p=0.0000). Diferencia significativa en eficiencia de recursos entre escenarios (H=91.921, p=0.0000). Modelo predictivo de uso de memoria significativo (R²=0.310)</p>
+                    <p><strong>Estadístico de prueba:</strong> 91.9214</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.2425 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.9980</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar uso de memoria para sesiones concurrentes</li><li>Implementar gestión eficiente de recursos por escenario</li><li>Desarrollar modelos predictivos de uso de recursos</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 4: Throughput Performance Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de throughput completado. Diferencia significativa en throughput entre escenarios (F=38.195, p=0.0000). Correlación throughput-memoria: r=0.238 (p=0.0000)</p>
+                    <p><strong>Estadístico de prueba:</strong> 38.1951</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.2377 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.9973</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar throughput para cargas altas</li><li>Balancear uso de recursos para maximizar throughput</li><li>Implementar métricas de eficiencia de throughput</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 5: Latency Performance Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de latencia completado. P50: 601.4ms, P95: 4132.0ms. Diferencia significativa en latencia entre escenarios (H=109.700, p=0.0000). Correlación latencia-sesiones: r=0.473 (p=0.0000)</p>
+                    <p><strong>Estadístico de prueba:</strong> 109.7003</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.4728 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar latencia para sesiones concurrentes</li><li>Implementar caching para reducir latencia</li><li>Monitorear percentiles de latencia críticos</li>
+                    </ul>
+                </div>
+            
+            </div>
+        </body>
+        </html>
+        

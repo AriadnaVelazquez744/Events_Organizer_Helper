@@ -172,3 +172,20 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# LaTeX files
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.pdf
+*.eps
+*.sty
+*.cls
+*.bst
+*.tex
+!event_organizer_helper_report.tex
+/Informe/history.txt
+/Informe/readme.txt

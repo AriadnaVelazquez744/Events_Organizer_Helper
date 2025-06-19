@@ -1,0 +1,96 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Reporte de Experimento: BDI_Effectiveness_Complete</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                .header { background-color: #f0f0f0; padding: 20px; border-radius: 5px; }
+                .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007acc; }
+                .result { background-color: #f9f9f9; padding: 10px; margin: 10px 0; border-radius: 3px; }
+                .significant { background-color: #d4edda; border-left-color: #28a745; }
+                .not-significant { background-color: #f8d7da; border-left-color: #dc3545; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>Reporte de Experimento: BDI_Effectiveness_Complete</h1>
+                <p>Generado el: 2025-06-18 03:54:55</p>
+            </div>
+            
+            <div class="section">
+                <h2>Resumen de Datos</h2>
+                <table>
+                    <tr><th>Métrica</th><th>Valor</th></tr>
+                    <tr><td>Total de muestras</td><td>200</td></tr>
+                    <tr><td>Duración del experimento</td><td>200 sesiones simuladas</td></tr>
+                    <tr><td>Experimentos realizados</td><td>4</td></tr>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>Resultados de Experimentos</h2>
+        
+                <div class="result significant">
+                    <h3>Experimento 1: BDI Effectiveness Analysis</h3>
+                    <p><strong>Conclusión:</strong> Existe diferencia significativa en efectividad BDI entre niveles de complejidad (F=6.234, p=0.0024)</p>
+                    <p><strong>Estadístico de prueba:</strong> 6.2342</p>
+                    <p><strong>P-valor:</strong> 0.0024</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.0595 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.1335</p>
+                    <p><strong>Supuestos cumplidos:</strong> No</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Monitorear sesiones de alta complejidad más de cerca</li><li>Implementar estrategias de recuperación para sesiones con baja estabilidad</li><li>Optimizar el procesamiento de beliefs para sesiones complejas</li>
+                    </ul>
+                </div>
+            
+                <div class="result not-significant">
+                    <h3>Experimento 2: Intention Reconsideration Analysis</h3>
+                    <p><strong>Conclusión:</strong> No se encontró diferencia significativa en patrones de reconsideración entre agentes (H=0.837, p=0.8407). Existe correlación significativa con complejidad (r=0.323, p=0.0000)</p>
+                    <p><strong>Estadístico de prueba:</strong> 0.8368</p>
+                    <p><strong>P-valor:</strong> 0.8407</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.3229 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.9951</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Implementar estrategias específicas por tipo de agente</li><li>Optimizar reconsideración para sesiones de alta complejidad</li><li>Establecer límites de reintentos por tipo de agente</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 3: BDI Correlations Analysis</h3>
+                    <p><strong>Conclusión:</strong> Correlación significativa entre beliefs_count y complexity_score (r=0.610, p=0.0000)</p>
+                    <p><strong>Estadístico de prueba:</strong> 0.6098</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.6098 (large)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Monitorear métricas correlacionadas para optimización</li><li>Implementar alertas basadas en correlaciones identificadas</li><li>Usar correlaciones para predicción de rendimiento</li>
+                    </ul>
+                </div>
+            
+                <div class="result not-significant">
+                    <h3>Experimento 4: BDI Regression Analysis</h3>
+                    <p><strong>Conclusión:</strong> El modelo de regresión no es significativo (F=0.952, p=0.4485, R²=0.024)</p>
+                    <p><strong>Estadístico de prueba:</strong> 0.9522</p>
+                    <p><strong>P-valor:</strong> 0.4485</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.0240 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.0631</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Usar  como predictores principales</li><li>Implementar modelo de predicción de efectividad BDI</li><li>Monitorear variables no significativas para cambios futuros</li>
+                    </ul>
+                </div>
+            
+            </div>
+        </body>
+        </html>
+        

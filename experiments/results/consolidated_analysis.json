@@ -1,0 +1,47 @@
+{
+  "experiment_summary": {
+    "BDI_Effectiveness": {
+      "total_analyses": 4,
+      "significant_analyses": 2,
+      "significance_rate": 0.5,
+      "avg_power": 0.5479244593841692,
+      "avg_effect_size": 0.25403626426660664,
+      "execution_time": 2.0227255821228027
+    },
+    "RAG_Precision": {
+      "total_analyses": 5,
+      "significant_analyses": 3,
+      "significance_rate": 0.6,
+      "avg_power": 0.3688122678072442,
+      "avg_effect_size": 0.20376769993927518,
+      "execution_time": 2.3941991329193115
+    },
+    "System_Performance": {
+      "total_analyses": 5,
+      "significant_analyses": 5,
+      "significance_rate": 1.0,
+      "avg_power": 0.9990611714060865,
+      "avg_effect_size": 0.32735864521307423,
+      "execution_time": 2.9840335845947266
+    },
+    "Integration_Effectiveness": {
+      "total_analyses": 5,
+      "significant_analyses": 2,
+      "significance_rate": 0.4,
+      "avg_power": 0.6454389539825102,
+      "avg_effect_size": 0.35338089862025573,
+      "execution_time": 3.447979688644409
+    }
+  },
+  "statistical_summary": {
+    "total_experiments": 4,
+    "total_analyses": 19,
+    "significant_analyses": 12,
+    "overall_significance_rate": 0.631578947368421,
+    "avg_power": 0.6403092131450026,
+    "avg_effect_size": 0.284635877009803
+  },
+  "performance_metrics": {},
+  "recommendations": [],
+  "timestamp": "2025-06-18T04:14:34.868640"
+}

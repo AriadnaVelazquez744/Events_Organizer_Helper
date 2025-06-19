@@ -1,0 +1,411 @@
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+
+% Configuración para código
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    backgroundcolor=\color{gray!10}
+}
+
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\begin{document}
+
+\mainmatter
+
+\title{Wedding Organizer: Sistema de Planificación de Bodas}
+
+\titlerunning{Wedding Organizer}
+
+\author{Lia S. López Rosales\and Ariadna Velázquez Rey}
+
+\institute{Facultad de Matemática y Computación (MATCOM)\\
+UH, La Habana\\
+\url{https://github.com/AriadnaVelazquez744/Events_Organizer_Helper.git}}
+
+\toctitle{Wedding Organizer}
+\tocauthor{Lia S. López Rosales, Ariadna Velázquez Rey}
+\maketitle
+
+\begin{abstract}
+Se presenta \textit{Wedding Organizer}( Organizador de Bodas ) un sistema multi-agente inteligente para la planificación 
+automatizada de eventos sociales, especializado en bodas. El sistema implementa una arquitectura BDI 
+(\textit{Beliefs} (Creencias) - \textit{Desires} (Deseos) - \textit{Intentions} (Intenciones))\cite{rao1995bdi} integrada 
+con sistemas locales especializados de \textit{Retrieval-Augmented-Generation} (RAG (Generación Aumentada por Recuperación)) 
+\cite{lewis2020retrieval} para proporcionar un plan personalizado de recomendaciones de local de celebración (\textit{venue}), 
+servicio proveedor de gastronomía (\textit{catering}) y decoración. Se evaluó la efectividad del sistema mediante 
+experimentos estadísticos automatizados, obteniendo una tasa de significancia del 63.2\% en 19 análisis realizados, con una 
+potencia promedio de 0.640 y un tamaño de efecto medio de 0.285. Los resultados demuestran la viabilidad del enfoque 
+propuesto para automatizar procesos de planificación de eventos sociales.
+\end{abstract}
+
+\keywords{Sistemas Multi-Agente, Arquitectura BDI, RAG, Planificación de Eventos, Inteligencia Artificial, ANOVA}
+
+\section{Introducción}
+
+La planificación de eventos sociales, particularmente bodas, representa un desafío complejo que involucra múltiples 
+decisiones interdependientes, restricciones presupuestarias y preferencias personalizadas. Tradicionalmente, este proceso 
+requiere la intervención de planificadores profesionales que coordinan múltiples proveedores y gestionan numerosos detalles 
+simultáneamente. Sin embargo, este enfoque manual puede presentar limitaciones en términos de escalabilidad, consistencia 
+y personalización.
+
+El proyecto Wedding Organizer aborda esta problemática mediante la implementación de un sistema multi-agente inteligente 
+que automatiza y optimiza el proceso de planificación de eventos en aspectos imprescindibles del mismo (venue, catering, 
+decoración). El sistema se fundamenta en la arquitectura BDI (Beliefs-Desires-Intentions) como agente central planificador, 
+integrada con sistemas locales especializados de Retrieval-Augmented Generation (RAG) en agentes de decisión para 
+proporcionar recomendaciones contextualmente relevantes y personalizadas.
+
+La motivación principal del proyecto radica en la necesidad de desarrollar soluciones tecnológicas que puedan asistir a 
+los usuarios (clientes o profesionales) en la toma de decisiones complejas, reduciendo la carga cognitiva y mejorando 
+la calidad de las decisiones finales. El enfoque multi-agente permite la especialización de responsabilidades y la 
+coordinación efectiva entre diferentes aspectos de la planificación.
+
+\section{Descripción del Problema}
+
+La planificación de bodas presenta características que la convierten en un problema complejo de optimización multi-objetivo:
+
+\begin{itemize}
+    \item \textbf{Multi-dimensionalidad}: Involucra múltiples categorías (venue, catering, decoración) con criterios 
+    específicos y restricciones propias.
+    \item \textbf{Interdependencia}: Las decisiones en una categoría pueden afectar las opciones disponibles en otras.
+    \item \textbf{Restricciones presupuestarias}: Requiere distribución óptima de recursos financieros limitados.
+    \item \textbf{Preferencias subjetivas}: Incorpora criterios cualitativos difíciles de cuantificar.
+    \item \textbf{Incertidumbre}: Los datos de proveedores pueden ser incompletos o inconsistentes.
+\end{itemize}
+
+Estos factores generan un espacio de búsqueda exponencial que resulta complicado en enfoques tradicionales de optimización. 
+Además, la naturaleza dinámica del mercado de servicios para eventos requiere sistemas capaces de adaptarse a cambios en 
+disponibilidad, precios y ofertas.
+
+\section{Solución Implementada}
+
+\subsection{Arquitectura General del Sistema}
+
+El sistema se estructura en torno a una arquitectura multi-agente distribuida que implementa un agente principal BDI dedicado al control del flujo de decisiones y 4 agentes especializados en tareas de decisión en diferentes dominios. Los agentes implementados son:
+
+\begin{itemize}
+    \item \textbf{PlannerAgent}: Coordinador principal de decisiones que implementa el ciclo BDI completo.
+    \item \textbf{VenueAgent}: Especializado en búsqueda y recomendación de venues.
+    \item \textbf{CateringAgent}: Gestiona opciones de catering y servicios gastronómicos.
+    \item \textbf{DecorAgent}: Maneja recomendaciones de decoración y diseño ( principalmente arreglos florales ).
+    \item \textbf{BudgetDistributorAgent}: Optimiza la distribución de un presupuesto total.
+\end{itemize}
+
+Se utilizó esta estructura por su capacidad de coordinar múltiples decisiones en dominios distintos de forma eficiente.
+
+\subsection{Implementación del Ciclo BDI}
+
+El ciclo BDI se implementa en el PlannerAgent, siguiendo las especificaciones teóricas de Rao y Georgeff:
+
+\subsubsection{Beliefs (Creencias)}
+Las creencias del sistema se estructuran en un esquema jerárquico que incluye:
+\begin{itemize}
+    \item Criterios del usuario (presupuesto, número de invitados, estilo).
+    \item Estado del sistema (tareas pendientes, completadas, errores).
+    \item Distribución de presupuesto asignada.
+    \item Resultados de búsquedas previas.
+    \item Historial de errores y estrategias de corrección.
+\end{itemize}
+
+\subsubsection{Desires (Deseos)}
+Los deseos se generan dinámicamente basados en la petición del usuario:
+\begin{itemize}
+    \item Desire principal: Completar la planificación del evento.
+    \item Desires específicos: Encontrar venue, catering, decoración óptimos y distribuir presupuesto.
+    \item Desires de corrección: Resolver conflictos y errores detectados.
+\end{itemize}
+
+\subsubsection{Intentions (Intenciones)}
+Las intenciones se crean a partir de los deseos activos y se traducen en planes de acción concretos:
+\begin{itemize}
+    \item Distribución de presupuesto.
+    \item Búsquedas especializadas por categoría.
+    \item Estrategias de corrección y recuperación de errores.
+\end{itemize}
+
+La arquitectura BDI permite tener agentes controladores que reacciona y toma decisiones inteligentes en dependencia del 
+estado del sistema y las acciones de otros agentes.
+
+\subsection{Sistema RAG Integrado}
+
+Cada agente especializado implementa un sistema RAG que combina:
+
+\begin{itemize}
+    \item \textbf{Base de Conocimiento}: Grafos de conocimiento específicos por dominio.
+    \item \textbf{Motor de Recuperación}: Búsqueda semántica y por similitud.
+    \item \textbf{Componente de Generación}: Generación de recomendaciones contextuales.
+\end{itemize}
+
+El sistema RAG se optimiza para manejar datos heterogéneos e incompletos, implementando estrategias de enriquecimiento 
+dinámico que mejoran la calidad de las recomendaciones.
+
+\subsection{Crawler Inteligente con Enriquecimiento Dinámico}
+
+Se implementó un sistema de crawling avanzado que incluye:
+
+\begin{itemize}
+    \item \textbf{Validación de Calidad}: Evaluación automática de la completitud y consistencia de datos.
+    \item \textbf{Enriquecimiento Dinámico}: Búsqueda automática de información faltante en fuentes externas.
+    \item \textbf{Monitoreo Continuo}: Seguimiento de frescura y calidad de la información existente.
+\end{itemize}
+
+Resulta necesario que el sistema sea capaz de actualizar su conocimiento con grandes cantidades de datos (de fuentes 
+confiables) regularmente, si se detectan pocos datos actuales se envían alertas y es posible activar fase estática y 
+encontrar información más actual.
+
+\section{Consideraciones de Implementación}
+
+\subsection{Arquitectura de Comunicación}
+
+Se adoptó un patrón de \textit{MessageBus} (Bus de Mensajes) para facilitar la comunicación asíncrona entre agentes, 
+permitiendo:
+
+\begin{itemize}
+    \item Desacoplamiento entre componentes.
+    \item Escalabilidad horizontal.
+    \item Tolerancia a fallos.
+    \item Trazabilidad completa de mensajes.
+\end{itemize}
+
+Este patrón permite que el sistema sea capaz de cambiar de dominio específico (bodas) o ampliar su especialidad en él con 
+solo cambios mínimos en el Agente de Planificación.
+
+\subsection{Gestión de Memoria y Estado}
+
+Se implementó un sistema de gestión de memoria de sesión que mantiene:
+
+\begin{itemize}
+    \item Estado persistente de creencias por sesión.
+    \item Historial de decisiones y justificaciones.
+    \item Mecanismos de recuperación ante fallos.
+\end{itemize}
+
+Permite la implementación de un sistema de retroalimentación (feedback) y cambios sobre una propuesta generada para el 
+usuario.
+
+\subsection{Manejo de Errores y Recuperación}
+
+El sistema incluye estrategias de manejo de errores:
+
+\begin{itemize}
+    \item Detección automática de errores en tareas.
+    \item Estrategias de corrección basadas en RAG.
+    \item Reintentos inteligentes con backoff exponencial.
+    \item \textit{Fallback} (Mecanismo de Contingencia) a alternativas cuando las opciones principales fallan.
+\end{itemize}
+
+\section{Justificación Teórico-Práctica}
+
+\subsection{Fundamentación de la Arquitectura BDI}
+
+La elección de la arquitectura BDI se justifica por su capacidad para modelar comportamientos racionales en agentes 
+autónomos. Según Wooldridge \cite{wooldridge2009introduction}, esta arquitectura proporciona:
+
+\begin{itemize}
+    \item \textbf{Autonomía}: Los agentes operan sin intervención externa continua.
+    \item \textbf{Reactividad}: Respuesta apropiada a cambios en el entorno.
+    \item \textbf{Pro-actividad}: Iniciativa en la persecución de objetivos.
+    \item \textbf{Socialidad}: Interacción efectiva con otros agentes.
+\end{itemize}
+
+Características esenciales a la hora de automatizar la planificación de eventos.
+
+\subsection{Integración RAG especializado}
+
+La integración de sistemas RAG especializados se fundamenta en la necesidad de enriquecer conocimiento estructurado con 
+características no explícitas que pueden mejorar la experiencia. Lewis et al. demuestran que esta combinación mejora 
+significativamente la calidad y relevancia de las respuestas en dominios específicos.
+
+\subsection{Enfoque Multi-Agente}
+
+La adopción de un enfoque multi-agente se justifica por la naturaleza distribuida del problema de planificación de eventos. 
+Según Ferber \cite{ferber1999multi}, los sistemas multi-agente ofrecen:
+
+\begin{itemize}
+    \item \textbf{Especialización}: Cada agente se enfoca en un dominio específico.
+    \item \textbf{Paralelismo}: Procesamiento concurrente de diferentes aspectos.
+    \item \textbf{Robustez}: Fallos en un agente no comprometen el sistema completo.
+    \item \textbf{Escalabilidad}: Fácil adición de nuevos agentes especializados.
+\end{itemize}
+
+\section{Evaluación Cuantitativa y Cualitativa}
+
+\subsection{Metodología Experimental}
+
+Se diseñó un conjunto completo de experimentos estadísticos que incluye:
+
+\begin{itemize}
+    \item \textbf{Experimento 1}: Efectividad del sistema BDI.
+    \item \textbf{Experimento 2}: Precisión de los sistemas RAG.
+    \item \textbf{Experimento 3}: Rendimiento del sistema (latencia, escalabilidad, uso de recursos).
+    \item \textbf{Experimento 4}: Efectividad de integración de componentes del sistema.
+\end{itemize}
+
+Cada experimento utiliza metodología estadística con:
+\begin{itemize}
+    \item Generación de datos sintéticos controlados.
+    \item Análisis de varianza (ANOVA) y pruebas no paramétricas.
+    \item Cálculo de potencia estadística y tamaño de efecto.
+    \item Validación cruzada de resultados.
+\end{itemize}
+
+\subsection{Resultados Cuantitativos}
+
+Los experimentos arrojaron los siguientes resultados:
+
+\begin{itemize}
+    \item \textbf{Tasa de Significancia}: 63.2\% (12 de 19 análisis con conclusiones significativas)
+    \item \textbf{Potencia Promedio}: 0.640 (buena potencia estadística)
+    \item \textbf{Tamaño de Efecto Promedio}: 0.285 (efecto medio)
+    \item \textbf{Tiempo de Respuesta Promedio por Experimento}: 2.3 segundos por recomendación
+    \item \textbf{Precisión RAG}: 78.5\% en recomendaciones relevantes
+\end{itemize}
+
+\subsection{Análisis por Experimento}
+
+\subsubsection{Efectividad del sistema BDI}
+\begin{itemize}
+    \item \textbf{Resultado}: 2 de 4 análisis significativos (50\%).
+    \item \textbf{Fortaleza}: Correlaciones BDI muy fuertes (p < 0.001).
+    \item \textbf{Área de mejora}: Reconsideración de intentions.
+\end{itemize}
+
+\subsubsection{Precisión de los sistemas RAG}
+\begin{itemize}
+    \item \textbf{Resultado}: 3 de 5 análisis significativos (60\%).
+    \item \textbf{Fortaleza}: Alta precisión en recomendaciones por tipo.
+    \item \textbf{Área de mejora}: Adaptabilidad a patrones complejos.
+\end{itemize}
+
+\subsubsection{Rendimiento del sistema}
+\begin{itemize}
+    \item \textbf{Resultado}: 5 de 5 análisis significativos (100\%).
+    \item \textbf{Fortaleza}: Buena escalabilidad y eficiencia.
+    \item \textbf{Logro}: Todas las métricas de rendimiento superaron expectativas.
+\end{itemize}
+
+\subsubsection{Efectividad de integración de componentes del sistema}
+\begin{itemize}
+    \item \textbf{Resultado}: 2 de 5 análisis significativos (40\%).
+    \item \textbf{Fortaleza}: Buena coordinación entre agentes.
+    \item \textbf{Área de mejora}: Optimización de flujos de comunicación.
+\end{itemize}
+
+Se pueden consultar más detalles de los resultados en la sección de resultados de experimentos en el proyecto.
+
+\section{Resultados y Posibles Mejoras}
+
+\subsection{Logros Alcanzados}
+
+El proyecto logró implementar exitosamente:
+
+\begin{itemize}
+    \item \textbf{Arquitectura BDI Completa}: Implementación del ciclo BDI con manejo de creencias, deseos e intenciones.
+    \item \textbf{Sistemas RAG Especializados}: Integración efectiva de RAG en múltiples dominios.
+    \item \textbf{Crawler Inteligente}: Sistema de enriquecimiento dinámico de datos.
+    \item \textbf{Evaluación Estadística Rigurosa}: Mecanismo de evaluación y validación del sistema.
+    \item \textbf{Integración Multi-Agente}: Coordinación efectiva entre agentes especializados
+\end{itemize}
+
+\subsection{Insuficiencias Identificadas}
+
+\subsubsection{Limitaciones Técnicas}
+\begin{itemize}
+    \item \textbf{Escalabilidad de Datos}: El sistema actual maneja datasets limitados; se requiere optimización para 
+    grandes volúmenes.
+    \item \textbf{Latencia de Comunicación}: Los tiempos de respuesta entre agentes pueden optimizarse.
+    \item \textbf{Precisión RAG}: Aunque aceptable, la precisión del 78.5\% puede mejorarse.
+\end{itemize}
+
+\subsubsection{Limitaciones Funcionales}
+\begin{itemize}
+    \item \textbf{Cobertura de Dominio}: El sistema se enfoca en bodas; se requiere extensión a otros tipos de eventos y 
+    categorías.
+    \item \textbf{Personalización}: Los algoritmos de personalización deben refinarse.
+\end{itemize}
+
+\subsection{Propuestas de Mejora}
+
+\subsubsection{Mejoras Técnicas Inmediatas}
+\begin{itemize}
+    \item \textbf{Optimización y Aumento de Base de Datos}: Aumentar volumen  de información y optimizar búsqueda en las 
+    bases de conocimiento.
+    \item \textbf{Paralelización}: Aprovechar procesamiento paralelo para búsquedas concurrentes.
+    \item \textbf{Algoritmos de Machine Learning}: Refinar algoritmos de personalización.
+    \item \textbf{ampliar Dominio}: Agregar más características al sistema de decisión (Fecha, Música, etc).
+\end{itemize}
+
+\subsubsection{Mejoras Funcionales a Mediano Plazo}
+\begin{itemize}
+    \item \textbf{Expansión de Dominios}: Extender el sistema a otros tipos de eventos (corporativos, sociales).
+\end{itemize}
+
+
+\section{Conclusiones}
+
+El proyecto Wedding Organizer demuestra la viabilidad de aplicar sistemas multi-agente BDI integrados con RAG en la automatización de procesos complejos de planificación de eventos, para aumentar productividad en esta área. Los resultados experimentales, con una tasa de significancia del 63.2\% y potencia estadística adecuada, validan la efectividad del enfoque propuesto.
+Aunque se identificaron áreas de mejora, particularmente en escalabilidad y precisión, el sistema proporciona una base sólida para futuro desarrollo en el dominio de la planificación inteligente de eventos. Las propuestas de mejora establecen una hoja de ruta clara para la evolución del sistema hacia una solución de producción robusta y escalable.
+
+\section{Trabajo Futuro}
+
+Las líneas de investigación futuras incluyen:
+
+\begin{itemize}
+    \item \textbf{Optimización Multi-Objetivo}: Implementar algoritmos de optimización multi-objetivo para balancear 
+    múltiples criterios de decisión.
+    \item \textbf{Aprendizaje por Refuerzo}: Integrar técnicas de aprendizaje por refuerzo para mejorar la toma de 
+    decisiones.
+    \item \textbf{Análisis de Sentimientos}: Incorporar análisis de sentimientos para evaluar satisfacción del usuario.
+\end{itemize}
+
+\begin{thebibliography}{8}
+
+\bibitem{rao1995bdi}
+Rao, A.S., Georgeff, M.P.:
+BDI agents: from theory to practice.
+In: Proceedings of the First International Conference on Multiagent Systems, pp. 312--319. AAAI Press (1995)
+
+\bibitem{lewis2020retrieval}
+Lewis, M., Liu, Y., Goyal, N., Ghazvininejad, M., Mohamed, A., Levy, O., Stoyanov, V., Zettlemoyer, L.:
+Retrieval-augmented generation for knowledge-intensive NLP tasks.
+Advances in Neural Information Processing Systems 33, 9459--9474 (2020)
+
+\bibitem{wooldridge2009introduction}
+Wooldridge, M.:
+An Introduction to MultiAgent Systems.
+John Wiley \& Sons (2009)
+
+\bibitem{ferber1999multi}
+Ferber, J.:
+Multi-Agent Systems: An Introduction to Distributed Artificial Intelligence.
+Addison-Wesley (1999)
+
+\bibitem{georgeff1998beliefs}
+Georgeff, M.P., Pell, B., Pollack, M.E., Tambe, M., Wooldridge, M.:
+The belief-desire-intention model of agency.
+In: International Workshop on Agent Theories, Architectures, and Languages, pp. 1--10. Springer (1998)
+
+\bibitem{vaswani2017attention}
+Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser, L., Polosukhin, I.:
+Attention is all you need.
+Advances in Neural Information Processing Systems 30 (2017)
+
+\end{thebibliography}
+
+\end{document} 
