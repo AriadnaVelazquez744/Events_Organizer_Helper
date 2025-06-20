@@ -91,6 +91,7 @@ class PlannerAgentBDI:
     def receive(self, message: Dict[str, Any]):
         """Procesa mensajes entrantes y actualiza el estado."""
         session_id = message.get("session_id")
+        print(session_id)
         if not session_id or session_id not in self.active_sessions:
             print(f"[⚠️] Sesión no válida: {session_id}")
             return {

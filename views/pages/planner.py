@@ -1,13 +1,13 @@
 import streamlit as st
 from views.components.sidebar import show_sidebar
 from views.components.chat import show_chat_interface
-from views.utils.session import initialize_session, clear_session
+from views.utils.session import process_user_input_and_query as process_llm
 
 def show_planner_page():
     # Initialize session if not already done
     if 'messages' not in st.session_state:
-        initialize_session()
-    
+        st.session_state.messages = []
+
     if 'current_query' not in st.session_state:
         st.session_state.current_query = ""
     
@@ -88,15 +88,16 @@ def show_planner_page():
             if user_input:
                 # Add user message to chat
                 st.session_state.messages.append({"role": "user", "content": user_input})
+                if 'current_query' not in st.session_state:
+                    st.session_state.current_query = ""
+                st.session_state.current_query += f"\n{user_input}"
                 
-                # TODO: Process with LLM
-                # Placeholder for LLM processing
-                response = "This is a placeholder response. LLM integration pending."
+                # LLM processing
+                response = process_llm()
                 
                 # Add assistant response to chat
                 st.session_state.messages.append({"role": "assistant", "content": response})
                 
                 # Clear input and current query
-                st.session_state.user_input = ""
                 st.session_state.current_query = ""
                 st.rerun() 

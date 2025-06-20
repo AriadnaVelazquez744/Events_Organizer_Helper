@@ -9,6 +9,7 @@ class SessionMemoryManager:
     def __init__(self, storage_file: str = "session_memory.json"):
         self.sessions: Dict[str, Dict] = defaultdict(dict)
         self.storage_file = storage_file
+        self._used_user_ids: set = set()  # Cache for existing user IDs
         self._load_from_storage()
 
     def _load_from_storage(self) -> None:
@@ -18,6 +19,9 @@ class SessionMemoryManager:
                 data = json.load(f)
                 for session_id, session_data in data.items():
                     self.sessions[session_id] = session_data
+                    # Populate the cache with existing user IDs
+                    if "user_id" in session_data:
+                        self._used_user_ids.add(session_data["user_id"])
         except FileNotFoundError:
             pass
 
@@ -38,6 +42,8 @@ class SessionMemoryManager:
             "last_activity": datetime.now().isoformat(),
             "status": "active"
         }
+        # Add to cache
+        self._used_user_ids.add(user_id)
         self._save_to_storage()
         return session_id
 
@@ -88,6 +94,10 @@ class SessionMemoryManager:
     def remove_session(self, session_id: str) -> None:
         """Elimina una sesión completamente."""
         if session_id in self.sessions:
+            # Remove from cache
+            user_id = self.sessions[session_id].get("user_id")
+            if user_id:
+                self._used_user_ids.discard(user_id)
             del self.sessions[session_id]
             self._save_to_storage()
 
@@ -118,3 +128,27 @@ class SessionMemoryManager:
             self.sessions[session_id]["status"] = "archived"
             self.sessions[session_id]["archived_at"] = datetime.now().isoformat()
             self._save_to_storage()
+
+    def set_all_sessions_inactive(self) -> None:
+        """Establece todas las sesiones existentes como inactivas."""
+        for session_id in self.sessions:
+            self.sessions[session_id]["status"] = "inactive"
+            self.sessions[session_id]["inactivated_at"] = datetime.now().isoformat()
+        self._save_to_storage()
+
+    def generate_unique_user_id(self) -> str:
+        """Genera un user_id único que no existe en ninguna sesión actual."""
+        # With UUID4, collisions are extremely rare (1 in 2^122)
+        # Try a few times before falling back to counter-based approach
+        for _ in range(5):
+            new_user_id = f"user_{uuid.uuid4().hex[:8]}"
+            if new_user_id not in self._used_user_ids:
+                return new_user_id
+        
+        # Fallback: counter-based approach for extremely rare collision cases
+        counter = 1
+        while True:
+            new_user_id = f"user_{uuid.uuid4().hex[:6]}_{counter:04d}"
+            if new_user_id not in self._used_user_ids:
+                return new_user_id
+            counter += 1

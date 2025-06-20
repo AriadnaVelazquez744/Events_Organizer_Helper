@@ -34,12 +34,14 @@ def show_chat_interface():
                     f"""
                     <div style='text-align: left; margin: 10px;'>
                         <div style='
-                            background-color: #f5f5f5;
+                            background-color: #e3f0fc;
+                            color: #222;
                             padding: 12px 20px;
                             border-radius: 20px;
                             display: inline-block;
                             max-width: 70%;
                             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                            border: 1px solid #b6d4ef;
                         '>
                             {message["content"]}
                         </div>

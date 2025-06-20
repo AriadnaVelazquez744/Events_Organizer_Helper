@@ -10,6 +10,7 @@ from src.crawler.quality.monitoring import DataQualityMonitor
 from src.crawler.quality.quality_validator import DataQualityValidator
 from src.agents.session_memory import SessionMemoryManager
 from src.agents.budget.BudgetAgent import BudgetDistributorAgent
+import streamlit as st
 import json
 from datetime import datetime
 
@@ -183,20 +184,8 @@ def initialize_system():
     
 class Comunication:
     
-    def send_query(request:str, user_id:str):
-        system = initialize_system()
-        planner = system["planner"]
-        quality_monitor = system["quality_monitor"]
-        
-        session_id = planner.create_session(user_id)
-        print(f"Sesión creada con ID: {session_id}")
-        
-        print_section("ENVIANDO PETICIÓN")
-        # Ejemplo de petición
-        print("Petición a procesar:")
-        print(json.dumps(request, indent=2, ensure_ascii=False))
-        
-        print_section("PROCESANDO PETICIÓN")
+    def send_query(request:str, session_id:str, user_id:str):
+        planner = st.session_state.planner
         # Enviar petición al planner
         response = planner.receive({
             "origen": "user",
@@ -206,22 +195,11 @@ class Comunication:
             "session_id": session_id
         })
         
-        print_section("RESULTADOS")
         if response:
-            print_result("Respuesta del sistema", response)
             return response
         else:
             print("❌ No se recibió respuesta del sistema")
-        
-        print_section("ESTADO FINAL")
-        # Obtener estado final de la sesión
-        session_info = system["memory"].get_session_info(session_id)
-        print_result("Información de la sesión", session_info)
-        
-        # Obtener beliefs finales
-        beliefs = system["memory"].get_beliefs(session_id)
-        print_result("Estado de creencias", beliefs.resumen())
-        
+
         
 
 def main():
