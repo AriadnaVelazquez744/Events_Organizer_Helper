@@ -1,0 +1,37 @@
+presupuesto_total!
+guest_count!
+general_style*
+venue!
+    atmosphere*
+    venue_budget
+    venue_type*
+    location
+    venue_price
+    venue_services*
+    venue_restrictions
+    supported_events
+    other_venue
+catering!
+    catering_budget
+    catering_services*
+    catering_ubication
+    venue_price
+    cuisines
+    dietary_options*
+    meal_types*
+    beverage_services
+    drink_types
+    catering_restrictions
+    other_catering
+decor*
+    decore_budget
+    decor_service_levels
+    pre_wedding_services
+    post_wedding_services
+    day_of_services
+    arrangement_styles
+    floral_arrangements*
+    restrictions_decor*
+    decor_price
+    decor_ubication
+    other_decor

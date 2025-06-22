@@ -1,72 +1,126 @@
 import streamlit as st
-from views.utils.llm_interface import LLMInterface
+from .llm_interface import LLMInterface
+from .models import Criterios, ResponseModel
 from main import Comunication
 import json
-import os
+from pydantic import ValidationError
+
+def initialize_session_state():
+    """Initializes the session state for the chat."""
+    if 'criterios' not in st.session_state:
+        st.session_state.criterios = Criterios()
+    if 'criterios_prev' not in st.session_state:
+        st.session_state.criterios_prev = Criterios()
+    if 'messages' not in st.session_state:
+        st.session_state.messages = []
+    if "user_id" not in st.session_state:
+        st.session_state.user_id = "default_user" # O genera uno único
+    if "session_id" not in st.session_state:
+        st.session_state.session_id = "default_session" # O genera uno único
+
+def reset_criterios_for_new_session():
+    """Resets both criterios and criterios_prev for a new session."""
+    st.session_state.criterios = Criterios()
+    st.session_state.criterios_prev = Criterios()
 
 def process_user_input_and_query():
     """
-    Receives a natural language string from the user, processes it with the LLM, and sends the structured result to the planner system.
-    Uses Streamlit's session_state for session and user management.
-    Updates the chat/messages in session_state accordingly.
+    Orchestrates the conversation flow:
+    1. Stores current criteria as previous before processing new input.
+    2. Processes user input to extract criteria.
+    3. Validates and merges it with previous criteria.
+    4. Checks for missing fields.
+    5. Asks for more info or processes the complete query.
     """
-    current_query = st.session_state.current_query
-    requirements = st.session_state.user_requirements
-    # Process input with LLM to extract structured criteria
+    user_input = st.session_state.get("user_input", "")
+    if not user_input:
+        return "Por favor, introduce tu consulta."
+
     llm = LLMInterface()
-    structured_criteria = llm.process_user_input(current_query)
-
-    # Try to parse the LLM output as JSON
-    try:
-        request = json.loads(structured_criteria)
-    except Exception as e:
-         f"❌ Error procesando tu solicitud: {str(e)}. Por favor, intenta de nuevo."
     
-    if (requirements != ""):
-        structured_criteria = llm.unify_jsons(requirements, request)
-        request = json.loads(structured_criteria)
+    # 1. Store current criteria as previous before processing new input
+    if 'criterios' in st.session_state:
+        st.session_state.criterios_prev = st.session_state.criterios.model_copy()
+        print(f"🔄 Stored previous criteria: {st.session_state.criterios_prev.model_dump_json(indent=2)}")
+    
+    # Get current criteria from session state
+    current_criterios = st.session_state.criterios
 
-    missing_necessary, missing_suggested = find_missing_fields(structured_criteria)
-
-    # if (missing_necessary != "" or missing_suggested != ""):
-    #     response = llm.ask_for_more_details(missing_necessary, missing_suggested, structured_criteria)
-    #     return response
-    # else: 
-    #     # Send structured request to the planner system
-    response = Comunication.send_query(request, st.session_state.session_id, st.session_state.user_id)
-
-    NLP_response = llm.json_to_natural_language(response)
-    return NLP_response
-
-
-def find_missing_fields(json_text):
-    """
-    From two lists (necessary_fields, suggested_fields) and a plain text with a JSON-like structure,
-    returns two lists: the missing necessary fields and the missing suggested fields from the parsed JSON.
-    """
-    necessary_fields = ["presupuesto_total", "guest_count_general", "venue", "catering"]
-    suggested_fields = [ "general_style", "atmosphere", "venue_type", "venue_services", "catering_services", "dietary_options", "meal_types", "decor", "floral_arrangements", "restrictions_decor"]
     try:
-        data = json.loads(json_text)
-    except Exception:
-        # Try to fix common JSON issues (e.g., single quotes)
+        # 2. Process user input to get new criteria
+        context = current_criterios.model_dump_json(indent=2, exclude_unset=True)
+        response_json = llm.process_user_input(user_input, context=context)
+        
+        # Check if the response contains an error
         try:
-            fixed = json_text.replace("'", '"')
-            data = json.loads(fixed)
-        except Exception:
-            return necessary_fields, suggested_fields  # If parsing fails, all are missing
+            response_data = json.loads(response_json)
+            if "error" in response_data:
+                error_msg = response_data.get("error", "Unknown error")
+                print(f"❌ LLM Error detected: {error_msg}")
+                return f"Lo siento, estoy teniendo problemas técnicos en este momento. Error: {error_msg}. Por favor, intenta de nuevo en unos momentos."
+        except json.JSONDecodeError:
+            # If it's not valid JSON, continue with normal processing
+            pass
+        
+        # 3. Validate the new data
+        new_data = ResponseModel.model_validate_json(response_json)
+        print(f"🆕 New criteria from LLM: {new_data.criterios.model_dump_json(indent=2)}")
+        
+        # Debug: Check the actual values after validation
+        print(f"🔍 Debug - After validation:")
+        print(f"  presupuesto: {new_data.criterios.presupuesto}")
+        print(f"  guest_count: {new_data.criterios.guest_count}")
+        print(f"  venue.type: {new_data.criterios.venue.type if new_data.criterios.venue else None}")
+        print(f"  venue.atmosphere: {new_data.criterios.venue.atmosphere if new_data.criterios.venue else None}")
+        
+        # 4. Use the validated data directly without unification
+        updated_data = new_data.criterios
+        print(f"✅ Using validated criteria directly: {updated_data.model_dump_json(indent=2)}")
+        
+        # Update the session state with the validated data
+        st.session_state.criterios = updated_data
+        
+        # 5. Check for missing fields
+        missing_fields = llm.check_missing_fields(updated_data)
 
-    def check_field(field, data):
-        # Support nested fields with dot notation
-        parts = field.split('.')
-        current = data
-        for part in parts:
-            if isinstance(current, dict) and part in current:
-                current = current[part]
-            else:
-                return False
-        return True
+        if missing_fields["obligatorios"]:
+            # 6. Ask for more info
+            follow_up_question = llm.ask_for_more_details(
+                missing_fields, 
+                context=updated_data.model_dump_json(indent=2, exclude_unset=True)
+            )
+            return follow_up_question
+        else:
+            # 7. Process the complete query
+            final_request = updated_data.model_dump()
+            
+            # This part seems to call your backend system
+            # Ensure `Comunication.send_query` can handle this dictionary
+            response_from_system = Comunication.send_query(
+                final_request, 
+                st.session_state.session_id, 
+                st.session_state.user_id
+            )
+            
+            # Convert the final response to natural language for the user
+            nlp_response = llm.json_to_natural_language(response_from_system)
+            return nlp_response
 
-    missing_necessary = [f for f in necessary_fields if not check_field(f, data)]
-    missing_suggested = [f for f in suggested_fields if not check_field(f, data)]
-    return missing_necessary, missing_suggested
+    except ValidationError as e:
+        # Handle cases where the LLM returns invalid JSON
+        error_details = []
+        for error in e.errors():
+            field_path = " -> ".join(str(loc) for loc in error["loc"])
+            error_msg = f"Field '{field_path}': {error['msg']}"
+            if "input" in error:
+                error_msg += f" (received: {error['input']})"
+            error_details.append(error_msg)
+        
+        error_message = "Estoy teniendo problemas para entender la respuesta. Detalles del error:\n" + "\n".join(error_details)
+        print(f"❌ Validation error: {error_message}")
+        return error_message
+    except json.JSONDecodeError:
+        # Handle cases where the response is not even JSON
+        return "La respuesta no parece ser un JSON válido. ¿Podrías intentarlo de nuevo?"
+    except Exception as e:
+        return f"Ha ocurrido un error inesperado: {str(e)}"

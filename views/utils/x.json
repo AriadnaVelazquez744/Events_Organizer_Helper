@@ -1,0 +1,243 @@
+{
+  "criterios": {
+    "presupuesto_total": {
+      "type": "number",
+      "example": 50000,
+      "description": "Total budget for the event"
+    },
+    "guest_count": {
+      "type": "number",
+      "example": 100,
+      "description": "Number of guests"
+    },
+    "style": {
+      "type": "string",
+      "example": "luxury",
+      "description": "Event style (e.g., luxury, classic, etc.)"
+    },
+    "venue": {
+      "obligatorios_venue": {
+        "type": "array of strings",
+        "example": ["venue_budget", "atmosphere","venue_type"]
+      },
+      "venue_budget":{
+        "type":  "number",
+        "example": "5000$",
+        "description": "part of the general budget destine to the venue"
+      },
+      "venue_type": {
+        "type": "string",
+        "example": "mansion",
+        "description": "Type of venue (e.g., mansion, ballroom, garden, etc.)"
+      },
+      "location": {
+        "type": "string",
+        "example": "Chicago, IL 60654"
+      },
+      "venue_price": {
+        "type": "object",
+        "example": {
+          "space_rental": 20000,
+          "per_person": 210,
+          "other": []
+        }
+      },
+      "atmosphere": {
+        "type": "string or array",
+        "example": ["Indoor", "Outdoor"]
+      },
+      "venue_services": {
+        "type": "array of strings",
+        "example": [
+          "Bar services",
+          "Catering services",
+          "Clean up",
+          "Dance floor"
+        ]
+      },
+      "venue_restrictions": {
+        "type": "string or array",
+        "example": "No outside alcohol allowed"
+      },
+      "supported_events": {
+        "type": "array of strings",
+        "example": [
+          "Wedding ceremony",
+          "Wedding reception"
+        ]
+      },
+      "other_venue": {
+        "type": "object",
+        "example": {
+          "custom_field": "custom_value"
+        }
+      }
+    },
+    "catering": {
+      "obligatorios_catering": {
+        "type": "array of strings",
+        "example": ["catering_budget", "meal_types", "dietary_options"]
+      },
+      "catering_budget":{
+        "type":  "number",
+        "example": "5000$",
+        "description": "part of the general budget destine to the catering"
+      },
+      "catering_services": {
+        "type": "array of strings",
+        "example": [
+          "Bartenders",
+          "Cleanup and breakdown",
+          "Consultations and tastings"
+        ]
+      },
+      "catering_ubication": {
+        "type": "string",
+        "example": "Chicagoland region"
+      },
+      "venue_price": {
+        "type": "object",
+        "example": {
+          "food": "$50 per person",
+          "bar_services": "$12 per person"
+        }
+      },
+      "cuisines": {
+        "type": "array of strings",
+        "example": [
+          "Pan-Asian",
+          "Pan-European",
+          "Southern"
+        ]
+      },
+      "dietary_options": {
+        "type": "array of strings",
+        "example": [
+          "Dairy-free",
+          "Gluten-free",
+          "Nut-free",
+          "Vegan",
+          "Vegetarian"
+        ]
+      },
+      "meal_types": {
+        "type": "array of strings",
+        "example": [
+          "Buffet",
+          "Dessert service",
+          "Family-style meal",
+          "plated"
+        ]
+      },
+      "beverage_services": {
+        "type": "array of strings",
+        "example": [
+          "Bartending",
+          "Beverage servingware rentals"
+        ]
+      },
+      "drink_types": {
+        "type": "array of strings",
+        "example": [
+          "Beer",
+          "Wine",
+          "Non-alcoholic"
+        ]
+      },
+      "catering_restrictions": {
+        "type": "array of strings",
+        "example": [
+          "Not a gluten-free kitchen"
+        ]
+      },
+      "other_catering": {
+        "type": "object",
+        "example": {
+          "custom_field": "custom_value"
+        }
+      }
+    },
+    "decor": {
+      "obligatorios_decor": {
+        "type": "array of strings",
+        "example": ["decor_budget", "service_levels", "floral_arrangements"]
+      },
+      "decore_budget":{
+        "type":  "number",
+        "example": "5000$",
+        "description": "part of the general budget destine to the decor"
+      },
+      "decor_service_levels": {
+        "type": "array of strings",
+        "example": [
+          "A La Carte",
+          "Full-Service Floral Design"
+        ]
+      },
+      "pre_wedding_services": {
+        "type": "array of strings",
+        "example": [
+          "Consultations",
+          "Event design",
+          "Mock-ups"
+        ]
+      },
+      "post_wedding_services": {
+        "type": "array of strings",
+        "example": [
+          "Cleanup",
+          "Flower preservation"
+        ]
+      },
+      "day_of_services": {
+        "type": "array of strings",
+        "example": [
+          "Container rentals",
+          "Decor rentals",
+          "Delivery"
+        ]
+      },
+      "arrangement_styles": {
+        "type": "array of strings",
+        "example": [
+          "Flower-forward with fresh blooms"
+        ]
+      },
+      "floral_arrangements": {
+        "type": "array of strings",
+        "example": [
+          "Bouquets",
+          "Centerpieces",
+          "Ceremony decor"
+        ]
+      },
+      "restrictions_decor": {
+        "type": "array of strings or string",
+        "example": [
+          "$2,000 minimum on all flower orders during May-October"
+        ]
+      },
+      "decor_price": {
+        "type": "object or string",
+        "example": {
+          "bouquets": "start at $250",
+          "centerpieces": "start at $100",
+          "minimum_spend": "$3,000 total"
+        }
+      },
+      "decor_ubication": {
+        "type": "string",
+        "example": "Milford, Connecticut"
+      },
+      "other_decor": {
+        "type": "object",
+        "example": {
+          "custom_field": "custom_value"
+        }
+      }
+    }
+  }
+}
+
+
+{"criterios":{"presupuesto_total":{"type":"number","example":50000,"description":"Total budget for the event"},"guest_count":{"type":"number","example":100,"description":"Number of guests"},"style":{"type":"string","example":"luxury","description":"Event style (e.g., luxury, classic, etc.)"},"venue":{"obligatorios_venue":{"type":"array of strings","example":["venue_budget","atmosphere","venue_type"]},"venue_budget":{"type":"number","example":"5000$","description":"part of the general budget destine to the venue"},"venue_type":{"type":"string","example":"mansion","description":"Type of venue (e.g., mansion, ballroom, garden, etc.)"},"location":{"type":"string","example":"Chicago, IL 60654"},"venue_price":{"type":"object","example":{"space_rental":20000,"per_person":210,"other":[]}},"atmosphere":{"type":"string or array","example":["Indoor","Outdoor"]},"venue_services":{"type":"array of strings","example":["Bar services","Catering services","Clean up","Dance floor"]},"venue_restrictions":{"type":"string or array","example":"No outside alcohol allowed"},"supported_events":{"type":"array of strings","example":["Wedding ceremony","Wedding reception"]},"other_venue":{"type":"object","example":{"custom_field":"custom_value"}}},"catering":{"obligatorios_catering":{"type":"array of strings","example":["catering_budget","meal_types","dietary_options"]},"catering_budget":{"type":"number","example":"5000$","description":"part of the general budget destine to the catering"},"catering_services":{"type":"array of strings","example":["Bartenders","Cleanup and breakdown","Consultations and tastings"]},"catering_ubication":{"type":"string","example":"Chicagoland region"},"venue_price":{"type":"object","example":{"food":"$50 per person","bar_services":"$12 per person"}},"cuisines":{"type":"array of strings","example":["Pan-Asian","Pan-European","Southern"]},"dietary_options":{"type":"array of strings","example":["Dairy-free","Gluten-free","Nut-free","Vegan","Vegetarian"]},"meal_types":{"type":"array of strings","example":["Buffet","Dessert service","Family-style meal","plated"]},"beverage_services":{"type":"array of strings","example":["Bartending","Beverage servingware rentals"]},"drink_types":{"type":"array of strings","example":["Beer","Wine","Non-alcoholic"]},"catering_restrictions":{"type":"array of strings","example":["Not a gluten-free kitchen"]},"other_catering":{"type":"object","example":{"custom_field":"custom_value"}}},"decor":{"obligatorios_decor":{"type":"array of strings","example":["decor_budget","service_levels","floral_arrangements"]},"decore_budget":{"type":"number","example":"5000$","description":"part of the general budget destine to the decor"},"decor_service_levels":{"type":"array of strings","example":["A La Carte","Full-Service Floral Design"]},"pre_wedding_services":{"type":"array of strings","example":["Consultations","Event design","Mock-ups"]},"post_wedding_services":{"type":"array of strings","example":["Cleanup","Flower preservation"]},"day_of_services":{"type":"array of strings","example":["Container rentals","Decor rentals","Delivery"]},"arrangement_styles":{"type":"array of strings","example":["Flower-forward with fresh blooms"]},"floral_arrangements":{"type":"array of strings","example":["Bouquets","Centerpieces","Ceremony decor"]},"restrictions_decor":{"type":"array of strings or string","example":["$2,000 minimum on all flower orders during May-October"]},"decor_price":{"type":"object or string","example":{"bouquets":"start at $250","centerpieces":"start at $100","minimum_spend":"$3,000 total"}},"decor_ubication":{"type":"string","example":"Milford, Connecticut"},"other_decor":{"type":"object","example":{"custom_field":"custom_value"}}}}}

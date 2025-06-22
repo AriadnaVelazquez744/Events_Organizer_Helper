@@ -62,6 +62,16 @@ if 'system_initialized' not in st.session_state:
 if 'user_id' not in st.session_state:
     st.session_state.user_id = None
 
+# Initialize criterios if not present
+if 'criterios' not in st.session_state:
+    from views.utils.models import Criterios
+    st.session_state.criterios = Criterios()
+
+# Initialize criterios_prev if not present
+if 'criterios_prev' not in st.session_state:
+    from views.utils.models import Criterios
+    st.session_state.criterios_prev = Criterios()
+
 def initialize_application_system():
     """Initialize the processing system and clean session states."""
     if not st.session_state.system_initialized:

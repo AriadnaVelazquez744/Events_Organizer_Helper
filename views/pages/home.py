@@ -1,15 +1,17 @@
 import streamlit as st
 from src.agents.session_memory import SessionMemoryManager
+from views.utils.session import reset_criterios_for_new_session
 
 def show_home_page():
     # Initialize session memory and user ID if not present
     if 'memory_manager' not in st.session_state:
         st.session_state.memory_manager = SessionMemoryManager()
 
-    st.session_state.user_requirements = ""
+    # Reset criteria for new session
+    reset_criterios_for_new_session()
     
     # Center the content
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2 = st.columns([1, 2])
     
     with col2:
         st.title("🎉 Events Organizer Helper")

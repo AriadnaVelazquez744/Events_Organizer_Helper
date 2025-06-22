@@ -3,6 +3,9 @@ import openai
 import os
 import json
 from dotenv import load_dotenv
+from pydantic import ValidationError
+from .models import ResponseModel, Criterios
+from .prompts import TRANSFORM_INITIAL_QUERY_EN, ASK_FOR_MORE_DATA_EN, TRANSFORM_FROM_JSON_TO_NL_EN
 
 class LLMInterface:
     def __init__(self):
@@ -23,299 +26,134 @@ class LLMInterface:
         Process initial user input (plain text, possibly JSON-like) and extract structured information using the LLM.
         """
         
-        prompt = f"""
-        Eres un asistente experto en planificación de eventos. Tu tarea es analizar la siguiente entrada del usuario y extraer toda la información relevante, organizándola en una estructura JSON clara y anidada, siguiendo exactamente el formato de ejemplo proporcionado a continuación.
-
-        - Usa como plantilla la siguiente estructura de criterios (puedes omitir campos para los que no haya información, pero incluye todos los subcampos relevantes si hay datos).
-        - Completa tantos campos y subcampos como sea posible usando la información del usuario.
-        - No inventes datos, pero sí infiere información si está implícita.
-        - El resultado debe ser un único objeto JSON válido, sin comentarios ni texto adicional.
-        - Si algún campo no tiene información, simplemente omítelo del resultado.
-
-        Ejemplo de estructura (usa este formato para tu respuesta):
-
-        {{
-            "criterios": {{
-                "presupuesto_total": {{
-                    "type": "number",
-                    "example": 50000,
-                    "description": "Total budget for the event"
-                }},
-                "guest_count_general": {{
-                    "type": "number",
-                    "example": 100,
-                    "description": "Number of guests"
-                }},
-                "general_style": {{
-                    "type": "string",
-                    "example": "luxury",
-                    "description": "Event style (e.g., luxury, classic, etc.)"
-                }},
-                "venue": {{
-                    "obligatorios_venue": {{
-                        "type": "array of strings",
-                        "example": ["venue_budget", "atmosphere", "venue_type"]
-                    }},
-                    "venue_budget": {{
-                        "type": "number",
-                        "example": "5000$",
-                        "description": "part of the general budget destine to the venue"
-                    }},
-                    "venue_type": {{
-                        "type": "string",
-                        "example": "mansion",
-                        "description": "Type of venue (e.g., mansion, ballroom, garden, etc.)"
-                    }},
-                    "location": {{
-                        "type": "string",
-                        "example": "Chicago, IL 60654"
-                    }},
-                    "venue_price": {{
-                        "type": "object",
-                        "example": {{
-                            "space_rental": 20000,
-                            "per_person": 210,
-                            "other": []
-                        }}
-                    }},
-                    "atmosphere": {{
-                        "type": "string or array",
-                        "example": ["Indoor", "Outdoor"]
-                    }},
-                    "venue_services": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Bar services",
-                            "Catering services",
-                            "Clean up",
-                            "Dance floor"
-                        ]
-                    }},
-                    "venue_restrictions": {{
-                        "type": "string or array",
-                        "example": "No outside alcohol allowed"
-                    }},
-                    "supported_events": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Wedding ceremony",
-                            "Wedding reception"
-                        ]
-                    }},
-                    "other_venue": {{
-                        "type": "object",
-                        "example": {{
-                            "custom_field": "custom_value"
-                        }}
-                    }}
-                }},
-                "catering": {{
-                    "obligatorios_catering": {{
-                        "type": "array of strings",
-                        "example": ["catering_budget", "meal_types", "dietary_options"]
-                    }},
-                    "catering_budget": {{
-                        "type": "number",
-                        "example": "5000$",
-                        "description": "part of the general budget destine to the catering"
-                    }},
-                    "catering_services": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Bartenders",
-                            "Cleanup and breakdown",
-                            "Consultations and tastings"
-                        ]
-                    }},
-                    "catering_ubication": {{
-                        "type": "string",
-                        "example": "Chicagoland region"
-                    }},
-                    "venue_price": {{
-                        "type": "object",
-                        "example": {{
-                            "food": "$50 per person",
-                            "bar_services": "$12 per person"
-                        }}
-                    }},
-                    "cuisines": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Pan-Asian",
-                            "Pan-European",
-                            "Southern"
-                        ]
-                    }},
-                    "dietary_options": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Dairy-free",
-                            "Gluten-free",
-                            "Nut-free",
-                            "Vegan",
-                            "Vegetarian"
-                        ]
-                    }},
-                    "meal_types": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Buffet",
-                            "Dessert service",
-                            "Family-style meal",
-                            "plated"
-                        ]
-                    }},
-                    "beverage_services": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Bartending",
-                            "Beverage servingware rentals"
-                        ]
-                    }},
-                    "drink_types": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Beer",
-                            "Wine",
-                            "Non-alcoholic"
-                        ]
-                    }},
-                    "catering_restrictions": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Not a gluten-free kitchen"
-                        ]
-                    }},
-                    "other_catering": {{
-                        "type": "object",
-                        "example": {{
-                            "custom_field": "custom_value"
-                        }}
-                    }}
-                }},
-                "decor": {{
-                    "obligatorios_decor": {{
-                        "type": "array of strings",
-                        "example": ["decor_budget", "service_levels", "floral_arrangements"]
-                    }},
-                    "decore_budget": {{
-                        "type": "number",
-                        "example": "5000$",
-                        "description": "part of the general budget destine to the decor"
-                    }},
-                    "decor_service_levels": {{
-                        "type": "array of strings",
-                        "example": [
-                            "A La Carte",
-                            "Full-Service Floral Design"
-                        ]
-                    }},
-                    "pre_wedding_services": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Consultations",
-                            "Event design",
-                            "Mock-ups"
-                        ]
-                    }},
-                    "post_wedding_services": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Cleanup",
-                            "Flower preservation"
-                        ]
-                    }},
-                    "day_of_services": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Container rentals",
-                            "Decor rentals",
-                            "Delivery"
-                        ]
-                    }},
-                    "arrangement_styles": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Flower-forward with fresh blooms"
-                        ]
-                    }},
-                    "floral_arrangements": {{
-                        "type": "array of strings",
-                        "example": [
-                            "Bouquets",
-                            "Centerpieces",
-                            "Ceremony decor"
-                        ]
-                    }},
-                    "restrictions_decor": {{
-                        "type": "array of strings or string",
-                        "example": [
-                            "$2,000 minimum on all flower orders during May-October"
-                        ]
-                    }},
-                    "decor_price": {{
-                        "type": "object or string",
-                        "example": {{
-                            "bouquets": "start at $250",
-                            "centerpieces": "start at $100",
-                            "minimum_spend": "$3,000 total"
-                        }}
-                    }},
-                    "decor_ubication": {{
-                        "type": "string",
-                        "example": "Milford, Connecticut"
-                    }},
-                    "other_decor": {{
-                        "type": "object",
-                        "example": {{
-                            "custom_field": "custom_value"
-                        }}
-                    }}
-                }}
-            }}
-        }}
-
-        Entrada del usuario:
-        {user_input}
-
-        Contexto previo:
-        {context if context else 'N/A'}
-
-        Devuelve solo el objeto JSON resultante, sin ningún texto adicional.
-        """
+        # Generate JSON schema from the Pydantic model
+        schema = ResponseModel.model_json_schema()
+        print(f"📋 Generated schema: {json.dumps(schema, indent=2)}")
+        
+        prompt = TRANSFORM_INITIAL_QUERY_EN(schema, user_input, context)
+        
         try:
-            response = self.client.chat.completions.create(
-                model="meta-llama/llama-3.3-70b-instruct:free",
-                messages=[{"role": "user", "content": prompt}]
-            )
-            return response.choices[0].message.content.strip()
+            response_text = self._make_llm_call(prompt)
+
+            print(f"🤖 LLM Response: {response_text}")
+            
+            # Check if the response contains an error
+            if "error" in response_text.lower() or "rate limit" in response_text.lower():
+                error_msg = f"LLM service error: {response_text}"
+                print(f"❌ LLM Error: {error_msg}")
+                return json.dumps({"error": error_msg})
+            
+            # Clean the response to ensure it's a valid JSON string
+            clean_response = self._clean_json_response(response_text)
+            print(f"🧹 Cleaned response: {clean_response}")
+            
+            # Validate the response against the Pydantic model
+            validated_data = ResponseModel.model_validate_json(clean_response)
+            print(f"✅ Validation successful: {validated_data.model_dump_json(indent=2)}")
+            
+            return validated_data.model_dump_json(indent=2)
+
+        except ValidationError as e:
+            # Handle validation errors, maybe ask the user for clarification
+            # For now, we'll just return an error message
+            error_details = []
+            for error in e.errors():
+                field_path = " -> ".join(str(loc) for loc in error["loc"])
+                error_msg = f"Field '{field_path}': {error['msg']}"
+                if "input" in error:
+                    error_msg += f" (received: {error['input']})"
+                error_details.append(error_msg)
+            
+            error_message = f"La respuesta del LLM no es válida. Detalles:\n" + "\n".join(error_details)
+            print(f"❌ Validation error: {error_message}")
+            return json.dumps({"error": error_message, "details": e.errors()})
         except Exception as e:
-            print(f"Error en process_user_input: {str(e)}")
-            return "{}"
+            error_msg = f"Ocurrió un error inesperado: {e}"
+            print(f"❌ Unexpected error: {error_msg}")
+            return json.dumps({"error": error_msg})
 
+    def _clean_json_response(self, response_text: str) -> str:
+        """
+        Cleans the LLM's response to extract a valid JSON object.
+        It removes markdown code blocks and trims whitespace.
+        """
+        # Find the start and end of the JSON object
+        start_index = response_text.find('{')
+        end_index = response_text.rfind('}')
+        
+        if start_index != -1 and end_index != -1:
+            return response_text[start_index:end_index+1]
+        
+        # Fallback if no JSON object is found
+        return "{}"
 
-    def ask_for_more_details(self, necessary_data: list, useful_data: list, context: Optional[str] = None) -> str:
+    def _make_llm_call(self, prompt: str) -> str:
+        # This is a placeholder for your actual LLM call.
+        # You would use self.client.chat.completions.create(...) here
+        
+        # For demonstration, I'll return a sample JSON based on the user input.
+        # In a real scenario, this comes from the LLM.
+        print("--- PROMPT ---")
+        print(prompt)
+        print("--- END PROMPT ---")
+
+        # Simulate an LLM call
+        completion = self.client.chat.completions.create(
+            model="meta-llama/llama-3.3-70b-instruct:free",
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.1,
+            max_tokens=4096,
+        )
+        
+        response = completion.choices[0].message.content
+        print(response)
+        return response or ""
+        
+    def check_missing_fields(self, criteria: Criterios) -> Dict[str, list]:
+        """
+        Checks for missing mandatory and useful fields in the criteria based on fields.txt logic.
+        Returns a dictionary with missing fields.
+        """
+        necessary_fields = [
+            "presupuesto", "guest_count", "venue", "catering"
+        ]
+        useful_fields = [
+            "style", "decor", "venue.atmosphere", "venue.type", 
+            "venue.services", "catering.services", "catering.dietary_options",
+            "catering.meal_types", "decor.floral_arrangements", "decor.restrictions"
+        ]
+
+        missing_fields = {
+            "obligatorios": [],
+            "utiles": []
+        }
+
+        def check_field(path: str, model: Criterios):
+            parts = path.split('.')
+            value = model
+            for part in parts:
+                if value is None:
+                    return True # Is missing
+                value = getattr(value, part, None)
+            return value is None
+
+        for field_path in necessary_fields:
+            if check_field(field_path, criteria):
+                missing_fields["obligatorios"].append(field_path)
+        
+        for field_path in useful_fields:
+            if check_field(field_path, criteria):
+                missing_fields["utiles"].append(field_path)
+            
+        return missing_fields
+    
+    def ask_for_more_details(self, missing_fields: Dict[str, list], context: Optional[str] = None) -> str:
         """
         Ask the user for more details about missing fields, using plain text context (possibly JSON-like).
         """
-        prompt = f"""
-        Eres un asistente experto en planificación de eventos.
-
-        Para continuar con la organización de tu evento y ofrecerte la mejor experiencia, necesito que me ayudes completando la siguiente información:
-
-        - **Campos imprescindibles (necesarios para avanzar):**
-        {', '.join(necessary_data)}
-
-        - **Campos recomendados (opcionales, pero útiles para personalizar tu experiencia):**
-        {', '.join(useful_data)}
-
-        Contexto actual:
-        {context if context else 'N/A'}
-
-        Por favor, responde proporcionando la información de los campos imprescindibles. Si puedes, añade también los recomendados para que la planificación sea aún más precisa. Si tienes dudas sobre algún campo, házmelo saber y te lo explico con gusto.
-
-        Redacta una pregunta clara, amable y motivadora para solicitar estos detalles al usuario.
-        """
+        prompt = ASK_FOR_MORE_DATA_EN(missing_fields, context)
         try:
             response = self.client.chat.completions.create(
                 model="meta-llama/llama-3.3-70b-instruct:free",
@@ -362,14 +200,7 @@ class LLMInterface:
         """
         Convert a JSON-like plain text summary into a natural language summary using the LLM.
         """
-        prompt = f"""
-                Eres un asistente de planificación de eventos. Dado el siguiente resumen en texto tipo JSON, elabora una descripción clara y amigable para el usuario:
-
-                Resumen:
-                {json_text}
-
-                Devuelve solo el texto final sin ningún formato adicional.
-                """
+        prompt = TRANSFORM_FROM_JSON_TO_NL_EN(json_text)
         try:
             response = self.client.chat.completions.create(
                 model="meta-llama/llama-3.3-70b-instruct:free",

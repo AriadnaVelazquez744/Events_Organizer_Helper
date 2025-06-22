@@ -1,15 +1,11 @@
 import streamlit as st
 from views.components.sidebar import show_sidebar
 from views.components.chat import show_chat_interface
-from views.utils.session import process_user_input_and_query as process_llm
+from views.utils.session import process_user_input_and_query, initialize_session_state
 
 def show_planner_page():
     # Initialize session if not already done
-    if 'messages' not in st.session_state:
-        st.session_state.messages = []
-
-    if 'current_query' not in st.session_state:
-        st.session_state.current_query = ""
+    initialize_session_state()
     
     # Custom CSS for modern chat interface
     st.markdown("""
@@ -75,7 +71,7 @@ def show_planner_page():
     with col1:
         user_input = st.text_area(
             "Type your message here...",
-            value=st.session_state.current_query,
+            value=st.session_state.get("user_input", ""),
             height=100,
             max_chars=1000,
             key="user_input",
@@ -85,19 +81,16 @@ def show_planner_page():
     with col2:
         st.markdown("<div style='height: 20px'></div>", unsafe_allow_html=True)
         if st.button("Send", use_container_width=True):
-            if user_input:
+            user_input_from_area = st.session_state.get("user_input", "")
+            if user_input_from_area:
                 # Add user message to chat
-                st.session_state.messages.append({"role": "user", "content": user_input})
-                if 'current_query' not in st.session_state:
-                    st.session_state.current_query = ""
-                st.session_state.current_query += f"\n{user_input}"
+                st.session_state.messages.append({"role": "user", "content": user_input_from_area})
                 
                 # LLM processing
-                response = process_llm()
+                response = process_user_input_and_query()
                 
                 # Add assistant response to chat
                 st.session_state.messages.append({"role": "assistant", "content": response})
                 
-                # Clear input and current query
-                st.session_state.current_query = ""
+                # Clear input area for next message
                 st.rerun() 
