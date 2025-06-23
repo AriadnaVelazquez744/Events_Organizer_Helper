@@ -1,0 +1,5431 @@
+{
+    "golden_test_set": [
+      {
+        "query_id": "test_1",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 29881,
+          "guest_count": 48,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity"
+            ],
+            "capacity": 48,
+            "venue_type": "hotel"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "vegan"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Boutonnieres"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_2",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 21858,
+          "guest_count": 67,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "venue_type"
+            ],
+            "capacity": 67,
+            "venue_type": "garden"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Centerpieces"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_3",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 28656,
+          "guest_count": 31,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "venue_type"
+            ],
+            "capacity": 31,
+            "venue_type": "restaurant"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Bouquets"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_4",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 24273,
+          "guest_count": 76,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "price"
+            ],
+            "capacity": 76,
+            "venue_type": "hotel"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Centerpieces"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_5",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 27732,
+          "guest_count": 36,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity"
+            ],
+            "capacity": 36,
+            "venue_type": "garden"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "buffet"
+            ],
+            "dietary_options": [
+              "vegan"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_6",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 27248,
+          "guest_count": 48,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "capacity"
+            ],
+            "capacity": 48,
+            "venue_type": "restaurant"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "gluten-free"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Bouquets"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_7",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 20491,
+          "guest_count": 67,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price"
+            ],
+            "capacity": 67,
+            "venue_type": "garden"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "vegan"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Bouquets"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_8",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 21881,
+          "guest_count": 34,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "price"
+            ],
+            "capacity": 34,
+            "venue_type": "restaurant"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "buffet"
+            ],
+            "dietary_options": [
+              "vegetarian"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_9",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 25159,
+          "guest_count": 48,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "venue_type"
+            ],
+            "capacity": 48,
+            "venue_type": "restaurant"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "vegan"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_10",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 13959,
+          "guest_count": 76,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "venue_type",
+              "capacity"
+            ],
+            "capacity": 76,
+            "venue_type": "garden"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "vegan"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_11",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 29699,
+          "guest_count": 65,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price"
+            ],
+            "capacity": 65,
+            "venue_type": "garden"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "vegetarian"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Bouquets"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_12",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 22752,
+          "guest_count": 33,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "capacity"
+            ],
+            "capacity": 33,
+            "venue_type": "hotel"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Boutonnieres"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_13",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 28355,
+          "guest_count": 35,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price"
+            ],
+            "capacity": 35,
+            "venue_type": "garden"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_14",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 15891,
+          "guest_count": 78,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "capacity"
+            ],
+            "capacity": 78,
+            "venue_type": "garden"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "family-style"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Bouquets"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_15",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 29990,
+          "guest_count": 48,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "venue_type"
+            ],
+            "capacity": 48,
+            "venue_type": "hotel"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_16",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 22263,
+          "guest_count": 62,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "venue_type"
+            ],
+            "capacity": 62,
+            "venue_type": "garden"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "buffet"
+            ],
+            "dietary_options": [
+              "vegetarian"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Centerpieces"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_17",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 22845,
+          "guest_count": 68,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "capacity"
+            ],
+            "capacity": 68,
+            "venue_type": "hotel"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "vegetarian"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_18",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 12136,
+          "guest_count": 64,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "venue_type"
+            ],
+            "capacity": 64,
+            "venue_type": "garden"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "buffet"
+            ],
+            "dietary_options": [
+              "gluten-free"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_19",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 13788,
+          "guest_count": 35,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "price"
+            ],
+            "capacity": 35,
+            "venue_type": "restaurant"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "vegan"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_20",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 22285,
+          "guest_count": 56,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price"
+            ],
+            "capacity": 56,
+            "venue_type": "restaurant"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "buffet"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_21",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 17897,
+          "guest_count": 53,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "price"
+            ],
+            "capacity": 53,
+            "venue_type": "restaurant"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_22",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 15725,
+          "guest_count": 55,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "capacity"
+            ],
+            "capacity": 55,
+            "venue_type": "hotel"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_23",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 22539,
+          "guest_count": 31,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "venue_type",
+              "price"
+            ],
+            "capacity": 31,
+            "venue_type": "hotel"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Centerpieces"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_24",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 13532,
+          "guest_count": 52,
+          "style": "classic",
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Centerpieces"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_25",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 10595,
+          "guest_count": 76,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "venue_type",
+              "price"
+            ],
+            "capacity": 76,
+            "venue_type": "restaurant"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Bouquets"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_26",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 22378,
+          "guest_count": 41,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "venue_type"
+            ],
+            "capacity": 41,
+            "venue_type": "restaurant"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Centerpieces"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_27",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 20436,
+          "guest_count": 79,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity"
+            ],
+            "capacity": 79,
+            "venue_type": "hotel"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "vegan"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Centerpieces"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_28",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 19572,
+          "guest_count": 50,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity"
+            ],
+            "capacity": 50,
+            "venue_type": "restaurant"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Bouquets"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_29",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 24939,
+          "guest_count": 69,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "venue_type"
+            ],
+            "capacity": 69,
+            "venue_type": "hotel"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "vegetarian"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_30",
+        "difficulty": "low",
+        "criterios": {
+          "presupuesto_total": 26979,
+          "guest_count": 73,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "capacity"
+            ],
+            "capacity": 73,
+            "venue_type": "hotel"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ]
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Bouquets"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_31",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 62568,
+          "guest_count": 141,
+          "style": "minimalist",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "price",
+              "amenities"
+            ],
+            "capacity": 178,
+            "venue_type": "hotel",
+            "amenities": [
+              "bridal_suite"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "buffet",
+              "family-style"
+            ],
+            "dietary_options": [
+              "vegan",
+              "nut-free"
+            ],
+            "cuisine_type": "Italian"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "color_palette",
+              "floral_arrangements"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Reception decor",
+              "Centerpieces"
+            ],
+            "color_palette": [
+              "earth tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_32",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 35306,
+          "guest_count": 92,
+          "style": "luxury",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "price",
+              "amenities"
+            ],
+            "capacity": 128,
+            "venue_type": "loft",
+            "amenities": [
+              "bridal_suite",
+              "pet_friendly",
+              "parking"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "cuisine_type"
+            ],
+            "meal_types": [
+              "food stations"
+            ],
+            "dietary_options": [
+              "vegetarian",
+              "gluten-free",
+              "nut-free"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Flower crowns",
+              "Centerpieces"
+            ],
+            "color_palette": [
+              "earth tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_33",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 78207,
+          "guest_count": 185,
+          "style": "tropical",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "venue_type",
+              "amenities",
+              "capacity"
+            ],
+            "capacity": 222,
+            "venue_type": "mansion",
+            "amenities": [
+              "bridal_suite",
+              "parking"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "meal_types",
+              "cuisine_type",
+              "price",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "gluten-free"
+            ],
+            "cuisine_type": "Mexican"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Petal toss",
+              "Reception decor",
+              "Flower crowns",
+              "Altar decor"
+            ],
+            "color_palette": [
+              "jewel tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_34",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 45195,
+          "guest_count": 101,
+          "style": "minimalist",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "amenities",
+              "capacity"
+            ],
+            "capacity": 128,
+            "venue_type": "beach",
+            "amenities": [
+              "pet_friendly",
+              "bridal_suite",
+              "parking"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "plated",
+              "family-style"
+            ],
+            "dietary_options": [
+              "gluten-free",
+              "nut-free",
+              "vegan"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "color_palette",
+              "price",
+              "floral_arrangements",
+              "service_levels"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Flower crowns",
+              "Reception decor",
+              "Petal toss",
+              "Altar decor"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_35",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 73934,
+          "guest_count": 169,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "location",
+              "amenities",
+              "capacity",
+              "price"
+            ],
+            "capacity": 204,
+            "venue_type": "barn",
+            "amenities": [
+              "wheelchair_accessible",
+              "parking"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "kosher",
+              "gluten-free"
+            ],
+            "cuisine_type": "Mexican"
+          },
+          "decor": {
+            "obligatorios": [
+              "color_palette",
+              "price"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Flower crowns",
+              "Reception decor"
+            ],
+            "color_palette": [
+              "earth tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_36",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 49033,
+          "guest_count": 196,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "amenities",
+              "price",
+              "venue_type"
+            ],
+            "capacity": 240,
+            "venue_type": "hotel",
+            "amenities": [
+              "bridal_suite"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "cuisine_type",
+              "meal_types"
+            ],
+            "meal_types": [
+              "food stations",
+              "family-style"
+            ],
+            "dietary_options": [
+              "vegan",
+              "nut-free"
+            ],
+            "cuisine_type": "Asian"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "floral_arrangements",
+              "color_palette"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Altar decor"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_37",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 56024,
+          "guest_count": 140,
+          "style": "minimalist",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity"
+            ],
+            "capacity": 174,
+            "venue_type": "hotel",
+            "amenities": [
+              "parking",
+              "bridal_suite"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "cuisine_type",
+              "dietary_options",
+              "meal_types"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "dairy-free"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette",
+              "floral_arrangements",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Petal toss",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "earth tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_38",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 54682,
+          "guest_count": 159,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "amenities",
+              "price",
+              "capacity"
+            ],
+            "capacity": 196,
+            "venue_type": "ballroom",
+            "amenities": [
+              "wheelchair_accessible",
+              "parking",
+              "bridal_suite"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "food stations"
+            ],
+            "dietary_options": [
+              "nut-free"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "service_levels",
+              "price",
+              "floral_arrangements",
+              "color_palette"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Flower crowns"
+            ],
+            "color_palette": [
+              "jewel tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_39",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 44439,
+          "guest_count": 141,
+          "style": "glamorous",
+          "venue": {
+            "obligatorios": [
+              "amenities",
+              "location",
+              "price",
+              "capacity"
+            ],
+            "capacity": 169,
+            "venue_type": "hotel",
+            "amenities": [
+              "pet_friendly",
+              "parking"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "dietary_options",
+              "cuisine_type",
+              "meal_types"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "dairy-free"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette",
+              "floral_arrangements"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Flower crowns",
+              "Altar decor",
+              "Reception decor"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_40",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 42774,
+          "guest_count": 185,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "price",
+              "location"
+            ],
+            "capacity": 223,
+            "venue_type": "ballroom",
+            "amenities": [
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "vegetarian",
+              "dairy-free",
+              "kosher"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "floral_arrangements",
+              "price"
+            ],
+            "service_levels": [
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "color_palette": [
+              "earth tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_41",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 41810,
+          "guest_count": 102,
+          "style": "glamorous",
+          "venue": {
+            "obligatorios": [
+              "venue_type",
+              "price",
+              "capacity"
+            ],
+            "capacity": 140,
+            "venue_type": "mansion",
+            "amenities": [
+              "wheelchair_accessible",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "meal_types",
+              "dietary_options",
+              "price"
+            ],
+            "meal_types": [
+              "buffet"
+            ],
+            "dietary_options": [
+              "gluten-free"
+            ],
+            "cuisine_type": "Italian"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Centerpieces",
+              "Bouquets"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_42",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 51693,
+          "guest_count": 137,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "price",
+              "venue_type",
+              "location"
+            ],
+            "capacity": 169,
+            "venue_type": "ballroom",
+            "amenities": [
+              "parking",
+              "bridal_suite",
+              "pet_friendly",
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "cuisine_type",
+              "meal_types",
+              "price",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "dairy-free",
+              "kosher"
+            ],
+            "cuisine_type": "Asian"
+          },
+          "decor": {
+            "obligatorios": [
+              "service_levels",
+              "floral_arrangements",
+              "price"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Petal toss",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "jewel tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_43",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 60506,
+          "guest_count": 140,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "amenities"
+            ],
+            "capacity": 182,
+            "venue_type": "garden",
+            "amenities": [
+              "parking",
+              "bridal_suite",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "cuisine_type",
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "food stations",
+              "family-style"
+            ],
+            "dietary_options": [
+              "gluten-free"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Petal toss",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "jewel tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_44",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 64516,
+          "guest_count": 89,
+          "style": "minimalist",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "amenities",
+              "capacity"
+            ],
+            "capacity": 113,
+            "venue_type": "loft",
+            "amenities": [
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "dietary_options",
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "buffet"
+            ],
+            "dietary_options": [
+              "kosher",
+              "vegetarian",
+              "gluten-free"
+            ],
+            "cuisine_type": "Mexican"
+          },
+          "decor": {
+            "obligatorios": [
+              "service_levels",
+              "floral_arrangements",
+              "color_palette",
+              "price"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_45",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 78248,
+          "guest_count": 132,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity"
+            ],
+            "capacity": 171,
+            "venue_type": "rooftop",
+            "amenities": [
+              "parking",
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "gluten-free"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "color_palette"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Reception decor",
+              "Centerpieces"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_46",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 45679,
+          "guest_count": 196,
+          "style": "glamorous",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type"
+            ],
+            "capacity": 222,
+            "venue_type": "mansion",
+            "amenities": [
+              "parking",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "cuisine_type",
+              "meal_types"
+            ],
+            "meal_types": [
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "gluten-free",
+              "vegan"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "floral_arrangements",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Petal toss",
+              "Boutonnieres",
+              "Centerpieces"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_47",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 44464,
+          "guest_count": 182,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "amenities",
+              "price"
+            ],
+            "capacity": 220,
+            "venue_type": "mansion",
+            "amenities": [
+              "bridal_suite",
+              "wheelchair_accessible",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "cuisine_type",
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "vegetarian"
+            ],
+            "cuisine_type": "Mexican"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "color_palette"
+            ],
+            "service_levels": [
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Altar decor",
+              "Centerpieces",
+              "Bouquets",
+              "Petal toss"
+            ],
+            "color_palette": [
+              "earth tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_48",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 60935,
+          "guest_count": 164,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "location",
+              "amenities",
+              "price"
+            ],
+            "capacity": 179,
+            "venue_type": "rooftop",
+            "amenities": [
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "kosher",
+              "vegetarian"
+            ],
+            "cuisine_type": "Mexican"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "floral_arrangements"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Petal toss",
+              "Bouquets",
+              "Reception decor",
+              "Flower crowns"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_49",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 57805,
+          "guest_count": 182,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "amenities",
+              "location"
+            ],
+            "capacity": 213,
+            "venue_type": "garden",
+            "amenities": [
+              "bridal_suite",
+              "parking"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "buffet"
+            ],
+            "dietary_options": [
+              "vegetarian",
+              "nut-free"
+            ],
+            "cuisine_type": "Asian"
+          },
+          "decor": {
+            "obligatorios": [
+              "service_levels",
+              "price"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Petal toss",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_50",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 61870,
+          "guest_count": 131,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "amenities",
+              "capacity"
+            ],
+            "capacity": 158,
+            "venue_type": "rooftop",
+            "amenities": [
+              "parking",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "cuisine_type"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "kosher",
+              "dairy-free",
+              "nut-free"
+            ],
+            "cuisine_type": "Mexican"
+          },
+          "decor": {
+            "obligatorios": [
+              "service_levels",
+              "price"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Altar decor",
+              "Flower crowns",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "jewel tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_51",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 76711,
+          "guest_count": 185,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "amenities"
+            ],
+            "capacity": 218,
+            "venue_type": "ballroom",
+            "amenities": [
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "meal_types",
+              "price",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "buffet"
+            ],
+            "dietary_options": [
+              "kosher"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Altar decor",
+              "Flower crowns"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_52",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 35359,
+          "guest_count": 128,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "amenities",
+              "capacity"
+            ],
+            "capacity": 169,
+            "venue_type": "beach",
+            "amenities": [
+              "pet_friendly",
+              "parking",
+              "bridal_suite",
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "dietary_options",
+              "meal_types"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "vegetarian"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette",
+              "floral_arrangements"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Flower crowns",
+              "Reception decor",
+              "Petal toss"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_53",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 52627,
+          "guest_count": 135,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "venue_type",
+              "price",
+              "capacity"
+            ],
+            "capacity": 158,
+            "venue_type": "ballroom",
+            "amenities": [
+              "parking",
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "cuisine_type"
+            ],
+            "meal_types": [
+              "plated",
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "vegan"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Petal toss"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_54",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 60980,
+          "guest_count": 163,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "amenities",
+              "price",
+              "capacity"
+            ],
+            "capacity": 174,
+            "venue_type": "hotel",
+            "amenities": [
+              "bridal_suite",
+              "parking"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "cuisine_type",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "plated",
+              "food stations"
+            ],
+            "dietary_options": [
+              "vegetarian",
+              "nut-free"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "floral_arrangements",
+              "price",
+              "service_levels",
+              "color_palette"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Altar decor"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_55",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 49755,
+          "guest_count": 149,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "venue_type",
+              "price",
+              "location"
+            ],
+            "capacity": 161,
+            "venue_type": "barn",
+            "amenities": [
+              "bridal_suite",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "cuisine_type",
+              "price"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "vegetarian",
+              "gluten-free"
+            ],
+            "cuisine_type": "Italian"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "floral_arrangements",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Petal toss",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_56",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 35349,
+          "guest_count": 158,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "amenities",
+              "price",
+              "venue_type"
+            ],
+            "capacity": 184,
+            "venue_type": "mansion",
+            "amenities": [
+              "bridal_suite"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "cuisine_type",
+              "meal_types",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "nut-free"
+            ],
+            "cuisine_type": "Asian"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Petal toss"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_57",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 79246,
+          "guest_count": 169,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "venue_type"
+            ],
+            "capacity": 213,
+            "venue_type": "rooftop",
+            "amenities": [
+              "parking",
+              "bridal_suite"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "meal_types",
+              "price",
+              "cuisine_type"
+            ],
+            "meal_types": [
+              "buffet"
+            ],
+            "dietary_options": [
+              "kosher"
+            ],
+            "cuisine_type": "Mexican"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Altar decor",
+              "Centerpieces"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_58",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 31397,
+          "guest_count": 139,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type"
+            ],
+            "capacity": 178,
+            "venue_type": "hotel",
+            "amenities": [
+              "parking"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "cuisine_type",
+              "price",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "gluten-free"
+            ],
+            "cuisine_type": "Asian"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_59",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 51586,
+          "guest_count": 162,
+          "style": "classic",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "venue_type",
+              "location"
+            ],
+            "capacity": 204,
+            "venue_type": "restaurant",
+            "amenities": [
+              "bridal_suite",
+              "pet_friendly",
+              "parking",
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "dietary_options",
+              "meal_types"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "buffet"
+            ],
+            "dietary_options": [
+              "kosher"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "floral_arrangements"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Reception decor",
+              "Centerpieces",
+              "Bouquets"
+            ],
+            "color_palette": [
+              "earth tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_60",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 52940,
+          "guest_count": 156,
+          "style": "modern",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "amenities",
+              "capacity",
+              "venue_type"
+            ],
+            "capacity": 178,
+            "venue_type": "beach",
+            "amenities": [
+              "parking",
+              "bridal_suite",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "food stations"
+            ],
+            "dietary_options": [
+              "vegan",
+              "kosher",
+              "dairy-free"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "color_palette",
+              "price",
+              "floral_arrangements",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Reception decor",
+              "Altar decor"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_61",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 60597,
+          "guest_count": 152,
+          "style": "tropical",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "amenities",
+              "price"
+            ],
+            "capacity": 169,
+            "venue_type": "beach",
+            "amenities": [
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "cuisine_type"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "vegan"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "color_palette",
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Altar decor",
+              "Petal toss",
+              "Reception decor"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_62",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 44961,
+          "guest_count": 163,
+          "style": "minimalist",
+          "venue": {
+            "obligatorios": [
+              "amenities",
+              "price"
+            ],
+            "capacity": 182,
+            "venue_type": "restaurant",
+            "amenities": [
+              "parking",
+              "bridal_suite"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "cuisine_type"
+            ],
+            "meal_types": [
+              "plated"
+            ],
+            "dietary_options": [
+              "kosher",
+              "dairy-free"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "floral_arrangements",
+              "service_levels"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Petal toss",
+              "Reception decor",
+              "Centerpieces"
+            ],
+            "color_palette": [
+              "jewel tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_63",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 77991,
+          "guest_count": 194,
+          "style": "glamorous",
+          "venue": {
+            "obligatorios": [
+              "location",
+              "price"
+            ],
+            "capacity": 208,
+            "venue_type": "rooftop",
+            "amenities": [
+              "pet_friendly",
+              "parking",
+              "wheelchair_accessible",
+              "bridal_suite"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "cuisine_type"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "food stations"
+            ],
+            "dietary_options": [
+              "kosher"
+            ],
+            "cuisine_type": "French"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "floral_arrangements"
+            ],
+            "service_levels": [
+              "DIY consulation"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Petal toss",
+              "Reception decor"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_64",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 45585,
+          "guest_count": 185,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "venue_type",
+              "price"
+            ],
+            "capacity": 204,
+            "venue_type": "restaurant",
+            "amenities": [
+              "parking",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "buffet"
+            ],
+            "dietary_options": [
+              "kosher"
+            ],
+            "cuisine_type": "Asian"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Centerpieces",
+              "Flower crowns"
+            ],
+            "color_palette": [
+              "jewel tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_65",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 35749,
+          "guest_count": 195,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "amenities",
+              "price",
+              "location"
+            ],
+            "capacity": 234,
+            "venue_type": "beach",
+            "amenities": [
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "kosher"
+            ],
+            "cuisine_type": "Mexican"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Altar decor",
+              "Centerpieces"
+            ],
+            "color_palette": [
+              "earth tones"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_66",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 37675,
+          "guest_count": 127,
+          "style": "rustic",
+          "venue": {
+            "obligatorios": [
+              "amenities",
+              "price",
+              "location",
+              "capacity"
+            ],
+            "capacity": 174,
+            "venue_type": "loft",
+            "amenities": [
+              "bridal_suite",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "vegetarian"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels"
+            ],
+            "service_levels": [
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Boutonnieres",
+              "Altar decor"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_67",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 79244,
+          "guest_count": 140,
+          "style": "vintage",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "amenities",
+              "capacity"
+            ],
+            "capacity": 178,
+            "venue_type": "ballroom",
+            "amenities": [
+              "bridal_suite",
+              "parking",
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "meal_types",
+              "price"
+            ],
+            "meal_types": [
+              "food stations"
+            ],
+            "dietary_options": [
+              "vegetarian"
+            ],
+            "cuisine_type": "Asian"
+          },
+          "decor": {
+            "obligatorios": [
+              "floral_arrangements",
+              "color_palette",
+              "price"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Reception decor",
+              "Altar decor",
+              "Flower crowns"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_68",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 60057,
+          "guest_count": 121,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "capacity",
+              "amenities",
+              "price",
+              "location"
+            ],
+            "capacity": 156,
+            "venue_type": "mansion",
+            "amenities": [
+              "wheelchair_accessible"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "cuisine_type"
+            ],
+            "meal_types": [
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "dairy-free"
+            ],
+            "cuisine_type": "Mexican"
+          },
+          "decor": {
+            "obligatorios": [
+              "floral_arrangements",
+              "price"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Reception decor"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_69",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 49989,
+          "guest_count": 169,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "venue_type",
+              "amenities"
+            ],
+            "capacity": 218,
+            "venue_type": "beach",
+            "amenities": [
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options"
+            ],
+            "meal_types": [
+              "family-style"
+            ],
+            "dietary_options": [
+              "kosher",
+              "vegetarian"
+            ],
+            "cuisine_type": "American"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "color_palette",
+              "floral_arrangements"
+            ],
+            "service_levels": [
+              "Lighting design"
+            ],
+            "floral_arrangements": [
+              "Flower crowns",
+              "Petal toss",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "pastels"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_70",
+        "difficulty": "medium",
+        "criterios": {
+          "presupuesto_total": 48588,
+          "guest_count": 156,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "location"
+            ],
+            "capacity": 171,
+            "venue_type": "mansion",
+            "amenities": [
+              "wheelchair_accessible",
+              "parking",
+              "pet_friendly"
+            ]
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types"
+            ],
+            "meal_types": [
+              "food stations",
+              "plated"
+            ],
+            "dietary_options": [
+              "gluten-free",
+              "vegan"
+            ],
+            "cuisine_type": "Asian"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "color_palette"
+            ],
+            "service_levels": [
+              "A-la-carte florals"
+            ],
+            "floral_arrangements": [
+              "Altar decor",
+              "Boutonnieres"
+            ],
+            "color_palette": [
+              "monochromatic"
+            ]
+          }
+        }
+      },
+      {
+        "query_id": "test_71",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 139163,
+          "guest_count": 66,
+          "style": "vintage",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 116,
+            "venue_type": "hotel",
+            "amenities": [
+              "valet_parking",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "family-style",
+              "food stations"
+            ],
+            "dietary_options": [
+              "halal",
+              "kosher",
+              "dairy-free",
+              "nut-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "mid-century modern wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_72",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 8555,
+          "guest_count": 164,
+          "style": "luxury",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 254,
+            "venue_type": "vineyard",
+            "amenities": [
+              "in-house_coordinator",
+              "valet_parking"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "food stations",
+              "plated"
+            ],
+            "dietary_options": [
+              "gluten-free",
+              "kosher",
+              "nut-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "gothic wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_73",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 353066,
+          "guest_count": 86,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 154,
+            "venue_type": "industrial warehouse",
+            "amenities": [
+              "late_night_hours",
+              "fireworks_allowed"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "buffet",
+              "food stations"
+            ],
+            "dietary_options": [
+              "kosher",
+              "vegetarian",
+              "vegan",
+              "nut-free",
+              "gluten-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "mid-century modern wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_74",
+        "difficulty": "high",
+        "criterios": {
+          "guest_count": 92,
+          "style": "industrial",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 158,
+            "venue_type": "museum",
+            "amenities": [
+              "in-house_coordinator",
+              "valet_parking",
+              "fireworks_allowed",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "plated"
+            ],
+            "dietary_options": [
+              "kosher",
+              "vegetarian",
+              "dairy-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_75",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 45195,
+          "guest_count": 99,
+          "style": "industrial",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 170,
+            "venue_type": "castle",
+            "amenities": [
+              "late_night_hours",
+              "valet_parking",
+              "in-house_coordinator"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "food stations",
+              "cocktail reception",
+              "family-style"
+            ],
+            "dietary_options": [
+              "kosher",
+              "dairy-free",
+              "halal",
+              "gluten-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "gothic wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_76",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 73934,
+          "guest_count": 80,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 139,
+            "venue_type": "art gallery",
+            "amenities": [
+              "late_night_hours",
+              "fireworks_allowed",
+              "valet_parking"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "buffet",
+              "food stations",
+              "family-style"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "kosher",
+              "dairy-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_77",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 56024,
+          "guest_count": 91,
+          "style": "vintage",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 172,
+            "venue_type": "mansion",
+            "amenities": [
+              "valet_parking",
+              "in-house_coordinator",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "food stations"
+            ],
+            "dietary_options": [
+              "dairy-free",
+              "halal",
+              "gluten-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_78",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 476839,
+          "guest_count": 89,
+          "style": "industrial",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 178,
+            "venue_type": "industrial warehouse",
+            "amenities": [
+              "late_night_hours",
+              "valet_parking"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "family-style"
+            ],
+            "dietary_options": [
+              "dairy-free",
+              "kosher",
+              "nut-free",
+              "gluten-free",
+              "halal"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "gothic wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_79",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 6093,
+          "guest_count": 218,
+          "style": "luxury",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 313,
+            "venue_type": "castle",
+            "amenities": [
+              "valet_parking",
+              "in-house_coordinator",
+              "fireworks_allowed",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "food stations"
+            ],
+            "dietary_options": [
+              "halal",
+              "gluten-free",
+              "kosher",
+              "vegan",
+              "dairy-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "gothic wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_80",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 42774,
+          "guest_count": 59,
+          "style": "industrial",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 158,
+            "venue_type": "art gallery",
+            "amenities": [
+              "late_night_hours",
+              "fireworks_allowed",
+              "in-house_coordinator"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "buffet"
+            ],
+            "dietary_options": [
+              "vegan",
+              "gluten-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "mid-century modern wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_81",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 41810,
+          "guest_count": 91,
+          "style": "vintage",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 177,
+            "venue_type": "industrial warehouse",
+            "amenities": [
+              "in-house_coordinator",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "plated",
+              "buffet"
+            ],
+            "dietary_options": [
+              "gluten-free",
+              "nut-free",
+              "halal"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_82",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 51693,
+          "guest_count": 87,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 159,
+            "venue_type": "vineyard",
+            "amenities": [
+              "fireworks_allowed",
+              "in-house_coordinator",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "food stations",
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "halal",
+              "vegan",
+              "kosher"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "steampunk wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_83",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 13998,
+          "guest_count": 204,
+          "style": "luxury",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 272,
+            "venue_type": "mansion",
+            "amenities": [
+              "fireworks_allowed",
+              "valet_parking"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "plated",
+              "buffet"
+            ],
+            "dietary_options": [
+              "vegetarian",
+              "dairy-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "gothic wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_84",
+        "difficulty": "high",
+        "criterios": {
+          "guest_count": 68,
+          "style": "industrial",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 164,
+            "venue_type": "art gallery",
+            "amenities": [
+              "late_night_hours",
+              "in-house_coordinator",
+              "valet_parking"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "buffet"
+            ],
+            "dietary_options": [
+              "halal",
+              "kosher"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "mid-century modern wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_85",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 78248,
+          "guest_count": 91,
+          "style": "industrial",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 178,
+            "venue_type": "industrial warehouse",
+            "amenities": [
+              "fireworks_allowed",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "buffet"
+            ],
+            "dietary_options": [
+              "gluten-free",
+              "halal",
+              "dairy-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "gothic wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_86",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 45679,
+          "guest_count": 91,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 141,
+            "venue_type": "art gallery",
+            "amenities": [
+              "fireworks_allowed",
+              "valet_parking",
+              "in-house_coordinator"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "buffet",
+              "plated"
+            ],
+            "dietary_options": [
+              "halal",
+              "kosher"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "steampunk wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_87",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 44464,
+          "guest_count": 98,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 182,
+            "venue_type": "restaurant",
+            "amenities": [
+              "fireworks_allowed",
+              "in-house_coordinator",
+              "valet_parking"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "family-style",
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "kosher",
+              "nut-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_88",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 60935,
+          "guest_count": 66,
+          "style": "vintage",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 125,
+            "venue_type": "library",
+            "amenities": [
+              "in-house_coordinator",
+              "fireworks_allowed",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "buffet",
+              "family-style",
+              "plated"
+            ],
+            "dietary_options": [
+              "vegan",
+              "kosher"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_89",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 57805,
+          "guest_count": 78,
+          "style": "vintage",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 177,
+            "venue_type": "vineyard",
+            "amenities": [
+              "in-house_coordinator",
+              "fireworks_allowed"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "family-style",
+              "plated",
+              "buffet"
+            ],
+            "dietary_options": [
+              "dairy-free",
+              "nut-free",
+              "kosher",
+              "vegan",
+              "halal"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "mid-century modern wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_90",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 12165,
+          "guest_count": 218,
+          "style": "luxury",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 272,
+            "venue_type": "loft",
+            "amenities": [
+              "in-house_coordinator",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "family-style",
+              "cocktail reception",
+              "buffet"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "kosher",
+              "vegetarian",
+              "dairy-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "steampunk wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_91",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 13411,
+          "guest_count": 169,
+          "style": "luxury",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 269,
+            "venue_type": "museum",
+            "amenities": [
+              "fireworks_allowed",
+              "late_night_hours",
+              "valet_parking"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "family-style"
+            ],
+            "dietary_options": [
+              "gluten-free",
+              "nut-free",
+              "dairy-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_92",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 35359,
+          "guest_count": 89,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 185,
+            "venue_type": "castle",
+            "amenities": [
+              "late_night_hours",
+              "fireworks_allowed",
+              "valet_parking",
+              "in-house_coordinator"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "buffet",
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "vegan",
+              "halal"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_93",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 52627,
+          "guest_count": 68,
+          "style": "industrial",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 139,
+            "venue_type": "industrial warehouse",
+            "amenities": [
+              "late_night_hours",
+              "in-house_coordinator"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "family-style",
+              "food stations"
+            ],
+            "dietary_options": [
+              "halal",
+              "dairy-free",
+              "vegetarian",
+              "gluten-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "steampunk wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_94",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 483161,
+          "guest_count": 78,
+          "style": "industrial",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 134,
+            "venue_type": "castle",
+            "amenities": [
+              "in-house_coordinator",
+              "valet_parking"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "cocktail reception",
+              "family-style"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "gluten-free",
+              "halal"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "mid-century modern wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_95",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 35749,
+          "guest_count": 69,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 147,
+            "venue_type": "mansion",
+            "amenities": [
+              "fireworks_allowed",
+              "in-house_coordinator"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "food stations",
+              "family-style",
+              "plated"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "kosher",
+              "vegan",
+              "halal"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_96",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 37675,
+          "guest_count": 86,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 169,
+            "venue_type": "loft",
+            "amenities": [
+              "valet_parking",
+              "late_night_hours",
+              "fireworks_allowed",
+              "in-house_coordinator"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "buffet",
+              "family-style"
+            ],
+            "dietary_options": [
+              "kosher",
+              "halal"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "mid-century modern wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_97",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 491741,
+          "guest_count": 68,
+          "style": "vintage",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 134,
+            "venue_type": "industrial warehouse",
+            "amenities": [
+              "fireworks_allowed",
+              "in-house_coordinator"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "buffet",
+              "food stations"
+            ],
+            "dietary_options": [
+              "kosher",
+              "vegan",
+              "dairy-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "hanging floral installation",
+              "custom lighting rig"
+            ],
+            "theme": "gothic wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_98",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 60057,
+          "guest_count": 76,
+          "style": "vintage",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 147,
+            "venue_type": "art gallery",
+            "amenities": [
+              "in-house_coordinator",
+              "fireworks_allowed",
+              "valet_parking"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "family-style",
+              "buffet",
+              "plated"
+            ],
+            "dietary_options": [
+              "dairy-free",
+              "vegetarian"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "enchanted forest wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_99",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 8201,
+          "guest_count": 181,
+          "style": "luxury",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 277,
+            "venue_type": "art gallery",
+            "amenities": [
+              "fireworks_allowed",
+              "in-house_coordinator",
+              "late_night_hours"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "buffet",
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "nut-free",
+              "gluten-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "gothic wedding"
+          }
+        }
+      },
+      {
+        "query_id": "test_100",
+        "difficulty": "high",
+        "criterios": {
+          "presupuesto_total": 48588,
+          "guest_count": 87,
+          "style": "bohemian",
+          "venue": {
+            "obligatorios": [
+              "price",
+              "capacity",
+              "venue_type",
+              "amenities",
+              "exclusivity"
+            ],
+            "capacity": 158,
+            "venue_type": "restaurant",
+            "amenities": [
+              "valet_parking",
+              "late_night_hours",
+              "fireworks_allowed",
+              "in-house_coordinator"
+            ],
+            "exclusivity": "full_venue"
+          },
+          "catering": {
+            "obligatorios": [
+              "price",
+              "meal_types",
+              "dietary_options",
+              "custom_menu",
+              "bar_service"
+            ],
+            "meal_types": [
+              "plated",
+              "cocktail reception"
+            ],
+            "dietary_options": [
+              "kosher",
+              "vegetarian",
+              "vegan",
+              "dairy-free",
+              "nut-free"
+            ],
+            "custom_menu": true,
+            "bar_service": "premium_open_bar"
+          },
+          "decor": {
+            "obligatorios": [
+              "price",
+              "service_levels",
+              "floral_arrangements",
+              "custom_installations",
+              "theme"
+            ],
+            "service_levels": [
+              "Full-Service Floral Design",
+              "Event design and styling"
+            ],
+            "floral_arrangements": [
+              "Bouquets",
+              "Boutonnieres",
+              "Centerpieces",
+              "Ceremony decor",
+              "Altar decor",
+              "Reception decor",
+              "Flower crowns",
+              "Petal toss"
+            ],
+            "custom_installations": [
+              "custom lighting rig",
+              "hanging floral installation"
+            ],
+            "theme": "gothic wedding"
+          }
+        }
+      }
+    ]
+  }

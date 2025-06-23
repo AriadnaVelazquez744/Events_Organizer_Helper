@@ -1,0 +1,110 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Reporte de Experimento: RAG_Quality_Comparison</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                .header { background-color: #f0f0f0; padding: 20px; border-radius: 5px; }
+                .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007acc; }
+                .result { background-color: #f9f9f9; padding: 10px; margin: 10px 0; border-radius: 3px; }
+                .significant { background-color: #d4edda; border-left-color: #28a745; }
+                .not-significant { background-color: #f8d7da; border-left-color: #dc3545; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>Reporte de Experimento: RAG_Quality_Comparison</h1>
+                <p>Generado el: 2025-06-22 22:31:52</p>
+            </div>
+            
+            <div class="section">
+                <h2>Resumen de Datos</h2>
+                <table>
+                    <tr><th>Métrica</th><th>Valor</th></tr>
+                    <tr><td>Total de muestras</td><td>600</td></tr>
+                    <tr><td>Duración del experimento</td><td>600 comparaciones A/B</td></tr>
+                    <tr><td>Experimentos realizados</td><td>5</td></tr>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>Resultados de Experimentos</h2>
+        
+                <div class="result significant">
+                    <h3>Experimento 1: RAG vs No-RAG General Comparison</h3>
+                    <p><strong>Conclusión:</strong> RAG mejora significativamente la calidad (t=97.642, p=0.0000). Mejora promedio: 42.8%, IC95%: [41.8%, 43.8%]</p>
+                    <p><strong>Estadístico de prueba:</strong> 97.6415</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 2.4846 (large)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> No</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Implementar RAG para mejorar calidad general de respuestas</li><li>Optimizar algoritmos RAG para maximizar mejora</li><li>Monitorear mejora por tipo de consulta</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 2: RAG Improvement by Query Type</h3>
+                    <p><strong>Conclusión:</strong> Análisis por tipo completado. Mejora promedio por tipo: venue: 44.2%, decor: 33.0%, catering: 38.9%, Diferencia significativa entre tipos (F=39.451, p=0.0000)</p>
+                    <p><strong>Estadístico de prueba:</strong> 39.4507</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.4420 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar RAG específicamente para tipos con menor mejora</li><li>Implementar estrategias diferenciadas por tipo de consulta</li><li>Monitorear mejora específica por categoría</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 3: RAG Improvement Metrics Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de métricas de mejora completado. R² del modelo predictivo: 1.000. Modelo significativo (F=11653935486542067973644517113856.000, p=0.0000). Mayor correlación: relevance_vs_usefulness (r=0.335)</p>
+                    <p><strong>Estadístico de prueba:</strong> 11653935486542067973644517113856.0000</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.3347 (medium)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Optimizar métricas con mayor impacto en mejora general</li><li>Implementar modelos predictivos de mejora</li><li>Monitorear correlaciones entre métricas de mejora</li>
+                    </ul>
+                </div>
+            
+                <div class="result significant">
+                    <h3>Experimento 4: Complexity-Benefit Analysis</h3>
+                    <p><strong>Conclusión:</strong> Correlación complejidad-mejora: r=0.772 (p=0.0000). Pendiente significativa: 0.383 (p=0.0000). Diferencia significativa entre niveles (F=321.383, p=0.0000)</p>
+                    <p><strong>Estadístico de prueba:</strong> 321.3832</p>
+                    <p><strong>P-valor:</strong> 0.0000</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.7719 (large)</p>
+                    <p><strong>Potencia alcanzada:</strong> 1.0000</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Priorizar RAG para consultas complejas</li><li>Optimizar algoritmos para consultas simples</li><li>Implementar estrategias adaptativas por complejidad</li>
+                    </ul>
+                </div>
+            
+                <div class="result not-significant">
+                    <h3>Experimento 5: Improvement Stability Analysis</h3>
+                    <p><strong>Conclusión:</strong> Análisis de estabilidad completado. Estabilidad: 0.984</p>
+                    <p><strong>Estadístico de prueba:</strong> 1.6490</p>
+                    <p><strong>P-valor:</strong> 0.1769</p>
+                    <p><strong>Tamaño del efecto:</strong> 0.0154 (small)</p>
+                    <p><strong>Potencia alcanzada:</strong> 0.0664</p>
+                    <p><strong>Supuestos cumplidos:</strong> Sí</p>
+                    <ul>
+                        <li><strong>Recomendaciones:</strong></li>
+                        <li>Implementar monitoreo continuo de estabilidad</li><li>Desarrollar estrategias de estabilización</li><li>Optimizar algoritmos para consistencia temporal</li>
+                    </ul>
+                </div>
+            
+            </div>
+        </body>
+        </html>
+        

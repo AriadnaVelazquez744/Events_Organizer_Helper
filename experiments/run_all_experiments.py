@@ -2,6 +2,12 @@
 """
 Script Principal para Ejecutar Todos los Experimentos Estadísticos
 Ejecuta los experimentos 2, 3, 5 y 6 con metodología robusta y validación estadística completa.
+
+Experimentos incluidos:
+- Experimento 2: Efectividad del ciclo BDI
+- Experimento 3: Comparación de calidad RAG vs No-RAG
+- Experimento 5: Rendimiento del sistema
+- Experimento 6: Efectividad de integración
 """
 
 import os
@@ -18,7 +24,7 @@ from pathlib import Path
 
 # Importar experimentos
 from experiments.experiment_2_bdi_effectiveness import run_bdi_experiments
-from experiments.experiment_3_rag_precision import run_rag_experiments
+from experiments.experiment_3_rag_precision import run_rag_quality_experiments
 from experiments.experiment_5_system_performance import run_performance_experiments
 from experiments.experiment_6_integration_effectiveness import run_integration_experiments
 
@@ -52,7 +58,7 @@ class ExperimentRunner:
         # Ejecutar experimentos
         experiments = {
             "BDI_Effectiveness": run_bdi_experiments,
-            "RAG_Precision": run_rag_experiments,
+            "RAG_Quality_Comparison": run_rag_quality_experiments,
             "System_Performance": run_performance_experiments,
             "Integration_Effectiveness": run_integration_experiments
         }
@@ -280,6 +286,7 @@ class ExperimentRunner:
                     <div class="header">
                         <h1>📊 Reporte Final - Suite de Experimentos Estadísticos</h1>
                         <p>Análisis completo de efectividad del sistema de planificación de eventos</p>
+                        <p><strong>Incluye:</strong> Efectividad BDI, Comparación RAG vs No-RAG, Rendimiento del Sistema, Efectividad de Integración</p>
                         <p>Generado el: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
                     </div>
                     
@@ -327,6 +334,7 @@ class ExperimentRunner:
                 <div class="header">
                     <h1>📊 Reporte Final - Suite de Experimentos Estadísticos</h1>
                     <p>Análisis completo de efectividad del sistema de planificación de eventos</p>
+                    <p><strong>Incluye:</strong> Efectividad BDI, Comparación RAG vs No-RAG, Rendimiento del Sistema, Efectividad de Integración</p>
                     <p>Generado el: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
                 </div>
                 
@@ -403,15 +411,25 @@ class ExperimentRunner:
         """
         
         # Análisis por experimento
-        for exp_name in ['BDI_Effectiveness', 'RAG_Precision', 'System_Performance', 'Integration_Effectiveness']:
+        for exp_name in ['BDI_Effectiveness', 'RAG_Quality_Comparison', 'System_Performance', 'Integration_Effectiveness']:
             exp_data = df[df['Experimento'] == exp_name]
             if len(exp_data) > 0:
                 significant_count = len(exp_data[exp_data['Significativo'] == 'Sí'])
                 total_count = len(exp_data)
                 mean_effect = exp_data['Tamaño_Efecto'].mean()
                 
+                # Mapear nombres de experimentos a nombres más legibles
+                exp_display_names = {
+                    'BDI_Effectiveness': 'Efectividad BDI',
+                    'RAG_Quality_Comparison': 'Comparación RAG vs No-RAG',
+                    'System_Performance': 'Rendimiento del Sistema',
+                    'Integration_Effectiveness': 'Efectividad de Integración'
+                }
+                
+                display_name = exp_display_names.get(exp_name, exp_name)
+                
                 html += f"""
-                    <h3>{exp_name.replace('_', ' ')}</h3>
+                    <h3>{display_name}</h3>
                     <p><strong>Análisis significativos:</strong> {significant_count}/{total_count} ({significant_count/total_count*100:.1f}%)</p>
                     <p><strong>Tamaño de efecto promedio:</strong> {mean_effect:.3f}</p>
                     <p><strong>Tiempo de ejecución:</strong> {self.execution_times.get(exp_name, 0):.2f} segundos</p>
@@ -424,7 +442,7 @@ class ExperimentRunner:
                     <h3>🎯 Recomendaciones Principales</h3>
                     <ul>
                         <li><strong>Optimización BDI:</strong> Implementar estrategias de reconsideración de intentions basadas en los patrones identificados</li>
-                        <li><strong>Mejora RAG:</strong> Optimizar sistemas RAG con menor precisión y implementar aprendizaje adaptativo</li>
+                        <li><strong>Mejora RAG:</strong> Optimizar sistemas RAG para maximizar mejora de calidad y implementar estrategias adaptativas por tipo de consulta</li>
                         <li><strong>Escalabilidad:</strong> Implementar optimizaciones para cargas extremas y balanceo de recursos</li>
                         <li><strong>Integración:</strong> Optimizar patrones de comunicación y persistencia de memoria</li>
                         <li><strong>Monitoreo:</strong> Implementar métricas continuas basadas en los hallazgos estadísticos</li>

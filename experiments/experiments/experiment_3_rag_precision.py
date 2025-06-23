@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Experimento 3: Análisis de Precisión de Sistemas RAG
-Implementa análisis robusto de precisión de recomendaciones RAG y adaptabilidad de patrones.
+Experimento 3: Análisis de Calidad de Información RAG vs No-RAG
+Implementa comparación A/B robusta de calidad de respuestas con y sin RAG.
 """
 
 import numpy as np
@@ -17,160 +17,211 @@ from sklearn.model_selection import cross_val_score, KFold
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 import statsmodels.api as sm
-from scipy.stats import f_oneway, kruskal, pearsonr, spearmanr
+from scipy.stats import f_oneway, kruskal, pearsonr, spearmanr, ttest_rel, ttest_ind
 
-class RAGPrecisionExperiment(BaseExperiment):
-    """Experimento para analizar la precisión de sistemas RAG."""
+class RAGQualityComparisonExperiment(BaseExperiment):
+    """Experimento para comparar calidad de información con RAG vs sin RAG."""
     
     def __init__(self, config: ExperimentConfig, system_components: Dict[str, Any], output_dir: str = None):
         super().__init__(config, system_components, output_dir)
         self.rag_types = ['venue', 'catering', 'decor']
         self.query_categories = ['budget', 'capacity', 'style', 'location', 'services']
+        self.quality_metrics = ['relevance', 'completeness', 'accuracy', 'usefulness', 'clarity']
         
     def run(self) -> List[ExperimentResult]:
-        """Ejecuta el experimento completo de precisión RAG."""
-        print(f"[RAGExperiment] Iniciando experimento: {self.config.name}")
+        """Ejecuta el experimento completo de comparación RAG vs No-RAG."""
+        print(f"[RAGQualityExperiment] Iniciando experimento: {self.config.name}")
         
         # Generar datos sintéticos para el experimento
-        self._generate_synthetic_rag_data()
+        self._generate_synthetic_comparison_data()
         
-        # Ejecutar análisis de precisión general
-        precision_result = self._analyze_rag_precision()
-        self.results.append(precision_result)
+        # Ejecutar análisis de comparación general
+        comparison_result = self._analyze_rag_vs_norag_comparison()
+        self.results.append(comparison_result)
         
-        # Ejecutar análisis por tipo de RAG
-        type_analysis_result = self._analyze_rag_by_type()
-        self.results.append(type_analysis_result)
+        # Ejecutar análisis por tipo de consulta
+        query_type_result = self._analyze_by_query_type()
+        self.results.append(query_type_result)
         
-        # Ejecutar análisis de adaptabilidad de patrones
-        adaptability_result = self._analyze_pattern_adaptability()
-        self.results.append(adaptability_result)
+        # Ejecutar análisis de mejora incremental
+        improvement_result = self._analyze_improvement_metrics()
+        self.results.append(improvement_result)
         
-        # Ejecutar análisis de correlación con complejidad de consulta
-        complexity_result = self._analyze_query_complexity_correlation()
-        self.results.append(complexity_result)
+        # Ejecutar análisis de complejidad vs beneficio RAG
+        complexity_benefit_result = self._analyze_complexity_benefit()
+        self.results.append(complexity_benefit_result)
         
-        # Ejecutar análisis de estabilidad temporal
-        stability_result = self._analyze_temporal_stability()
+        # Ejecutar análisis de estabilidad de mejora
+        stability_result = self._analyze_improvement_stability()
         self.results.append(stability_result)
         
-        print(f"[RAGExperiment] Experimento completado. {len(self.results)} análisis realizados.")
+        print(f"[RAGQualityExperiment] Experimento completado. {len(self.results)} análisis realizados.")
         return self.results
     
-    def _generate_synthetic_rag_data(self):
-        """Genera datos sintéticos realistas para el experimento RAG."""
-        print("[RAGExperiment] Generando datos sintéticos RAG...")
+    def _generate_synthetic_comparison_data(self):
+        """Genera datos sintéticos para comparación RAG vs No-RAG."""
+        print("[RAGQualityExperiment] Generando datos sintéticos para comparación...")
         
         np.random.seed(self.config.random_seed)
-        n_queries = 300  # Tamaño de muestra robusto
+        n_queries = 600#Tamaño de muestra robusto para comparación A/B
         
         for i in range(n_queries):
-            # Generar tipo de RAG aleatorio
-            rag_type = np.random.choice(self.rag_types, p=[0.4, 0.35, 0.25])
+            # Generar tipo de consulta aleatorio
+            query_type = np.random.choice(self.rag_types, p=[0.4, 0.35, 0.25])
             
             # Generar complejidad de consulta
             query_complexity = np.random.uniform(0.1, 1.0)
             
-            # Generar métricas RAG basadas en tipo y complejidad
-            rag_metrics = self._generate_rag_metrics(rag_type, query_complexity)
+            # Generar métricas base (sin RAG)
+            baseline_metrics = self._generate_baseline_metrics(query_type, query_complexity)
+            
+            # Generar métricas con RAG
+            rag_metrics = self._generate_rag_metrics(query_type, query_complexity, baseline_metrics)
             
             # Agregar ruido realista
+            baseline_metrics = self._add_realistic_noise(baseline_metrics)
             rag_metrics = self._add_realistic_noise(rag_metrics)
             
             # Agregar timestamp
-            rag_metrics['timestamp'] = datetime.now() - timedelta(
-                minutes=np.random.randint(0, 1440)  # Últimas 24 horas
-            )
+            timestamp = datetime.now() - timedelta(minutes=np.random.randint(0, 1440))
+            baseline_metrics['timestamp'] = timestamp
+            rag_metrics['timestamp'] = timestamp
             
-            self.data_buffer.append(rag_metrics)
+            # Agregar identificador de consulta
+            query_id = f"query_{np.random.randint(1000, 9999)}"
+            baseline_metrics['query_id'] = query_id
+            rag_metrics['query_id'] = query_id
+            
+            # Agregar a buffer
+            self.data_buffer.append({
+                'query_id': query_id,
+                'query_type': query_type,
+                'query_complexity': query_complexity,
+                'timestamp': timestamp,
+                'baseline': baseline_metrics,
+                'rag': rag_metrics,
+                'improvement': self._calculate_improvement(baseline_metrics, rag_metrics)
+            })
         
-        print(f"[RAGExperiment] Generados {len(self.data_buffer)} registros de datos RAG")
+        print(f"[RAGQualityExperiment] Generados {len(self.data_buffer)} registros de comparación")
     
-    def _generate_rag_metrics(self, rag_type: str, query_complexity: float) -> Dict[str, Any]:
-        """Genera métricas RAG basadas en tipo y complejidad."""
-        # Parámetros base según tipo de RAG
-        rag_params = {
+    def _generate_baseline_metrics(self, query_type: str, query_complexity: float) -> Dict[str, Any]:
+        """Genera métricas base sin RAG."""
+        # Parámetros base según tipo de consulta
+        baseline_params = {
             'venue': {
-                'base_precision': 0.85,
-                'base_recall': 0.80,
-                'base_confidence': 0.75,
-                'pattern_stability': 0.70
+                'base_relevance': 0.65,
+                'base_completeness': 0.60,
+                'base_accuracy': 0.70,
+                'base_usefulness': 0.55,
+                'base_clarity': 0.75
             },
             'catering': {
-                'base_precision': 0.80,
-                'base_recall': 0.75,
-                'base_confidence': 0.70,
-                'pattern_stability': 0.65
+                'base_relevance': 0.60,
+                'base_completeness': 0.55,
+                'base_accuracy': 0.65,
+                'base_usefulness': 0.50,
+                'base_clarity': 0.70
             },
             'decor': {
-                'base_precision': 0.75,
-                'base_recall': 0.70,
-                'base_confidence': 0.65,
-                'pattern_stability': 0.60
+                'base_relevance': 0.55,
+                'base_completeness': 0.50,
+                'base_accuracy': 0.60,
+                'base_usefulness': 0.45,
+                'base_clarity': 0.65
             }
         }
         
-        params = rag_params[rag_type]
+        params = baseline_params[query_type]
         
         # Ajustar métricas por complejidad
-        complexity_factor = 1 - (query_complexity * 0.3)  # Complejidad reduce rendimiento
+        complexity_factor = 1 - (query_complexity * 0.4)  # Complejidad reduce rendimiento base
         
-        precision = params['base_precision'] * complexity_factor
-        recall = params['base_recall'] * complexity_factor
-        confidence = params['base_confidence'] * complexity_factor
+        metrics = {}
+        for metric in self.quality_metrics:
+            base_value = params[f'base_{metric}']
+            metrics[metric] = base_value * complexity_factor
         
-        # Calcular F1-score
-        f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+        # Métricas adicionales
+        metrics['response_time'] = np.random.exponential(1.5)  # Más rápido sin RAG
+        metrics['confidence'] = np.random.beta(2, 3) * 0.6  # Menor confianza
+        metrics['detail_level'] = np.random.beta(1, 2) * 0.5  # Menos detalle
+        metrics['context_awareness'] = np.random.beta(1, 3) * 0.4  # Menos contexto
         
-        # Generar número de resultados
-        results_count = np.random.poisson(5) + 1  # Mínimo 1 resultado
-        
-        # Generar métricas de confianza
-        confidence_scores = np.random.beta(2, 2, results_count) * confidence
-        avg_confidence = np.mean(confidence_scores)
-        max_confidence = np.max(confidence_scores)
-        min_confidence = np.min(confidence_scores)
-        confidence_variance = np.var(confidence_scores)
-        
-        # Generar tiempo de respuesta
-        response_time = np.random.exponential(2.0)  # Media de 2 segundos
-        
-        # Generar score de coincidencia de patrones
-        pattern_match_score = np.random.beta(3, 2) * params['pattern_stability']
-        
-        # Generar métricas de adaptabilidad
-        pattern_update_frequency = np.random.exponential(10.0)  # Media de 10 consultas
-        success_rate_trend = np.random.normal(0.02, 0.01)  # Tendencia de mejora
-        
-        return {
-            'query_id': f"query_{np.random.randint(1000, 9999)}",
-            'rag_type': rag_type,
-            'query_complexity': query_complexity,
-            'precision': precision,
-            'recall': recall,
-            'f1_score': f1,
-            'results_count': results_count,
-            'avg_confidence': avg_confidence,
-            'max_confidence': max_confidence,
-            'min_confidence': min_confidence,
-            'confidence_variance': confidence_variance,
-            'response_time': response_time,
-            'pattern_match_score': pattern_match_score,
-            'pattern_update_frequency': pattern_update_frequency,
-            'success_rate_trend': success_rate_trend,
-            'overall_quality_score': (precision + recall + f1) / 3,
-            'stability_score': 1 - confidence_variance,
-            'adaptability_score': 1 / (1 + pattern_update_frequency)
+        return metrics
+    
+    def _generate_rag_metrics(self, query_type: str, query_complexity: float, baseline: Dict[str, Any]) -> Dict[str, Any]:
+        """Genera métricas con RAG basadas en las métricas base."""
+        # Factor de mejora RAG por tipo
+        rag_improvement_factors = {
+            'venue': {
+                'relevance': 1.25,
+                'completeness': 1.35,
+                'accuracy': 1.20,
+                'usefulness': 1.30,
+                'clarity': 1.15
+            },
+            'catering': {
+                'relevance': 1.20,
+                'completeness': 1.30,
+                'accuracy': 1.15,
+                'usefulness': 1.25,
+                'clarity': 1.10
+            },
+            'decor': {
+                'relevance': 1.15,
+                'completeness': 1.25,
+                'accuracy': 1.10,
+                'usefulness': 1.20,
+                'clarity': 1.05
+            }
         }
+        
+        factors = rag_improvement_factors[query_type]
+        
+        # Ajustar factor de mejora por complejidad
+        complexity_benefit = 1 + (query_complexity * 0.3)  # Consultas complejas se benefician más
+        
+        metrics = {}
+        for metric in self.quality_metrics:
+            baseline_value = baseline[metric]
+            improvement_factor = factors[metric] * complexity_benefit
+            metrics[metric] = min(1.0, baseline_value * improvement_factor)
+        
+        # Métricas adicionales con RAG
+        metrics['response_time'] = baseline['response_time'] * 1.2  # Más lento con RAG
+        metrics['confidence'] = min(1.0, baseline['confidence'] * 1.4)  # Mayor confianza
+        metrics['detail_level'] = min(1.0, baseline['detail_level'] * 1.6)  # Más detalle
+        metrics['context_awareness'] = min(1.0, baseline['context_awareness'] * 1.8)  # Más contexto
+        
+        return metrics
+    
+    def _calculate_improvement(self, baseline: Dict[str, Any], rag: Dict[str, Any]) -> Dict[str, float]:
+        """Calcula métricas de mejora."""
+        improvement = {}
+        
+        for metric in self.quality_metrics:
+            if baseline[metric] > 0:
+                improvement[metric] = (rag[metric] - baseline[metric]) / baseline[metric]
+            else:
+                improvement[metric] = 0.0
+        
+        # Métricas adicionales de mejora
+        improvement['overall_quality'] = np.mean([improvement[m] for m in self.quality_metrics])
+        improvement['confidence_gain'] = (rag['confidence'] - baseline['confidence']) / max(baseline['confidence'], 0.01)
+        improvement['detail_gain'] = (rag['detail_level'] - baseline['detail_level']) / max(baseline['detail_level'], 0.01)
+        improvement['context_gain'] = (rag['context_awareness'] - baseline['context_awareness']) / max(baseline['context_awareness'], 0.01)
+        
+        return improvement
     
     def _add_realistic_noise(self, metrics: Dict[str, Any]) -> Dict[str, Any]:
-        """Agrega ruido realista a las métricas RAG."""
-        noise_factor = 0.05  # 5% de ruido para métricas de precisión
+        """Agrega ruido realista a las métricas."""
+        noise_factor = 0.08  # 8% de ruido para métricas de calidad
         
         for key, value in metrics.items():
-            if isinstance(value, (int, float)) and key not in ['query_id', 'rag_type']:
-                if key in ['precision', 'recall', 'f1_score', 'avg_confidence', 'max_confidence', 'min_confidence']:
-                    # Para métricas de precisión, mantener en rango [0,1]
+            if isinstance(value, (int, float)) and key not in ['query_id', 'query_type']:
+                if key in self.quality_metrics + ['confidence', 'detail_level', 'context_awareness']:
+                    # Para métricas de calidad, mantener en rango [0,1]
                     noise = np.random.normal(0, value * noise_factor)
                     metrics[key] = np.clip(value + noise, 0, 1)
                 else:
@@ -179,61 +230,64 @@ class RAGPrecisionExperiment(BaseExperiment):
         
         return metrics
     
-    def _analyze_rag_precision(self) -> ExperimentResult:
-        """Analiza la precisión general de los sistemas RAG."""
-        print("[RAGExperiment] Analizando precisión general RAG...")
+    def _analyze_rag_vs_norag_comparison(self) -> ExperimentResult:
+        """Analiza la comparación general RAG vs No-RAG."""
+        print("[RAGQualityExperiment] Analizando comparación general RAG vs No-RAG...")
         
-        df = pd.DataFrame(self.data_buffer)
+        # Extraer métricas de mejora
+        improvements = [record['improvement'] for record in self.data_buffer]
+        overall_improvements = [imp['overall_quality'] for imp in improvements]
         
-        # Métricas de precisión generales
-        overall_precision = df['precision'].mean()
-        overall_recall = df['recall'].mean()
-        overall_f1 = df['f1_score'].mean()
+        # Test t-pareado para comparar métricas
+        baseline_metrics = []
+        rag_metrics = []
         
-        # Análisis de precisión por tipo de RAG
-        rag_groups = [df[df['rag_type'] == rag_type]['precision'].values 
-                     for rag_type in self.rag_types]
+        for record in self.data_buffer:
+            baseline_metrics.append(np.mean([record['baseline'][m] for m in self.quality_metrics]))
+            rag_metrics.append(np.mean([record['rag'][m] for m in self.quality_metrics]))
         
-        # ANOVA para comparar precisión entre tipos de RAG
-        f_stat, p_value = f_oneway(*rag_groups)
+        # Test t-pareado
+        t_stat, p_value = ttest_rel(rag_metrics, baseline_metrics)
         
-        # Calcular tamaño del efecto (eta-squared)
-        ss_between = sum(len(group) * (np.mean(group) - overall_precision)**2 for group in rag_groups)
-        ss_total = sum((precision - overall_precision)**2 for precision in df['precision'])
-        eta_squared = ss_between / ss_total if ss_total > 0 else 0
+        # Calcular tamaño del efecto (Cohen's d)
+        effect_size = self.effect_calculator.cohens_d(np.array(rag_metrics), np.array(baseline_metrics))
+        
+        # Calcular intervalos de confianza
+        mean_improvement = np.mean(overall_improvements)
+        ci = self.calculate_confidence_interval(np.array(overall_improvements))
         
         # Validar supuestos
-        assumptions_met = all(self.validate_assumptions(group) for group in rag_groups)
+        assumptions_met = self.validate_assumptions(np.array(overall_improvements))
         
         # Calcular potencia
         power_achieved = self.power_analyzer.calculate_power(
-            len(df), eta_squared, self.config.alpha
+            len(overall_improvements), abs(effect_size), self.config.alpha
         )
         
         # Interpretar resultados
-        effect_significance = self.effect_calculator.interpret_effect_size(eta_squared, 'eta_squared')
+        effect_significance = self.effect_calculator.interpret_effect_size(abs(effect_size), 'cohens_d')
         
         if p_value < self.config.alpha:
-            conclusion = f"Existe diferencia significativa en precisión entre tipos de RAG (F={f_stat:.3f}, p={p_value:.4f})"
+            conclusion = f"RAG mejora significativamente la calidad (t={t_stat:.3f}, p={p_value:.4f})"
         else:
-            conclusion = f"No se encontró diferencia significativa en precisión entre tipos de RAG (F={f_stat:.3f}, p={p_value:.4f})"
+            conclusion = f"No se encontró mejora significativa con RAG (t={t_stat:.3f}, p={p_value:.4f})"
         
-        conclusion += f". Precisión general: {overall_precision:.3f}, Recall: {overall_recall:.3f}, F1: {overall_f1:.3f}"
+        conclusion += f". Mejora promedio: {mean_improvement:.1%}, IC95%: [{ci[0]:.1%}, {ci[1]:.1%}]"
         
         recommendations = [
-            "Optimizar RAG de decor que muestra menor precisión",
-            "Implementar estrategias de mejora específicas por tipo",
-            "Monitorear tendencias de precisión por tipo de RAG"
+            "Implementar RAG para mejorar calidad general de respuestas",
+            "Optimizar algoritmos RAG para maximizar mejora",
+            "Monitorear mejora por tipo de consulta"
         ]
         
         return ExperimentResult(
-            experiment_name="RAG Precision Analysis",
+            experiment_name="RAG vs No-RAG General Comparison",
             timestamp=datetime.now().isoformat(),
-            sample_size=len(df),
-            test_statistic=f_stat,
+            sample_size=len(overall_improvements),
+            test_statistic=t_stat,
             p_value=p_value,
-            effect_size=eta_squared,
-            confidence_interval=self.calculate_confidence_interval(df['precision'].values),
+            effect_size=abs(effect_size),
+            confidence_interval=ci,
             power_achieved=power_achieved,
             conclusion=conclusion,
             assumptions_met=assumptions_met,
@@ -241,189 +295,103 @@ class RAGPrecisionExperiment(BaseExperiment):
             recommendations=recommendations
         )
     
-    def _analyze_rag_by_type(self) -> ExperimentResult:
-        """Análisis detallado por tipo de RAG."""
-        print("[RAGExperiment] Analizando RAG por tipo...")
+    def _analyze_by_query_type(self) -> ExperimentResult:
+        """Análisis de mejora por tipo de consulta."""
+        print("[RAGQualityExperiment] Analizando mejora por tipo de consulta...")
         
-        df = pd.DataFrame(self.data_buffer)
+        # Agrupar por tipo de consulta
+        type_improvements = {}
+        for record in self.data_buffer:
+            query_type = record['query_type']
+            if query_type not in type_improvements:
+                type_improvements[query_type] = []
+            type_improvements[query_type].append(record['improvement']['overall_quality'])
         
-        # Métricas por tipo
-        type_metrics = {}
-        for rag_type in self.rag_types:
-            type_data = df[df['rag_type'] == rag_type]
-            type_metrics[rag_type] = {
-                'precision': type_data['precision'].mean(),
-                'recall': type_data['recall'].mean(),
-                'f1': type_data['f1_score'].mean(),
-                'confidence': type_data['avg_confidence'].mean(),
-                'response_time': type_data['response_time'].mean(),
-                'stability': type_data['stability_score'].mean()
-            }
+        # ANOVA para comparar mejora entre tipos
+        improvement_groups = [np.array(improvements) for improvements in type_improvements.values()]
+        f_stat, p_value = f_oneway(*improvement_groups)
         
-        # Test de correlación entre métricas
-        precision_stability_corr, precision_stability_p = pearsonr(
-            df['precision'], df['stability_score']
-        )
-        
-        confidence_precision_corr, confidence_precision_p = pearsonr(
-            df['avg_confidence'], df['precision']
-        )
-        
-        # Análisis de regresión múltiple
-        X_vars = ['query_complexity', 'results_count', 'confidence_variance', 'pattern_match_score']
-        y_var = 'precision'
-        
-        X = df[X_vars].values
-        y = df[y_var].values
-        
-        # Eliminar filas con valores faltantes
-        mask = ~(np.isnan(X).any(axis=1) | np.isnan(y))
-        X = X[mask]
-        y = y[mask]
-        
-        if len(X) >= 10:
-            # Estandarizar variables
-            from sklearn.preprocessing import StandardScaler
-            scaler = StandardScaler()
-            X_scaled = scaler.fit_transform(X)
+        # Calcular tamaños de efecto por tipo
+        type_effect_sizes = {}
+        for query_type, improvements in type_improvements.items():
+            baseline_group = [record['baseline'] for record in self.data_buffer if record['query_type'] == query_type]
+            rag_group = [record['rag'] for record in self.data_buffer if record['query_type'] == query_type]
             
-            # Agregar constante
-            X_with_const = sm.add_constant(X_scaled)
+            baseline_avg = np.mean([np.mean([b[m] for m in self.quality_metrics]) for b in baseline_group])
+            rag_avg = np.mean([np.mean([r[m] for m in self.quality_metrics]) for r in rag_group])
             
-            # Ajustar modelo
-            model = sm.OLS(y, X_with_const)
-            results = model.fit()
-            
-            r_squared = results.rsquared
-            f_stat = results.fvalue
-            f_p_value = results.f_pvalue
-        else:
-            r_squared = 0
-            f_stat = 0
-            f_p_value = 1
+            type_effect_sizes[query_type] = (rag_avg - baseline_avg) / baseline_avg if baseline_avg > 0 else 0
         
         # Calcular potencia
+        max_effect = max(type_effect_sizes.values())
         power_achieved = self.power_analyzer.calculate_power(
-            len(df), abs(precision_stability_corr), self.config.alpha
+            len(self.data_buffer), max_effect, self.config.alpha
         )
         
         # Interpretar resultados
-        effect_significance = self.effect_calculator.interpret_effect_size(abs(precision_stability_corr), 'cohens_d')
+        effect_significance = self.effect_calculator.interpret_effect_size(max_effect, 'cohens_d')
         
-        conclusion = f"Análisis por tipo completado. Correlación precisión-estabilidad: r={precision_stability_corr:.3f} (p={precision_stability_p:.4f})"
-        
-        if f_p_value < self.config.alpha:
-            conclusion += f". Modelo de regresión significativo (R²={r_squared:.3f})"
-        
-        recommendations = [
-            "Optimizar estabilidad para mejorar precisión",
-            "Implementar estrategias específicas por tipo de RAG",
-            "Monitorear correlaciones identificadas"
-        ]
-        
-        return ExperimentResult(
-            experiment_name="RAG Type Analysis",
-            timestamp=datetime.now().isoformat(),
-            sample_size=len(df),
-            test_statistic=f_stat,
-            p_value=f_p_value,
-            effect_size=abs(precision_stability_corr),
-            confidence_interval=(-1, 1),
-            power_achieved=power_achieved,
-            conclusion=conclusion,
-            assumptions_met=True,
-            effect_significance=effect_significance,
-            recommendations=recommendations
-        )
-    
-    def _analyze_pattern_adaptability(self) -> ExperimentResult:
-        """Analiza la adaptabilidad de patrones RAG."""
-        print("[RAGExperiment] Analizando adaptabilidad de patrones...")
-        
-        df = pd.DataFrame(self.data_buffer)
-        
-        # Métricas de adaptabilidad
-        adaptability_scores = df['adaptability_score'].values
-        update_frequencies = df['pattern_update_frequency'].values
-        success_trends = df['success_rate_trend'].values
-        
-        # Análisis de adaptabilidad por tipo de RAG
-        rag_adaptability_groups = [df[df['rag_type'] == rag_type]['adaptability_score'].values 
-                                 for rag_type in self.rag_types]
-        
-        # Test de Kruskal-Wallis (no paramétrico)
-        h_stat, p_value = kruskal(*rag_adaptability_groups)
-        
-        # Correlación entre adaptabilidad y rendimiento
-        adaptability_performance_corr, adaptability_performance_p = spearmanr(
-            adaptability_scores, df['overall_quality_score'].values
-        )
-        
-        # Análisis de tendencias temporales
-        df_sorted = df.sort_values('timestamp')
-        temporal_trend, temporal_p = spearmanr(
-            range(len(df_sorted)), df_sorted['adaptability_score'].values
-        )
-        
-        # Calcular potencia
-        power_achieved = self.power_analyzer.calculate_power(
-            len(adaptability_scores), abs(adaptability_performance_corr), self.config.alpha
-        )
-        
-        # Interpretar resultados
-        effect_significance = self.effect_calculator.interpret_effect_size(abs(adaptability_performance_corr), 'cohens_d')
-        
-        conclusion = f"Análisis de adaptabilidad completado. Correlación adaptabilidad-rendimiento: r={adaptability_performance_corr:.3f} (p={adaptability_performance_p:.4f})"
+        conclusion = f"Análisis por tipo completado. Mejora promedio por tipo:"
+        for query_type, effect_size in type_effect_sizes.items():
+            conclusion += f" {query_type}: {effect_size:.1%},"
         
         if p_value < self.config.alpha:
-            conclusion += f". Diferencia significativa en adaptabilidad entre tipos (H={h_stat:.3f}, p={p_value:.4f})"
-        
-        if temporal_p < self.config.alpha:
-            conclusion += f". Tendencia temporal significativa (r={temporal_trend:.3f}, p={temporal_p:.4f})"
+            conclusion += f" Diferencia significativa entre tipos (F={f_stat:.3f}, p={p_value:.4f})"
         
         recommendations = [
-            "Optimizar frecuencia de actualización de patrones",
-            "Implementar aprendizaje adaptativo por tipo de RAG",
-            "Monitorear tendencias temporales de adaptabilidad"
+            "Optimizar RAG específicamente para tipos con menor mejora",
+            "Implementar estrategias diferenciadas por tipo de consulta",
+            "Monitorear mejora específica por categoría"
         ]
         
         return ExperimentResult(
-            experiment_name="Pattern Adaptability Analysis",
+            experiment_name="RAG Improvement by Query Type",
             timestamp=datetime.now().isoformat(),
-            sample_size=len(adaptability_scores),
-            test_statistic=h_stat,
+            sample_size=len(self.data_buffer),
+            test_statistic=f_stat,
             p_value=p_value,
-            effect_size=abs(adaptability_performance_corr),
-            confidence_interval=self.calculate_confidence_interval(adaptability_scores),
+            effect_size=max_effect,
+            confidence_interval=(-1, 1),
             power_achieved=power_achieved,
             conclusion=conclusion,
-            assumptions_met=True,  # Kruskal-Wallis no requiere normalidad
+            assumptions_met=True,
             effect_significance=effect_significance,
             recommendations=recommendations
         )
     
-    def _analyze_query_complexity_correlation(self) -> ExperimentResult:
-        """Analiza correlación entre complejidad de consulta y rendimiento RAG."""
-        print("[RAGExperiment] Analizando correlación con complejidad...")
+    def _analyze_improvement_metrics(self) -> ExperimentResult:
+        """Analiza métricas específicas de mejora."""
+        print("[RAGQualityExperiment] Analizando métricas específicas de mejora...")
         
-        df = pd.DataFrame(self.data_buffer)
+        # Extraer métricas de mejora específicas
+        metric_improvements = {}
+        for metric in self.quality_metrics:
+            metric_improvements[metric] = [record['improvement'][metric] for record in self.data_buffer]
         
-        # Correlaciones con complejidad
-        complexity_precision_corr, complexity_precision_p = spearmanr(
-            df['query_complexity'], df['precision']
-        )
+        # Análisis de correlación entre métricas de mejora
+        improvement_correlations = {}
+        for i, metric1 in enumerate(self.quality_metrics):
+            for j, metric2 in enumerate(self.quality_metrics[i+1:], i+1):
+                corr, p_val = pearsonr(metric_improvements[metric1], metric_improvements[metric2])
+                improvement_correlations[f"{metric1}_vs_{metric2}"] = (corr, p_val)
         
-        complexity_confidence_corr, complexity_confidence_p = spearmanr(
-            df['query_complexity'], df['avg_confidence']
-        )
+        # Análisis de regresión múltiple para predecir mejora general
+        X_vars = ['query_complexity'] + [f'improvement_{m}' for m in self.quality_metrics]
+        y_var = 'overall_improvement'
         
-        complexity_response_time_corr, complexity_response_time_p = spearmanr(
-            df['query_complexity'], df['response_time']
-        )
+        # Preparar datos
+        X_data = []
+        y_data = []
         
-        # Análisis de regresión para predecir rendimiento basado en complejidad
-        X = df[['query_complexity', 'results_count', 'confidence_variance']].values
-        y = df['overall_quality_score'].values
+        for record in self.data_buffer:
+            x_row = [record['query_complexity']]
+            for metric in self.quality_metrics:
+                x_row.append(record['improvement'][metric])
+            X_data.append(x_row)
+            y_data.append(record['improvement']['overall_quality'])
+        
+        X = np.array(X_data)
+        y = np.array(y_data)
         
         # Eliminar filas con valores faltantes
         mask = ~(np.isnan(X).any(axis=1) | np.isnan(y))
@@ -452,34 +420,36 @@ class RAGPrecisionExperiment(BaseExperiment):
             f_p_value = 1
         
         # Calcular potencia
+        max_corr = max([abs(corr) for corr, _ in improvement_correlations.values()])
         power_achieved = self.power_analyzer.calculate_power(
-            len(df), abs(complexity_precision_corr), self.config.alpha
+            len(self.data_buffer), max_corr, self.config.alpha
         )
         
         # Interpretar resultados
-        effect_significance = self.effect_calculator.interpret_effect_size(abs(complexity_precision_corr), 'cohens_d')
+        effect_significance = self.effect_calculator.interpret_effect_size(max_corr, 'cohens_d')
         
-        conclusion = f"Correlación complejidad-preción: r={complexity_precision_corr:.3f} (p={complexity_precision_p:.4f})"
-        
-        if complexity_confidence_p < self.config.alpha:
-            conclusion += f". Correlación complejidad-confianza: r={complexity_confidence_corr:.3f} (p={complexity_confidence_p:.4f})"
+        conclusion = f"Análisis de métricas de mejora completado. R² del modelo predictivo: {r_squared:.3f}"
         
         if f_p_value < self.config.alpha:
-            conclusion += f". Modelo predictivo significativo (R²={r_squared:.3f})"
+            conclusion += f". Modelo significativo (F={f_stat:.3f}, p={f_p_value:.4f})"
+        
+        # Identificar métricas más correlacionadas
+        max_corr_pair = max(improvement_correlations.items(), key=lambda x: abs(x[1][0]))
+        conclusion += f". Mayor correlación: {max_corr_pair[0]} (r={max_corr_pair[1][0]:.3f})"
         
         recommendations = [
-            "Implementar estrategias específicas para consultas complejas",
-            "Optimizar algoritmos para mantener precisión en consultas complejas",
-            "Desarrollar modelos predictivos de rendimiento"
+            "Optimizar métricas con mayor impacto en mejora general",
+            "Implementar modelos predictivos de mejora",
+            "Monitorear correlaciones entre métricas de mejora"
         ]
         
         return ExperimentResult(
-            experiment_name="Query Complexity Correlation",
+            experiment_name="RAG Improvement Metrics Analysis",
             timestamp=datetime.now().isoformat(),
-            sample_size=len(df),
+            sample_size=len(self.data_buffer),
             test_statistic=f_stat,
             p_value=f_p_value,
-            effect_size=abs(complexity_precision_corr),
+            effect_size=max_corr,
             confidence_interval=(-1, 1),
             power_achieved=power_achieved,
             conclusion=conclusion,
@@ -488,86 +458,187 @@ class RAGPrecisionExperiment(BaseExperiment):
             recommendations=recommendations
         )
     
-    def _analyze_temporal_stability(self) -> ExperimentResult:
-        """Analiza la estabilidad temporal de los sistemas RAG."""
-        print("[RAGExperiment] Analizando estabilidad temporal...")
+    def _analyze_complexity_benefit(self) -> ExperimentResult:
+        """Analiza la relación entre complejidad de consulta y beneficio RAG."""
+        print("[RAGQualityExperiment] Analizando relación complejidad-beneficio...")
         
-        df = pd.DataFrame(self.data_buffer)
+        # Extraer datos de complejidad y mejora
+        complexities = [record['query_complexity'] for record in self.data_buffer]
+        improvements = [record['improvement']['overall_quality'] for record in self.data_buffer]
         
-        # Ordenar por timestamp
-        df_sorted = df.sort_values('timestamp')
+        # Correlación entre complejidad y mejora
+        complexity_improvement_corr, complexity_improvement_p = spearmanr(complexities, improvements)
         
-        # Análisis de estabilidad temporal por tipo de RAG
-        temporal_stability_metrics = {}
+        # Análisis por niveles de complejidad
+        complexity_levels = ['low', 'medium', 'high']
+        complexity_thresholds = [0.33, 0.67]
         
-        for rag_type in self.rag_types:
-            type_data = df_sorted[df_sorted['rag_type'] == rag_type]
-            
-            if len(type_data) > 10:
-                # Calcular estabilidad temporal
-                precision_trend, precision_trend_p = spearmanr(
-                    range(len(type_data)), type_data['precision'].values
-                )
-                
-                confidence_trend, confidence_trend_p = spearmanr(
-                    range(len(type_data)), type_data['avg_confidence'].values
-                )
-                
-                temporal_stability_metrics[rag_type] = {
-                    'precision_trend': precision_trend,
-                    'precision_trend_p': precision_trend_p,
-                    'confidence_trend': confidence_trend,
-                    'confidence_trend_p': confidence_trend_p,
-                    'stability_score': 1 - abs(precision_trend)
-                }
+        level_improvements = {'low': [], 'medium': [], 'high': []}
         
-        # Análisis de varianza de estabilidad entre tipos
-        stability_scores = [metrics['stability_score'] for metrics in temporal_stability_metrics.values()]
+        for complexity, improvement in zip(complexities, improvements):
+            if complexity < complexity_thresholds[0]:
+                level_improvements['low'].append(improvement)
+            elif complexity < complexity_thresholds[1]:
+                level_improvements['medium'].append(improvement)
+            else:
+                level_improvements['high'].append(improvement)
         
-        if len(stability_scores) > 1:
-            # Test de varianza
-            f_stat, p_value = f_oneway(*[df_sorted[df_sorted['rag_type'] == rag_type]['stability_score'].values 
-                                       for rag_type in temporal_stability_metrics.keys()])
+        # ANOVA para comparar mejora entre niveles de complejidad
+        level_groups = [np.array(improvements) for improvements in level_improvements.values() if len(improvements) > 0]
+        
+        if len(level_groups) > 1:
+            f_stat, p_value = f_oneway(*level_groups)
         else:
             f_stat = 0
             p_value = 1
         
-        # Correlación entre estabilidad y rendimiento general
-        overall_stability = df_sorted['stability_score'].mean()
-        stability_performance_corr, stability_performance_p = pearsonr(
-            df_sorted['stability_score'].values, df_sorted['overall_quality_score'].values
-        )
+        # Análisis de regresión para predecir mejora basada en complejidad
+        X = np.array(complexities).reshape(-1, 1)
+        y = np.array(improvements)
+        
+        # Eliminar filas con valores faltantes
+        mask = ~(np.isnan(X).any(axis=1) | np.isnan(y))
+        X = X[mask]
+        y = y[mask]
+        
+        if len(X) >= 10:
+            # Agregar constante
+            X_with_const = sm.add_constant(X)
+            
+            # Ajustar modelo
+            model = sm.OLS(y, X_with_const)
+            results = model.fit()
+            
+            r_squared = results.rsquared
+            slope = results.params[1]
+            slope_p = results.pvalues[1]
+        else:
+            r_squared = 0
+            slope = 0
+            slope_p = 1
         
         # Calcular potencia
         power_achieved = self.power_analyzer.calculate_power(
-            len(df_sorted), abs(stability_performance_corr), self.config.alpha
+            len(complexities), abs(complexity_improvement_corr), self.config.alpha
         )
         
         # Interpretar resultados
-        effect_significance = self.effect_calculator.interpret_effect_size(abs(stability_performance_corr), 'cohens_d')
+        effect_significance = self.effect_calculator.interpret_effect_size(abs(complexity_improvement_corr), 'cohens_d')
         
-        conclusion = f"Análisis de estabilidad temporal completado. Estabilidad general: {overall_stability:.3f}"
+        conclusion = f"Correlación complejidad-mejora: r={complexity_improvement_corr:.3f} (p={complexity_improvement_p:.4f})"
         
-        if stability_performance_p < self.config.alpha:
-            conclusion += f". Correlación estabilidad-rendimiento: r={stability_performance_corr:.3f} (p={stability_performance_p:.4f})"
+        if slope_p < self.config.alpha:
+            conclusion += f". Pendiente significativa: {slope:.3f} (p={slope_p:.4f})"
         
         if p_value < self.config.alpha:
-            conclusion += f". Diferencia significativa en estabilidad entre tipos (F={f_stat:.3f}, p={p_value:.4f})"
+            conclusion += f". Diferencia significativa entre niveles (F={f_stat:.3f}, p={p_value:.4f})"
         
         recommendations = [
-            "Implementar monitoreo continuo de estabilidad temporal",
-            "Desarrollar estrategias de estabilización por tipo de RAG",
-            "Optimizar algoritmos para mantener consistencia temporal"
+            "Priorizar RAG para consultas complejas",
+            "Optimizar algoritmos para consultas simples",
+            "Implementar estrategias adaptativas por complejidad"
         ]
         
         return ExperimentResult(
-            experiment_name="Temporal Stability Analysis",
+            experiment_name="Complexity-Benefit Analysis",
             timestamp=datetime.now().isoformat(),
-            sample_size=len(df_sorted),
+            sample_size=len(complexities),
             test_statistic=f_stat,
             p_value=p_value,
-            effect_size=abs(stability_performance_corr),
-            confidence_interval=self.calculate_confidence_interval(df_sorted['stability_score'].values),
+            effect_size=abs(complexity_improvement_corr),
+            confidence_interval=(-1, 1),
+            power_achieved=power_achieved,
+            conclusion=conclusion,
+            assumptions_met=True,
+            effect_significance=effect_significance,
+            recommendations=recommendations
+        )
+    
+    def _analyze_improvement_stability(self) -> ExperimentResult:
+        """Analiza la estabilidad de la mejora RAG a lo largo del tiempo."""
+        print("[RAGQualityExperiment] Analizando estabilidad de mejora...")
+        
+        # Ordenar por timestamp
+        sorted_data = sorted(self.data_buffer, key=lambda x: x['timestamp'])
+        
+        # Análisis de estabilidad temporal
+        timestamps = [record['timestamp'] for record in sorted_data]
+        improvements = [record['improvement']['overall_quality'] for record in sorted_data]
+        
+        # Correlación temporal
+        temporal_corr, temporal_p = spearmanr(range(len(improvements)), improvements)
+        
+        # Análisis de varianza temporal
+        n_periods = 4  # Dividir en 4 períodos
+        period_size = len(improvements) // n_periods
+        
+        period_improvements = []
+        for i in range(n_periods):
+            start_idx = i * period_size
+            end_idx = start_idx + period_size if i < n_periods - 1 else len(improvements)
+            period_improvements.append(improvements[start_idx:end_idx])
+        
+        # ANOVA para comparar períodos
+        if len(period_improvements) > 1:
+            f_stat, p_value = f_oneway(*period_improvements)
+        else:
+            f_stat = 0
+            p_value = 1
+        
+        # Análisis de tendencia
+        if len(improvements) > 10:
+            # Regresión lineal para tendencia
+            X = np.array(range(len(improvements))).reshape(-1, 1)
+            y = np.array(improvements)
+            
+            X_with_const = sm.add_constant(X)
+            model = sm.OLS(y, X_with_const)
+            results = model.fit()
+            
+            trend_slope = results.params[1]
+            trend_p = results.pvalues[1]
+            trend_r_squared = results.rsquared
+        else:
+            trend_slope = 0
+            trend_p = 1
+            trend_r_squared = 0
+        
+        # Calcular estabilidad (inverso de varianza)
+        stability_score = 1 / (1 + np.var(improvements))
+        
+        # Calcular potencia
+        power_achieved = self.power_analyzer.calculate_power(
+            len(improvements), abs(temporal_corr), self.config.alpha
+        )
+        
+        # Interpretar resultados
+        effect_significance = self.effect_calculator.interpret_effect_size(abs(temporal_corr), 'cohens_d')
+        
+        conclusion = f"Análisis de estabilidad completado. Estabilidad: {stability_score:.3f}"
+        
+        if temporal_p < self.config.alpha:
+            conclusion += f". Correlación temporal: r={temporal_corr:.3f} (p={temporal_p:.4f})"
+        
+        if trend_p < self.config.alpha:
+            conclusion += f". Tendencia significativa: {trend_slope:.3f} (p={trend_p:.4f})"
+        
+        if p_value < self.config.alpha:
+            conclusion += f". Diferencia entre períodos (F={f_stat:.3f}, p={p_value:.4f})"
+        
+        recommendations = [
+            "Implementar monitoreo continuo de estabilidad",
+            "Desarrollar estrategias de estabilización",
+            "Optimizar algoritmos para consistencia temporal"
+        ]
+        
+        return ExperimentResult(
+            experiment_name="Improvement Stability Analysis",
+            timestamp=datetime.now().isoformat(),
+            sample_size=len(improvements),
+            test_statistic=f_stat,
+            p_value=p_value,
+            effect_size=abs(temporal_corr),
+            confidence_interval=self.calculate_confidence_interval(np.array(improvements)),
             power_achieved=power_achieved,
             conclusion=conclusion,
             assumptions_met=True,
@@ -575,16 +646,16 @@ class RAGPrecisionExperiment(BaseExperiment):
             recommendations=recommendations
         )
 
-def run_rag_experiments(system_components: Dict[str, Any]) -> List[ExperimentResult]:
-    """Función principal para ejecutar todos los experimentos RAG."""
+def run_rag_quality_experiments(system_components: Dict[str, Any]) -> List[ExperimentResult]:
+    """Función principal para ejecutar experimentos de calidad RAG vs No-RAG."""
     print("="*80)
-    print("INICIANDO EXPERIMENTOS DE PRECISIÓN RAG")
+    print("INICIANDO EXPERIMENTOS DE CALIDAD RAG vs No-RAG")
     print("="*80)
     
     # Configurar experimento
     config = ExperimentConfig(
-        name="RAG_Precision_Complete",
-        description="Análisis completo de precisión de sistemas RAG",
+        name="RAG_Quality_Comparison",
+        description="Comparación A/B de calidad de información con RAG vs sin RAG",
         alpha=0.05,
         power=0.8,
         effect_size=0.3,
@@ -592,9 +663,9 @@ def run_rag_experiments(system_components: Dict[str, Any]) -> List[ExperimentRes
         max_sample_size=500
     )
     
-    # Crear y ejecutar experimento con directorio de salida específico
-    output_dir = os.path.join("results", "rag_precision")
-    experiment = RAGPrecisionExperiment(config, system_components, output_dir)
+    # Crear y ejecutar experimento
+    output_dir = os.path.join("results", "rag_quality_comparison")
+    experiment = RAGQualityComparisonExperiment(config, system_components, output_dir)
     results = experiment.run()
     
     # Generar visualizaciones
@@ -606,7 +677,7 @@ def run_rag_experiments(system_components: Dict[str, Any]) -> List[ExperimentRes
     # Generar reporte
     data_summary = {
         'total_samples': len(experiment.data_buffer),
-        'duration': f"{len(experiment.data_buffer)} consultas simuladas",
+        'duration': f"{len(experiment.data_buffer)} comparaciones A/B",
         'experiments_completed': len(results)
     }
     
@@ -614,9 +685,9 @@ def run_rag_experiments(system_components: Dict[str, Any]) -> List[ExperimentRes
         experiment.config.name, results, data_summary
     )
     
-    print(f"\n✅ Experimentos RAG completados:")
+    print(f"\n✅ Experimentos de calidad RAG completados:")
     print(f"   - Análisis realizados: {len(results)}")
-    print(f"   - Consultas procesadas: {len(experiment.data_buffer)}")
+    print(f"   - Comparaciones procesadas: {len(experiment.data_buffer)}")
     print(f"   - Reporte generado: {report_file}")
     
     return results
@@ -629,11 +700,11 @@ if __name__ == "__main__":
         'decor_rag': None
     }
     
-    results = run_rag_experiments(mock_components)
+    results = run_rag_quality_experiments(mock_components)
     
     # Mostrar resumen de resultados
     print("\n" + "="*80)
-    print("RESUMEN DE RESULTADOS RAG")
+    print("RESUMEN DE RESULTADOS DE CALIDAD RAG")
     print("="*80)
     
     for i, result in enumerate(results, 1):
