@@ -185,6 +185,45 @@ def initialize_system():
 class Comunication:
     
     def send_query(request:str, session_id:str, user_id:str):
+        
+        # Validar y completar campos requeridos en el request
+        if "criterios" not in request:
+            request["criterios"] = {}
+        
+        criterios = request["criterios"]
+        
+        # Asegurar que todos los campos requeridos estén presentes
+        if "venue" not in criterios:
+            criterios["venue"] = {
+                "obligatorios": [],
+                "capacity": 0,
+                "venue_type": ""
+            }
+        
+        if "catering" not in criterios:
+            criterios["catering"] = {
+                "obligatorios": [],
+                "meal_types": [],
+                "dietary_options": []
+            }
+        
+        if "decor" not in criterios:
+            criterios["decor"] = {
+                "obligatorios": [],
+                "service_levels": [],
+                "floral_arrangements": []
+            }
+        
+        # Asegurar campos básicos del request
+        if "presupuesto_total" not in criterios:
+            criterios["presupuesto_total"] = 0
+        
+        if "guest_count" not in criterios:
+            criterios["guest_count"] = 0
+        
+        if "style" not in criterios:
+            criterios["style"] = "classic"
+        
         planner = st.session_state.planner
         # Enviar petición al planner
         response = planner.receive({
@@ -199,8 +238,6 @@ class Comunication:
             return response
         else:
             print("❌ No se recibió respuesta del sistema")
-
-        
 
 def main():
     # Inicializar el sistema
