@@ -19,7 +19,7 @@ class AdvancedCrawlerAgent:
         self.log = []
         self.visited = set()
         self.max_visits = 15
-        self.to_visit = []  # nueva pila FIFO
+        self.to_visit = []  
         
         # Inicializar sistema de validación y enriquecimiento
         self.quality_validator = DataQualityValidator()

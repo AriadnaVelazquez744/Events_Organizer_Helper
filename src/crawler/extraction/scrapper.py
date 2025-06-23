@@ -15,8 +15,7 @@ from src.crawler.extraction.llm_extract_openrouter import llm_extract_openrouter
 
 def setup_driver():
     options = Options()
-    # QUITA el modo headless
-    # options.add_argument("--headless")  # Desactivado
+    
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("start-maximized")
     options.add_argument("window-size=1920x1080")

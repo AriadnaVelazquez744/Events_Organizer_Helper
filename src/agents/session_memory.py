@@ -152,3 +152,32 @@ class SessionMemoryManager:
             if new_user_id not in self._used_user_ids:
                 return new_user_id
             counter += 1
+            
+    def set_session_status(self, session_id: str, status: str) -> None:
+        """Cambia el estado de una sesión.
+        
+        Args:
+            session_id: ID de la sesión a modificar
+            status: Nuevo estado para la sesión ('active', 'inactive', 'archived')
+            
+        Raises:
+            KeyError: Si la sesión no existe
+            ValueError: Si el estado proporcionado no es válido
+        """
+        if session_id not in self.sessions:
+            raise KeyError(f"Sesión no encontrada: {session_id}")
+            
+        valid_statuses = ['active', 'inactive', 'archived']
+        if status not in valid_statuses:
+            raise ValueError(f"Estado inválido. Debe ser uno de: {', '.join(valid_statuses)}")
+        
+        self.sessions[session_id]["status"] = status
+        self.sessions[session_id]["last_activity"] = datetime.now().isoformat()
+        
+        if status == "inactive":
+            self.sessions[session_id]["inactivated_at"] = datetime.now().isoformat()
+        elif status == "archived":
+            self.sessions[session_id]["archived_at"] = datetime.now().isoformat()
+            
+        self._save_to_storage()
+
