@@ -20,67 +20,98 @@ def settings_page():
     # API Configuration Section
     st.header("🔑 API Configuration")
     
-    with st.expander("OpenRouter API Settings", expanded=True):
-        # API Key input
-        api_key = st.text_input(
-            "OpenRouter API Key:",
-            value=config.openrouter.api_key,
+    # --- OpenRouter Section (commented for clarity) ---
+    # with st.expander("OpenRouter API Settings", expanded=True):
+    #     api_key = st.text_input(
+    #         "OpenRouter API Key:",
+    #         value=config.openrouter.api_key,
+    #         type="password",
+    #         help="Get your API key from https://openrouter.ai/keys"
+    #     )
+    #     ...
+    #     # Model selection
+    #     st.subheader("Default Model")
+    #     available_models = [
+    #         "openai/gpt-3.5-turbo",
+    #         "openai/gpt-4",
+    #         "anthropic/claude-3-haiku",
+    #         "anthropic/claude-3-sonnet",
+    #         "meta-llama/llama-3.1-8b-instruct"
+    #     ]
+    #     default_model = st.selectbox(
+    #         "Default Model:",
+    #         available_models,
+    #         index=available_models.index(config.openrouter.model)
+    #     )
+    #     ...
+    #     # Model parameters
+    #     st.subheader("Model Parameters")
+    #     col1, col2 = st.columns(2)
+    #     with col1:
+    #         default_temperature = st.slider(
+    #             "Default Temperature:",
+    #             min_value=0.0,
+    #             max_value=2.0,
+    #             value=config.openrouter.temperature,
+    #             step=0.1
+    #         )
+    #     with col2:
+    #         default_max_tokens = st.slider(
+    #             "Default Max Tokens:",
+    #             min_value=100,
+    #             max_value=4000,
+    #             value=config.openrouter.max_tokens,
+    #             step=100
+    #         )
+
+    # --- Fireworks Section ---
+    with st.expander("Fireworks API Settings", expanded=True):
+        fw_api_key = st.text_input(
+            "Fireworks API Key:",
+            value=config.fireworks.api_key,
             type="password",
-            help="Get your API key from https://openrouter.ai/keys"
+            help="Get your API key from https://fireworks.ai/keys"
         )
-        
-        # Test API connection
         col1, col2 = st.columns([1, 3])
-        
         with col1:
-            if st.button("🔍 Test Connection"):
-                if api_key:
-                    test_api_connection(api_key)
+            if st.button("🔍 Test Fireworks Connection"):
+                if fw_api_key:
+                    test_fireworks_api_connection(fw_api_key)
                 else:
-                    st.error("Please enter an API key first.")
-        
+                    st.error("Please enter a Fireworks API key first.")
         with col2:
-            if api_key:
+            if fw_api_key:
                 st.success("✅ API key entered")
             else:
                 st.warning("⚠️ No API key configured")
-        
-        # Model selection
         st.subheader("Default Model")
-        available_models = [
-            "openai/gpt-3.5-turbo",
-            "openai/gpt-4",
-            "anthropic/claude-3-haiku",
-            "anthropic/claude-3-sonnet",
-            "meta-llama/llama-3.1-8b-instruct"
+        fireworks_models = [
+            "accounts/fireworks/models/llama-v3p3-70b-instruct",
+            "accounts/fireworks/models/llama-v3p1-8b-instruct",
+            "accounts/fireworks/models/llama-v2-70b-chat",
+            "accounts/fireworks/models/mixtral-8x7b-instruct"
         ]
-        
-        default_model = st.selectbox(
-            "Default Model:",
-            available_models,
-            index=available_models.index(config.openrouter.model)
+        fw_default_model = st.selectbox(
+            "Default Fireworks Model:",
+            fireworks_models,
+            index=fireworks_models.index(config.fireworks.model) if config.fireworks.model in fireworks_models else 0
         )
-        
-        # Model parameters
         st.subheader("Model Parameters")
-        
         col1, col2 = st.columns(2)
-        
         with col1:
-            default_temperature = st.slider(
+            fw_default_temperature = st.slider(
                 "Default Temperature:",
                 min_value=0.0,
                 max_value=2.0,
-                value=config.openrouter.temperature,
+                value=config.fireworks.temperature,
                 step=0.1
             )
-        
         with col2:
-            default_max_tokens = st.slider(
+            fw_default_max_tokens = st.slider(
                 "Default Max Tokens:",
                 min_value=100,
                 max_value=4000,
-                value=config.openrouter.max_tokens,
+                value=config.fireworks.max_tokens,
                 step=100
             )
     
@@ -105,28 +136,28 @@ def settings_page():
     col1, col2, col3 = st.columns([1, 1, 2])
     
     with col1:
-        if st.button("💾 Save to Memory"):
-            save_settings_to_memory(
-                api_key=api_key,
-                default_model=default_model,
-                default_temperature=default_temperature,
-                default_max_tokens=default_max_tokens,
+        if st.button("💾 Save Fireworks to Memory"):
+            save_fireworks_settings_to_memory(
+                api_key=fw_api_key,
+                default_model=fw_default_model,
+                default_temperature=fw_default_temperature,
+                default_max_tokens=fw_default_max_tokens,
                 app_name=app_name,
                 debug_mode=debug_mode
             )
     
     with col2:
-        if st.button("📁 Save to .env"):
-            save_settings_to_env(
-                api_key=api_key,
-                default_model=default_model,
-                default_temperature=default_temperature,
-                default_max_tokens=default_max_tokens
+        if st.button("📁 Save Fireworks to .env"):
+            save_fireworks_settings_to_env(
+                api_key=fw_api_key,
+                default_model=fw_default_model,
+                default_temperature=fw_default_temperature,
+                default_max_tokens=fw_default_max_tokens
             )
     
     with col3:
-        if st.button("🔄 Reset to Defaults"):
-            reset_to_defaults()
+        if st.button("�� Reset Fireworks to Defaults"):
+            reset_fireworks_to_defaults()
     
     # Information Section
     st.header("ℹ️ Information")
@@ -253,4 +284,70 @@ def reset_to_defaults():
         st.rerun()
         
     except Exception as e:
-        st.error(f"❌ Failed to reset settings: {str(e)}") 
+        st.error(f"❌ Failed to reset settings: {str(e)}")
+
+# --- Fireworks helpers ---
+def test_fireworks_api_connection(api_key: str):
+    from interface.api.fireworks_client import SyncFireworksClient, ChatMessage
+    try:
+        test_client = SyncFireworksClient()
+        test_message = [ChatMessage(role="user", content="Hello! This is a test message.")]
+        with st.spinner("Testing Fireworks API connection..."):
+            response = test_client.chat_completion(
+                messages=test_message,
+                model="accounts/fireworks/models/llama-v3p3-70b-instruct",
+                max_tokens=50
+            )
+        st.success("✅ Fireworks API connection successful!")
+        st.info(f"Response: {response.choices[0].message.content}")
+        models = test_client.get_models()
+        st.success(f"✅ Available models: {len(models)} models found")
+    except Exception as e:
+        st.error(f"❌ Fireworks API connection failed: {str(e)}")
+        st.error("Please check your Fireworks API key and try again.")
+
+def save_fireworks_settings_to_memory(**kwargs):
+    from config import AppConfig, FireworksConfig, get_config, update_config
+    try:
+        new_fireworks_config = FireworksConfig(
+            api_key=kwargs.get('api_key', ''),
+            model=kwargs.get('default_model', 'accounts/fireworks/models/llama-v3p3-70b-instruct'),
+            temperature=kwargs.get('default_temperature', 0.7),
+            max_tokens=kwargs.get('default_max_tokens', 1000)
+        )
+        current_config = get_config()
+        new_config = AppConfig(
+            openrouter=current_config.openrouter,
+            fireworks=new_fireworks_config,
+            app_name=kwargs.get('app_name', 'Events Organizer Helper'),
+            debug=kwargs.get('debug_mode', False)
+        )
+        update_config(new_config)
+        st.success("✅ Fireworks settings saved to memory!")
+    except Exception as e:
+        st.error(f"❌ Failed to save Fireworks settings: {str(e)}")
+
+def save_fireworks_settings_to_env(**kwargs):
+    try:
+        env_content = f"""# Fireworks Configuration\nFIREWORKS_API_KEY={kwargs.get('api_key', '')}\nFIREWORKS_MODEL={kwargs.get('default_model', 'accounts/fireworks/models/llama-v3p3-70b-instruct')}\nFIREWORKS_TEMPERATURE={kwargs.get('default_temperature', 0.7)}\nFIREWORKS_MAX_TOKENS={kwargs.get('default_max_tokens', 1000)}\n"""
+        with open('.env', 'w') as f:
+            f.write(env_content)
+        st.success("✅ Fireworks settings saved to .env file!")
+    except Exception as e:
+        st.error(f"❌ Failed to save Fireworks settings to .env: {str(e)}")
+
+def reset_fireworks_to_defaults():
+    from config import AppConfig, FireworksConfig, get_config, update_config
+    try:
+        current_config = get_config()
+        default_fireworks_config = FireworksConfig()
+        new_config = AppConfig(
+            openrouter=current_config.openrouter,
+            fireworks=default_fireworks_config,
+            app_name=current_config.app_name,
+            debug=current_config.debug
+        )
+        update_config(new_config)
+        st.success("✅ Fireworks settings reset to defaults!")
+    except Exception as e:
+        st.error(f"❌ Failed to reset Fireworks settings: {str(e)}") 

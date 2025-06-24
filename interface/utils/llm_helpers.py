@@ -5,11 +5,14 @@ from difflib import get_close_matches
 from interface.prompts import TRANSFORM_INITIAL_QUERY_EN, TRANSFORM_FROM_JSON_TO_NL_EN
 from interface.models import Criterios
 from pydantic import ValidationError
-from interface.api.openrouter_client import ChatMessage
+# from interface.api.openrouter_client import ChatMessage
+from interface.api.fireworks_client import ChatMessage
 
 # You must replace this with your actual LLM client import and call
 # from interface.api.openrouter_client import SyncOpenRouterClient
 # llm_client = SyncOpenRouterClient(...)
+# from interface.api.fireworks_client import SyncFireworksClient
+# llm_client = SyncFireworksClient(...)
 
 # Helper to call the LLM using the OpenRouter client
 def call_llm(prompt: str, llm_client):
@@ -118,13 +121,18 @@ def process_user_input(
     Full flow: NL input -> LLM (JSON) -> merge -> backend -> LLM (NL) -> return answer.
     This is the only function chat_page.py should call.
     """
+    print("aqui")
     # 1. NL -> JSON
     new_json = call_llm_extract_json(user_input, prev_context, llm_client)
+    print("aqui2")
     # 2. Merge with previous context, updating missing_fields
     merged_json = merge_contexts(prev_context or {}, new_json)
     # 3. Pass to backend (send_query expects merged_json)
     from main import Comunication  # Import here to avoid circular import
     response_json = Comunication.send_query(merged_json, session_id, user_id)
+    print(response_json)
+    
+    response_json = st.session_state.response_planner
     # 4. JSON -> NL
     nl_message = call_llm_json_to_nl(response_json, llm_client)
     return nl_message

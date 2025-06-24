@@ -6,7 +6,7 @@ Provides an interactive chat interface with OpenRouter API.
 import streamlit as st
 import json
 from typing import List
-from api.openrouter_client import SyncOpenRouterClient, ChatMessage
+#from api.openrouter_client import SyncOpenRouterClient, ChatMessage
 from config import get_config
 import sys
 import os
@@ -15,12 +15,14 @@ from main import initialize_system, Comunication
 import src.agents.session_memory as sm
 
 
-from interface.api.openrouter_client import SyncOpenRouterClient
+#from interface.api.openrouter_client import SyncOpenRouterClient
+from interface.api.fireworks_client import SyncFireworksClient, ChatMessage
 from interface.utils.llm_helpers import process_user_input
 from interface.utils.session_helpers import instance_missing_fields
 
 # Instantiate the LLM client using config (no need to pass config explicitly)
-llm_client = SyncOpenRouterClient()
+#llm_client = SyncOpenRouterClient()
+llm_client = SyncFireworksClient()
 
 def chat_page():
     """Main chat page function."""
@@ -55,6 +57,9 @@ def chat_page():
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
+    if "response_planner" not in st.session_state:
+        st.session_state.response_planner = None
+        
     instance_missing_fields()
 
     # Sidebar for session/user controls

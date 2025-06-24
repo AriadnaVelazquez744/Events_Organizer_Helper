@@ -14,6 +14,7 @@ from src.utils.request_normalizer import normalize_request
 import streamlit as st
 import json
 from datetime import datetime
+import time
 
 def print_section(title: str):
     """Imprime una sección con formato."""
@@ -196,7 +197,7 @@ class Comunication:
         
         planner = st.session_state.planner
         # Enviar petición al planner
-        response = planner.receive({
+        initial_response = planner.receive({
             "origen": "user",
             "destino": "PlannerAgent",
             "tipo": "user_request",
@@ -204,10 +205,30 @@ class Comunication:
             "session_id": session_id
         })
         
-        if response:
-            return response
-        else:
-            print("❌ No se recibió respuesta del sistema")
+        if not initial_response:
+            print("❌ No se recibió respuesta inicial del sistema")
+            st.session_state.response_planner = None
+            return None
+            
+        # Esperar la respuesta final
+        max_retries = 30  # 30 segundos máximo de espera
+        retries = 0
+        
+        while retries < max_retries:
+            # Verificar si hay una respuesta final
+            final_response = planner._check_completion(session_id)
+            if final_response:
+                print("[Comunication] Respuesta final recibida")
+                st.session_state.response_planner = final_response
+                return final_response
+                
+            # Esperar un segundo antes de verificar de nuevo
+            time.sleep(1)
+            retries += 1
+            
+        print("❌ Timeout esperando respuesta final del sistema")
+        st.session_state.response_planner = None
+        return None
 
 def main():
     # Inicializar el sistema

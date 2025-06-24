@@ -9,6 +9,7 @@ from src.agents.beliefs_schema import BeliefState
 from src.agents.session_memory import SessionMemoryManager
 from src.agents.planner.planner_rag import PlannerRAG
 import time
+import streamlit as st
 
 @dataclass
 class Task:
@@ -126,6 +127,7 @@ class PlannerAgentBDI:
             final_response = self._check_completion(session_id)
             if final_response:
                 print(f"[PlannerAgent] Todas las tareas completadas, retornando respuesta final")
+                
                 return final_response
             
             print(f"[PlannerAgent] Tareas pendientes, enviando acknowledgment")
