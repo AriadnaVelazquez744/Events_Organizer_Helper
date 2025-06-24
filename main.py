@@ -10,6 +10,7 @@ from src.crawler.quality.monitoring import DataQualityMonitor
 from src.crawler.quality.quality_validator import DataQualityValidator
 from src.agents.session_memory import SessionMemoryManager
 from src.agents.budget.BudgetAgent import BudgetDistributorAgent
+from src.utils.request_normalizer import normalize_request
 import streamlit as st
 import json
 from datetime import datetime
@@ -186,43 +187,12 @@ class Comunication:
     
     def send_query(request:str, session_id:str, user_id:str):
         
-        # Validar y completar campos requeridos en el request
-        if "criterios" not in request:
-            request["criterios"] = {}
+        print(f"[Comunication] Request original: {request}")
         
-        criterios = request["criterios"]
+        # Normalizar el request usando el normalizador
+        normalized_request = normalize_request(request)
         
-        # Asegurar que todos los campos requeridos estén presentes
-        if "venue" not in criterios:
-            criterios["venue"] = {
-                "obligatorios": [],
-                "capacity": 0,
-                "venue_type": ""
-            }
-        
-        if "catering" not in criterios:
-            criterios["catering"] = {
-                "obligatorios": [],
-                "meal_types": [],
-                "dietary_options": []
-            }
-        
-        if "decor" not in criterios:
-            criterios["decor"] = {
-                "obligatorios": [],
-                "service_levels": [],
-                "floral_arrangements": []
-            }
-        
-        # Asegurar campos básicos del request
-        if "presupuesto_total" not in criterios:
-            criterios["presupuesto_total"] = 0
-        
-        if "guest_count" not in criterios:
-            criterios["guest_count"] = 0
-        
-        if "style" not in criterios:
-            criterios["style"] = "classic"
+        print(f"[Comunication] Request normalizado: {normalized_request}")
         
         planner = st.session_state.planner
         # Enviar petición al planner
@@ -230,7 +200,7 @@ class Comunication:
             "origen": "user",
             "destino": "PlannerAgent",
             "tipo": "user_request",
-            "contenido": request,
+            "contenido": normalized_request,
             "session_id": session_id
         })
         
