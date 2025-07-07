@@ -236,7 +236,7 @@ DO NOT include any additional text or explanation. ONLY return the JSON object.
             print(f"[BudgetDistributorAgent] Prompt: {prompt}")
             
             response = client.chat.completions.create(
-                model="meta-llama/llama-3.3-8b-instruct:free",
+                model="meta-llama/llama-3.3-70b-instruct:free",
                 messages=[{"role": "user", "content": prompt}]
             )
             

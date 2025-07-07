@@ -20,70 +20,53 @@ def settings_page():
     # API Configuration Section
     st.header("🔑 API Configuration")
     
-    with st.expander("OpenRouter API Settings", expanded=True):
-        # API Key input
-        api_key = st.text_input(
-            "OpenRouter API Key:",
-            value=config.openrouter.api_key,
-            type="password",
-            help="Get your API key from https://openrouter.ai/keys"
-        )
-        
-        # Test API connection
-        col1, col2 = st.columns([1, 3])
-        
-        with col1:
-            if st.button("🔍 Test Connection"):
-                if api_key:
-                    test_api_connection(api_key)
-                else:
-                    st.error("Please enter an API key first.")
-        
-        with col2:
-            if api_key:
-                st.success("✅ API key entered")
-            else:
-                st.warning("⚠️ No API key configured")
-        
-        # Model selection
-        st.subheader("Default Model")
-        available_models = [
-            "openai/gpt-3.5-turbo",
-            "openai/gpt-4",
-            "anthropic/claude-3-haiku",
-            "anthropic/claude-3-sonnet",
-            "meta-llama/llama-3.1-8b-instruct"
-        ]
-        
-        default_model = st.selectbox(
-            "Default Model:",
-            available_models,
-            index=available_models.index(config.openrouter.model)
-        )
-        
-        # Model parameters
-        st.subheader("Model Parameters")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            default_temperature = st.slider(
-                "Default Temperature:",
-                min_value=0.0,
-                max_value=2.0,
-                value=config.openrouter.temperature,
-                step=0.1
-            )
-        
-        with col2:
-            default_max_tokens = st.slider(
-                "Default Max Tokens:",
-                min_value=100,
-                max_value=4000,
-                value=config.openrouter.max_tokens,
-                step=100
-            )
-    
+    # --- OpenRouter Section (commented for clarity) ---
+    # with st.expander("OpenRouter API Settings", expanded=True):
+    #     api_key = st.text_input(
+    #         "OpenRouter API Key:",
+    #         value=config.openrouter.api_key,
+    #         type="password",
+    #         help="Get your API key from https://openrouter.ai/keys"
+    #     )
+    #     ...
+    #     # Model selection
+    #     st.subheader("Default Model")
+    #     available_models = [
+    #         "openai/gpt-3.5-turbo",
+    #         "openai/gpt-4",
+    #         "anthropic/claude-3-haiku",
+    #         "anthropic/claude-3-sonnet",
+    #         "meta-llama/llama-3.1-8b-instruct"
+    #     ]
+    #     default_model = st.selectbox(
+    #         "Default Model:",
+    #         available_models,
+    #         index=available_models.index(config.openrouter.model)
+    #     )
+    #     ...
+    #     # Model parameters
+    #     st.subheader("Model Parameters")
+    #     col1, col2 = st.columns(2)
+    #     with col1:
+    #         default_temperature = st.slider(
+    #             "Default Temperature:",
+    #             min_value=0.0,
+    #             max_value=2.0,
+    #             value=config.openrouter.temperature,
+    #             step=0.1
+    #         )
+    #     with col2:
+    #         default_max_tokens = st.slider(
+    #             "Default Max Tokens:",
+    #             min_value=100,
+    #             max_value=4000,
+    #             value=config.openrouter.max_tokens,
+    #             step=100
+    #         )
+
+    # --- Fireworks Section ---
+    # (Fireworks settings UI and helpers removed)
+
     # Application Settings Section
     st.header("🎯 Application Settings")
     
@@ -105,28 +88,19 @@ def settings_page():
     col1, col2, col3 = st.columns([1, 1, 2])
     
     with col1:
-        if st.button("💾 Save to Memory"):
-            save_settings_to_memory(
-                api_key=api_key,
-                default_model=default_model,
-                default_temperature=default_temperature,
-                default_max_tokens=default_max_tokens,
-                app_name=app_name,
-                debug_mode=debug_mode
-            )
+        if st.button("💾 Save Fireworks to Memory"):
+            # (Fireworks helper functions removed)
+            pass
     
     with col2:
-        if st.button("📁 Save to .env"):
-            save_settings_to_env(
-                api_key=api_key,
-                default_model=default_model,
-                default_temperature=default_temperature,
-                default_max_tokens=default_max_tokens
-            )
+        if st.button("📁 Save Fireworks to .env"):
+            # (Fireworks helper functions removed)
+            pass
     
     with col3:
-        if st.button("🔄 Reset to Defaults"):
-            reset_to_defaults()
+        if st.button("�� Reset Fireworks to Defaults"):
+            # (Fireworks helper functions removed)
+            pass
     
     # Information Section
     st.header("ℹ️ Information")
@@ -253,4 +227,10 @@ def reset_to_defaults():
         st.rerun()
         
     except Exception as e:
-        st.error(f"❌ Failed to reset settings: {str(e)}") 
+        st.error(f"❌ Failed to reset settings: {str(e)}")
+
+# --- Fireworks helpers ---
+# (Fireworks helper functions removed)
+
+# --- Fireworks helpers ---
+# (Fireworks helper functions removed) 

@@ -41,12 +41,42 @@ class OpenRouterConfig(BaseModel):
         description="Temperature for response generation (0.0-2.0)"
     )
 
+class FireworksConfig(BaseModel):
+    """Configuration for Fireworks API connection."""
+    api_key: str = Field(
+        default_factory=lambda: os.getenv("FIREWORKS_API_KEY", ""),
+        description="Fireworks API key"
+    )
+    base_url: str = Field(
+        default="https://api.fireworks.ai/inference/v1",
+        description="Fireworks API base URL"
+    )
+    model: str = Field(
+        default="accounts/fireworks/models/llama-v3p3-70b-instruct",
+        description="Default model to use for chat"
+    )
+    max_tokens: int = Field(
+        default=1000,
+        description="Maximum tokens for API responses"
+    )
+    temperature: float = Field(
+        default=0.7,
+        ge=0.0,
+        le=2.0,
+        description="Temperature for response generation (0.0-2.0)"
+    )
+
 class AppConfig(BaseModel):
     """Main application configuration."""
     
     openrouter: OpenRouterConfig = Field(
         default_factory=OpenRouterConfig,
         description="OpenRouter API configuration"
+    )
+    
+    fireworks: FireworksConfig = Field(
+        default_factory=FireworksConfig,
+        description="Fireworks API configuration"
     )
     
     app_name: str = Field(

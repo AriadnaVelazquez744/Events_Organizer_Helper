@@ -490,7 +490,92 @@ class VenueAgent:
         if not valid:
             print("[VenueAgent] Advertencia: No se encontraron venues válidos")
             print("[VenueAgent] Criterios aplicados:", criteria)
-            return []
+            # --- NUEVO: Búsqueda web automática si no hay resultados válidos ---
+            print("[VenueAgent] Lanzando búsqueda web automática...")
+            try:
+                from ddgs import DDGS
+                # --- Construcción de la query con todos los campos obligatorios ---
+                obligatorios = criteria.get('obligatorios', [])
+                query_parts = []
+                for campo in obligatorios:
+                    valor = criteria.get(campo)
+                    if valor is None:
+                        continue
+                    # Formateo natural para algunos campos
+                    if campo == 'capacity':
+                        query_parts.append(f"{valor} guests")
+                    elif campo == 'price':
+                        query_parts.append(f"${valor}")
+                    else:
+                        if isinstance(valor, list):
+                            query_parts.extend([str(v) for v in valor])
+                        else:
+                            query_parts.append(str(valor))
+                # Siempre incluir tipo de búsqueda
+                query_base = "wedding venue " + " ".join(query_parts)
+                # --- Subqueries priorizando sitios confiables ---
+                subqueries = [
+                    f"site:zola.com {query_base}",
+                    f"site:theknot.com {query_base}",
+                    f"{query_base} zola",
+                    f"{query_base} theknot"
+                ]
+                # --- Búsqueda relajada como último recurso ---
+                relaxed_query = query_base
+                web_urls = []
+                for subq in subqueries:
+                    print(f"[VenueAgent] Query enviada a DuckDuckGo: {subq}")
+                    with DDGS() as ddgs:
+                        search_results = list(ddgs.text(subq, max_results=15))
+                    urls = [r['href'] for r in search_results if 'href' in r]
+                    print(f"[VenueAgent] Resultados encontrados: {len(urls)}")
+                    web_urls.extend(urls)
+                # Si no hay resultados, búsqueda relajada
+                if not web_urls:
+                    print(f"[VenueAgent] Query enviada a DuckDuckGo (relajada): {relaxed_query}")
+                    with DDGS() as ddgs:
+                        search_results = list(ddgs.text(relaxed_query, max_results=15))
+                    urls = [r['href'] for r in search_results if 'href' in r]
+                    print(f"[VenueAgent] Resultados encontrados (relajada): {len(urls)}")
+                    web_urls.extend(urls)
+                if not web_urls:
+                    print('[VenueAgent] No se encontraron URLs relevantes. No se hará crawling.')
+                    return []
+                print(f"[VenueAgent] URLs encontradas en la web: {web_urls}")
+                for url in web_urls:
+                    self.crawler.enqueue_url(url)
+                while self.crawler.to_visit and len(self.crawler.visited) < self.crawler.max_visits:
+                    next_url = self.crawler.to_visit.pop(0)
+                    if not self.crawler.policy.can_fetch(next_url):
+                        print(f"[VenueAgent] robots.txt bloquea: {next_url}. No se hará crawling.")
+                        continue
+                    self.crawler.crawl(next_url, context=criteria)
+                print("[VenueAgent] Guardando grafo después del crawling web...")
+                self.graph.save_to_file("venues_graph.json")
+                self.graph.clean_errors()
+                venue_nodes = self.graph.query("venue")
+                print(f"[VenueAgent] Nodos tipo 'venue' encontrados después del crawling web: {len(venue_nodes)}")
+                candidates = []
+                for node in venue_nodes:
+                    if isinstance(node, dict):
+                        candidates.append(node)
+                    elif isinstance(node, list):
+                        if node and isinstance(node[0], dict):
+                            candidates.append(node[0])
+                valid = []
+                for v in candidates:
+                    data = v.get("original_data", v)
+                    if not data:
+                        continue
+                    if self.expert.process_knowledge(data):
+                        valid.append((v, data))
+                print(f"[VenueAgent] {len(valid)} venues válidos tras búsqueda web")
+                if not valid:
+                    print("[VenueAgent] No se encontraron venues válidos ni tras búsqueda web")
+                    return []
+            except Exception as e:
+                print(f"[VenueAgent] Error en búsqueda web automática: {e}")
+                return []
 
         scored = [(v[0], self.score_optional(v[1], criteria)) for v in valid]
         scored.sort(key=lambda x: x[1], reverse=True)

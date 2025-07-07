@@ -6,7 +6,7 @@ from src.crawler.extraction.scrapper import scrape_page
 from src.crawler.core.policy import CrawlPolicy
 from src.crawler.quality.quality_validator import DataQualityValidator
 from src.crawler.quality.enrichment_engine import DynamicEnrichmentEngine
-from datetime import datetime
+from datetime import datetime, timezone
 
 class AdvancedCrawlerAgent:
     
@@ -18,7 +18,7 @@ class AdvancedCrawlerAgent:
         self.mission_profile = mission_profile or {}
         self.log = []
         self.visited = set()
-        self.max_visits = 15
+        self.max_visits = 5
         self.to_visit = []  
         
         # Inicializar sistema de validación y enriquecimiento
@@ -54,7 +54,8 @@ class AdvancedCrawlerAgent:
             return
 
         if not self.policy.can_fetch(url):
-            print(f"[CRAWLER] Robots.txt bloquea: {url} (continuando con Selenium si es necesario)")
+            print(f"[CRAWLER] Robots.txt bloquea: {url} (no se continuará)")
+            return
 
         if len(self.visited) >= self.max_visits:
             print(f"[CRAWLER] Límite de {self.max_visits} URLs alcanzado.")
@@ -69,42 +70,24 @@ class AdvancedCrawlerAgent:
 
             # Asegura campos mínimos
             content.setdefault("url", url)
-            content.setdefault("tipo", "venue")
-            content.setdefault("timestamp", datetime.utcnow().isoformat())
-            knowledge = content
+            content.setdefault("timestamp", datetime.now(timezone.utc).isoformat())
+            # Guardar directamente en el grafo, sin validación ni enriquecimiento
+            self.graph_interface.insert_knowledge(content)
 
-            # === FASE DINÁMICA: VALIDACIÓN Y ENRIQUECIMIENTO ===
-            if self.enrichment_config["enabled"]:
-                knowledge = self._apply_dynamic_enrichment(knowledge, context)
-
-            # Insertar en el grafo
-            self.graph_interface.insert_knowledge(knowledge)
-
-            # Evaluar con el sistema experto
+            # Evaluar con el sistema experto si existe
             if self.expert_system:
-                self.expert_system.process_knowledge(knowledge)
+                self.expert_system.process_knowledge(content)
 
             self._log("SUCCESS", f"Procesado: {url}")
 
             # === EXPANSIÓN DE URLS ===
-            outlinks = content.get("outbound_links") or content.get("outlinks") or []
-            base_domain = urlparse(url).netloc
-
-            # 1. Agregar outlinks relevantes
-            for next_url in outlinks:
-                if isinstance(next_url, str) and next_url.startswith("http"):
-                    if urlparse(next_url).netloc == base_domain:
-                        self.enqueue_url(next_url)
-
-            # 2. Si es página de búsqueda, intentar paginar
-            if "search" in url and "?page=" in url:
-                match = re.search(r"\?page=(\d+)", url)
-                if match:
-                    current_page = int(match.group(1))
-                    next_page_url = re.sub(r"\?page=\d+", f"?page={current_page + 1}", url)
-                    self.enqueue_url(next_page_url)
-            elif "search" in url and "?page=" not in url:
-                self.enqueue_url(url + "?page=2")
+            if depth < self.max_visits:
+                outlinks = content.get("outbound_links") or content.get("outlinks") or []
+                base_domain = urlparse(url).netloc
+                for next_url in outlinks:
+                    if isinstance(next_url, str) and next_url.startswith("http"):
+                        if urlparse(next_url).netloc == base_domain:
+                            self.crawl(next_url, context, depth + 1)
 
         except Exception as e:
             self._log("ERROR", f"{url} falló: {str(e)}")
@@ -168,7 +151,7 @@ class AdvancedCrawlerAgent:
                     "final_score": stats["enriched_score"],
                     "improvement": stats["improvement"],
                     "attempts": enrichment_attempts,
-                    "enrichment_timestamp": datetime.utcnow().isoformat()
+                    "enrichment_timestamp": datetime.now(timezone.utc).isoformat()
                 }
             
             return enriched_knowledge
@@ -178,7 +161,7 @@ class AdvancedCrawlerAgent:
             return knowledge
 
     def _log(self, level: str, message: str):
-        log_entry = f"[{self.name}] [{level}] {datetime.utcnow().isoformat()} - {message}"
+        log_entry = f"[{self.name}] [{level}] {datetime.now(timezone.utc).isoformat()} - {message}"
         print(log_entry)
         self.log.append(log_entry)
 

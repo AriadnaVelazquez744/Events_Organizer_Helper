@@ -9,6 +9,7 @@ from src.agents.beliefs_schema import BeliefState
 from src.agents.session_memory import SessionMemoryManager
 from src.agents.planner.planner_rag import PlannerRAG
 import time
+import streamlit as st
 
 @dataclass
 class Task:
@@ -126,6 +127,7 @@ class PlannerAgentBDI:
             final_response = self._check_completion(session_id)
             if final_response:
                 print(f"[PlannerAgent] Todas las tareas completadas, retornando respuesta final")
+                
                 return final_response
             
             print(f"[PlannerAgent] Tareas pendientes, enviando acknowledgment")
@@ -1012,7 +1014,7 @@ class MessageBus:
         self.message_queue.put(message)
         self.history.append(message)
 
-    def send_and_wait(self, message: Dict[str, Any], timeout: int = 30) -> Optional[Dict]:
+    def send_and_wait(self, message: Dict[str, Any], timeout: int = 120) -> Optional[Dict]:
         """Envía un mensaje y espera la respuesta"""
         if "task_id" not in message["contenido"]:
             print("[MessageBus] ⚠️ Mensaje sin task_id, no se puede esperar respuesta")
@@ -1040,7 +1042,7 @@ class MessageBus:
         if response_event.wait(timeout):
             return response_data[0]
         else:
-            print(f"[MessageBus] ⚠️ Timeout esperando respuesta para task {task_id}")
+            print(f"[MessageBus] ⚠️  esperando respuesta para task {task_id}")
             # Limpiar el callback para evitar memory leaks
             if task_id in self.waiting_responses:
                 del self.waiting_responses[task_id]
