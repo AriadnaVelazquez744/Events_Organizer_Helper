@@ -249,9 +249,10 @@ def main():
             "guest_count": 100,
             "style": "luxury",
             "venue": {
-                "obligatorios": ["price", "capacity", "venue_type"],
+                "obligatorios": ["price", "capacity", "venue_type", "location"],
                 "capacity": 100,
-                "venue_type": "mansion"
+                "venue_type": "mansion",
+                "location": "Alaska",
             },
             "catering": {
                 "obligatorios": ["price", "meal_types", "dietary_options"],

@@ -490,7 +490,81 @@ class CateringAgent:
         if not valid:
             print("[CateringAgent] Advertencia: No se encontraron caterings válidos")
             print("[CateringAgent] Criterios aplicados:", criteria)
-            return []
+            # --- NUEVO: Búsqueda web automática si no hay resultados válidos ---
+            print("[CateringAgent] Lanzando búsqueda web automática...")
+            try:
+                from duckduckgo_search import DDGS
+                # --- Construcción de la query con todos los campos obligatorios ---
+                obligatorios = criteria.get('obligatorios', [])
+                query_parts = []
+                for campo in obligatorios:
+                    valor = criteria.get(campo)
+                    if valor is None:
+                        continue
+                    # Formateo natural para algunos campos
+                    if campo == 'guest_count':
+                        query_parts.append(f"{valor} guests")
+                    elif campo == 'price':
+                        query_parts.append(f"${valor}")
+                    else:
+                        if isinstance(valor, list):
+                            query_parts.extend([str(v) for v in valor])
+                        else:
+                            query_parts.append(str(valor))
+                query_base = "wedding catering " + " ".join(query_parts)
+                subqueries = [
+                    f"site:zola.com {query_base}",
+                    f"site:theknot.com {query_base}",
+                    f"{query_base} zola",
+                    f"{query_base} theknot"
+                ]
+                relaxed_query = query_base
+                web_urls = []
+                for subq in subqueries:
+                    print(f"[CateringAgent] Query enviada a DuckDuckGo: {subq}")
+                    with DDGS() as ddgs:
+                        search_results = list(ddgs.text(subq, max_results=15))
+                    urls = [r['href'] for r in search_results if 'href' in r]
+                    print(f"[CateringAgent] Resultados encontrados: {len(urls)}")
+                    web_urls.extend(urls)
+                if not web_urls:
+                    print(f"[CateringAgent] Query enviada a DuckDuckGo (relajada): {relaxed_query}")
+                    with DDGS() as ddgs:
+                        search_results = list(ddgs.text(relaxed_query, max_results=15))
+                    urls = [r['href'] for r in search_results if 'href' in r]
+                    print(f"[CateringAgent] Resultados encontrados (relajada): {len(urls)}")
+                    web_urls.extend(urls)
+                if not web_urls:
+                    print('[CateringAgent] No se encontraron URLs relevantes. No se hará crawling.')
+                    return []
+                print(f"[CateringAgent] URLs encontradas en la web: {web_urls}")
+                for url in web_urls:
+                    self.crawler.enqueue_url(url)
+                while self.crawler.to_visit and len(self.crawler.visited) < self.crawler.max_visits:
+                    next_url = self.crawler.to_visit.pop(0)
+                    if not self.crawler.policy.can_fetch(next_url):
+                        print(f"[CateringAgent] robots.txt bloquea: {next_url}. No se hará crawling.")
+                        continue
+                    self.crawler.crawl(next_url, context=criteria)
+                print("[CateringAgent] Guardando grafo después del crawling web...")
+                self.graph.save_to_file("catering_graph.json")
+                self.graph.clean_errors()
+                candidates = self.graph.query("catering")
+                print(f"[CateringAgent] Nodos tipo 'catering' encontrados después del crawling web: {len(candidates)}")
+                valid = []
+                for v in candidates:
+                    data = v.get("original_data", {})
+                    if not data:
+                        continue
+                    if self.expert.process_knowledge(data):
+                        valid.append((v, data))
+                print(f"[CateringAgent] {len(valid)} caterings válidos tras búsqueda web")
+                if not valid:
+                    print("[CateringAgent] No se encontraron caterings válidos ni tras búsqueda web")
+                    return []
+            except Exception as e:
+                print(f"[CateringAgent] Error en búsqueda web automática: {e}")
+                return []
 
         scored = [(v[0], self.score_optional(v[1], criteria)) for v in valid]
         scored.sort(key=lambda x: x[1], reverse=True)
