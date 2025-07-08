@@ -33,14 +33,14 @@
 
 \titlerunning{Wedding Organizer}
 
-\author{Lia S. López Rosales\and Ariadna Velázquez Rey}
+\author{Lia S. López Rosales CC-312 \and Ariadna Velázquez Rey CC-311}
 
 \institute{Facultad de Matemática y Computación (MATCOM)\\
 UH, La Habana\\
 \url{https://github.com/AriadnaVelazquez744/Events_Organizer_Helper.git}}
 
 \toctitle{Wedding Organizer}
-\tocauthor{Lia S. López Rosales, Ariadna Velázquez Rey}
+\tocauthor{Lia S. López Rosales CC-312, Ariadna Velázquez Rey CC-311}
 \maketitle
 
 \begin{abstract}
@@ -73,12 +73,12 @@ proporcionar recomendaciones contextualmente relevantes y personalizadas.
 
 La motivación principal del proyecto radica en la necesidad de desarrollar soluciones tecnológicas que puedan asistir a 
 los usuarios (clientes o profesionales) en la toma de decisiones complejas, reduciendo la carga cognitiva y mejorando 
-la calidad de las decisiones finales. El enfoque multi-agente permite la especialización de responsabilidades y la 
+la calidad de las decisiones finales. El enfoque multi-agente permite la especia-lización de responsabilidades y la 
 coordinación efectiva entre diferentes aspectos de la planificación.
 
 \section{Descripción del Problema}
 
-La planificación de bodas presenta características que la convierten en un problema complejo de optimización multi-objetivo:
+La planificación de bodas presenta características que la convierten en un pro-blema complejo de optimización multi-objetivo:
 
 \begin{itemize}
     \item \textbf{Multi-dimensionalidad}: Involucra múltiples categorías (venue, catering, decoración) con criterios 
@@ -95,9 +95,18 @@ disponibilidad, precios y ofertas.
 
 \section{Solución Implementada}
 
+La solución implementada adopta un enfoque distribuido basado en múltiples agentes, integrando la solidez de la arquitectura BDI 
+con las capacidades avanzadas de procesamiento de lenguaje natural de los sistemas RAG. El diseño gira en torno a un agente 
+coordinador principal responsable de gestionar el ciclo completo de creencias, deseos e intenciones, mientras que agentes 
+especializados abordan dominios concretos mediante sistemas RAG optimizados. Esta confi-guración facilita la coordinación eficiente 
+de los distintos aspectos de la planificación de eventos, asegurando tanto la especialización como la escalabilidad y mantenibilidad 
+del sistema.
+
 \subsection{Arquitectura General del Sistema}
 
-El sistema se estructura en torno a una arquitectura multi-agente distribuida que implementa un agente principal BDI dedicado al control del flujo de decisiones y 4 agentes especializados en tareas de decisión en diferentes dominios. Los agentes implementados son:
+El sistema se estructura en torno a una arquitectura multi-agente distribuida que implementa un agente principal BDI dedicado 
+al control del flujo de decisiones y 4 agentes especializados en tareas de decisión en diferentes dominios. Los agentes 
+implementados son:
 
 \begin{itemize}
     \item \textbf{PlannerAgent}: Coordinador principal de decisiones que implementa el ciclo BDI completo.
@@ -171,6 +180,13 @@ encontrar información más actual.
 
 \section{Consideraciones de Implementación}
 
+La implementación del sistema requiere consideraciones técnicas específicas que garantizan su robustez, escalabilidad 
+y mantenibilidad. Estas consideraciones abarcan desde la arquitectura de comunicación entre agentes hasta el manejo de 
+errores y la gestión de memoria, aspectos críticos para un sistema multi-agente que debe operar de forma continua y 
+confiable. La elección de patrones de diseño específicos y estrategias de implementación se fundamenta en las mejores 
+prácticas de sistemas distribuidos y la necesidad de mantener la coherencia del estado del sistema a través de múltiples 
+sesiones de usuario.
+
 \subsection{Arquitectura de Comunicación}
 
 Se adoptó un patrón de \textit{MessageBus} (Bus de Mensajes) para facilitar la comunicación asíncrona entre agentes, 
@@ -212,6 +228,13 @@ El sistema incluye estrategias de manejo de errores:
 
 \section{Justificación Teórico-Práctica}
 
+La elección de las tecnologías y enfoques implementados en el sistema se fundamenta en una sólida base teórica y práctica 
+que respalda su efectividad para el dominio de planificación de eventos. Esta justificación abarca desde la arquitectura 
+BDI como modelo cognitivo para agentes autónomos hasta la integración de sistemas RAG especializados y la adopción de un 
+enfoque multi-agente. Cada decisión de diseño se sustenta en evidencia empírica y principios teóricos establecidos en el 
+campo de la inteligencia artificial y sistemas multi-agente, garantizando que la solución implementada no solo sea técnicamente 
+viable sino también científicamente fundamentada.
+
 \subsection{Fundamentación de la Arquitectura BDI}
 
 La elección de la arquitectura BDI se justifica por su capacidad para modelar comportamientos racionales en agentes 
@@ -245,6 +268,13 @@ Según Ferber \cite{ferber1999multi}, los sistemas multi-agente ofrecen:
 \end{itemize}
 
 \section{Evaluación Cuantitativa y Cualitativa}
+
+La evaluación del sistema se realiza mediante una metodología experimental rigurosa que combina análisis estadísticos 
+cuantitativos con evaluación cualitativa de la experiencia del usuario. Esta evaluación integral permite validar no solo la 
+efectividad técnica del sistema sino también su utilidad práctica en escenarios reales de planificación de eventos. El enfoque 
+experimental incluye la generación de datos sintéticos controlados, análisis de varianza, cálculo de potencia estadística y 
+validación cruzada, proporcionando una base sólida para medir el rendimiento del sistema y identificar áreas de mejora 
+específicas.
 
 \subsection{Metodología Experimental}
 
@@ -311,6 +341,12 @@ Se pueden consultar más detalles de los resultados en la sección de resultados
 
 \section{Resultados y Posibles Mejoras}
 
+El análisis de los resultados obtenidos revela tanto los logros significativos alcanzados por el sistema como las áreas 
+que requieren atención para su evolución futura. Esta evaluación balanceada permite reconocer el valor de la implementación 
+actual mientras se identifican oportunidades específicas de mejora que pueden transformar el sistema en una solución de 
+producción robusta y escalable. Los resultados demuestran la viabilidad del enfoque multi-agente BDI integrado con RAG, 
+mientras que las limitaciones identificadas proporcionan una hoja de ruta clara para el desarrollo continuo del sistema.
+
 \subsection{Logros Alcanzados}
 
 El proyecto logró implementar exitosamente:
@@ -320,15 +356,15 @@ El proyecto logró implementar exitosamente:
     \item \textbf{Sistemas RAG Especializados}: Integración efectiva de RAG en múltiples dominios.
     \item \textbf{Crawler Inteligente}: Sistema de enriquecimiento dinámico de datos.
     \item \textbf{Evaluación Estadística Rigurosa}: Mecanismo de evaluación y validación del sistema.
-    \item \textbf{Integración Multi-Agente}: Coordinación efectiva entre agentes especializados
+    \item \textbf{Integración Multi-Agente}: Coordinación efectiva entre agentes especia-lizados
 \end{itemize}
 
 \subsection{Insuficiencias Identificadas}
 
 \subsubsection{Limitaciones Técnicas}
 \begin{itemize}
-    \item \textbf{Escalabilidad de Datos}: El sistema actual maneja datasets limitados; se requiere optimización para 
-    grandes volúmenes.
+    \item \textbf{Escalabilidad de Datos}: El sistema actual maneja \textit{datasets} (conjunto de datos)
+    limitados; se requiere optimización para grandes volúmenes.
     \item \textbf{Latencia de Comunicación}: Los tiempos de respuesta entre agentes pueden optimizarse.
     \item \textbf{Precisión RAG}: Aunque aceptable, la precisión del 78.5\% puede mejorarse.
 \end{itemize}
@@ -342,13 +378,19 @@ El proyecto logró implementar exitosamente:
 
 \subsection{Propuestas de Mejora}
 
+Las propuestas de mejora se estructuran en dos categorías temporales que abordan tanto las optimizaciones técnicas inmediatas 
+necesarias para mejorar el rendimiento actual del sistema, como las expansiones funcionales a mediano plazo que pueden ampliar 
+significativamente su alcance y utilidad. Estas pro-puestas se basan en el análisis detallado de los resultados experimentales 
+y las limitaciones identificadas, proporcionando una estrategia de desarrollo incremental que mantiene la estabilidad del 
+sistema mientras se introducen mejoras significativas.
+
 \subsubsection{Mejoras Técnicas Inmediatas}
 \begin{itemize}
     \item \textbf{Optimización y Aumento de Base de Datos}: Aumentar volumen  de información y optimizar búsqueda en las 
     bases de conocimiento.
-    \item \textbf{Paralelización}: Aprovechar procesamiento paralelo para búsquedas concurrentes.
+    \item \textbf{Paralelización}: Aprovechar procesamiento paralelo para búsquedas concu-rrentes.
     \item \textbf{Algoritmos de Machine Learning}: Refinar algoritmos de personalización.
-    \item \textbf{ampliar Dominio}: Agregar más características al sistema de decisión (Fecha, Música, etc).
+    \item \textbf{Ampliar Dominio}: Agregar más características al sistema de decisión (Fecha, Música, etc).
 \end{itemize}
 
 \subsubsection{Mejoras Funcionales a Mediano Plazo}
