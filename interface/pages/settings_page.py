@@ -230,7 +230,67 @@ def reset_to_defaults():
         st.error(f"❌ Failed to reset settings: {str(e)}")
 
 # --- Fireworks helpers ---
-# (Fireworks helper functions removed)
+def test_fireworks_api_connection(api_key: str):
+    from interface.api.fireworks_client import SyncFireworksClient, ChatMessage
+    try:
+        test_client = SyncFireworksClient()
+        test_message = [ChatMessage(role="user", content="Hello! This is a test message.")]
+        with st.spinner("Testing Fireworks API connection..."):
+            response = test_client.chat_completion(
+                messages=test_message,
+                model="accounts/fireworks/models/llama-v3p3-70b-instruct",
+                max_tokens=50
+            )
+        st.success("✅ Fireworks API connection successful!")
+        st.info(f"Response: {response.choices[0].message.content}")
+        models = test_client.get_models()
+        st.success(f"✅ Available models: {len(models)} models found")
+    except Exception as e:
+        st.error(f"❌ Fireworks API connection failed: {str(e)}")
+        st.error("Please check your Fireworks API key and try again.")
 
-# --- Fireworks helpers ---
-# (Fireworks helper functions removed) 
+def save_fireworks_settings_to_memory(**kwargs):
+    from config import AppConfig, FireworksConfig, get_config, update_config
+    try:
+        new_fireworks_config = FireworksConfig(
+            api_key=kwargs.get('api_key', ''),
+            model=kwargs.get('default_model', 'accounts/fireworks/models/llama-v3p3-70b-instruct'),
+            temperature=kwargs.get('default_temperature', 0.7),
+            max_tokens=kwargs.get('default_max_tokens', 1000)
+        )
+        current_config = get_config()
+        new_config = AppConfig(
+            openrouter=current_config.openrouter,
+            fireworks=new_fireworks_config,
+            app_name=kwargs.get('app_name', 'Events Organizer Helper'),
+            debug=kwargs.get('debug_mode', False)
+        )
+        update_config(new_config)
+        st.success("✅ Fireworks settings saved to memory!")
+    except Exception as e:
+        st.error(f"❌ Failed to save Fireworks settings: {str(e)}")
+
+def save_fireworks_settings_to_env(**kwargs):
+    try:
+        env_content = f"""# Fireworks Configuration\nFIREWORKS_API_KEY={kwargs.get('api_key', '')}\nFIREWORKS_MODEL={kwargs.get('default_model', 'accounts/fireworks/models/llama-v3p3-70b-instruct')}\nFIREWORKS_TEMPERATURE={kwargs.get('default_temperature', 0.7)}\nFIREWORKS_MAX_TOKENS={kwargs.get('default_max_tokens', 1000)}\n"""
+        with open('.env', 'w') as f:
+            f.write(env_content)
+        st.success("✅ Fireworks settings saved to .env file!")
+    except Exception as e:
+        st.error(f"❌ Failed to save Fireworks settings to .env: {str(e)}")
+
+def reset_fireworks_to_defaults():
+    from config import AppConfig, FireworksConfig, get_config, update_config
+    try:
+        current_config = get_config()
+        default_fireworks_config = FireworksConfig()
+        new_config = AppConfig(
+            openrouter=current_config.openrouter,
+            fireworks=default_fireworks_config,
+            app_name=current_config.app_name,
+            debug=current_config.debug
+        )
+        update_config(new_config)
+        st.success("✅ Fireworks settings reset to defaults!")
+    except Exception as e:
+        st.error(f"❌ Failed to reset Fireworks settings: {str(e)}") 

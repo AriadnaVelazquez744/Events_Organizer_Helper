@@ -6,7 +6,7 @@ from interface.prompts import TRANSFORM_INITIAL_QUERY_EN, TRANSFORM_FROM_JSON_TO
 from interface.models import Criterios
 from pydantic import ValidationError
 # from interface.api.openrouter_client import ChatMessage
-from interface.api.openrouter_client import ChatMessage
+from interface.api.fireworks_client import ChatMessage
 
 # You must replace this with your actual LLM client import and call
 # from interface.api.openrouter_client import SyncOpenRouterClient
