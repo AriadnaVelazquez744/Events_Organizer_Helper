@@ -16,13 +16,13 @@ import src.agents.session_memory as sm
 
 
 #from interface.api.openrouter_client import SyncOpenRouterClient
-from interface.api.openrouter_client import SyncOpenRouterClient, ChatMessage
+from interface.api.fireworks_client import SyncFireworksClient, ChatMessage
 from interface.utils.llm_helpers import process_user_input
 from interface.utils.session_helpers import instance_missing_fields
 
 # Instantiate the LLM client using config (no need to pass config explicitly)
 #llm_client = SyncOpenRouterClient()
-llm_client = SyncOpenRouterClient()
+llm_client = SyncFireworksClient()
 
 def chat_page():
     """Main chat page function."""
