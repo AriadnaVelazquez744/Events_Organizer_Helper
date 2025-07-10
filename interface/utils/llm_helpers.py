@@ -20,6 +20,28 @@ def call_llm(prompt: str, llm_client):
     response = llm_client.chat_completion(messages=messages)
     return response.choices[0].message.content
 
+def check_obligatorios_consistency(result):
+    """
+    Ensures all filled fields in venue, catering, and decor are present in their respective 'obligatorios' arrays.
+    Adds any missing fields and prints a warning if any were missing.
+    """
+    from interface.models import ObligatoriesVenue, ObligatoriesCatering, ObligatoriesDecor
+    for section, enum_cls in [
+        ("venue", ObligatoriesVenue),
+        ("catering", ObligatoriesCatering),
+        ("decor", ObligatoriesDecor),
+    ]:
+        if section in result and isinstance(result[section], dict):
+            obj = result[section]
+            allowed = set(e.value for e in enum_cls)
+            filled = set(k for k, v in obj.items() if k in allowed and v not in (None, [], ""))
+            obligatorios = set(obj.get("obligatorios", []))
+            missing = filled - obligatorios
+            if missing:
+                print(f"[WARNING] In '{section}', the following filled fields were missing from 'obligatorios' and will be added: {missing}")
+                # Add missing fields to obligatorios
+                obj["obligatorios"] = sorted(list(obligatorios | missing))
+
 def call_llm_extract_json(user_input: str, prev_context: Optional[dict] = None, llm_client=None) -> dict:
     """
     Calls the LLM to extract a JSON structure from user NL input, using the Criterios schema.
@@ -40,6 +62,7 @@ def call_llm_extract_json(user_input: str, prev_context: Optional[dict] = None, 
             result = json.loads(match.group(0))
         else:
             raise ValueError("LLM did not return valid JSON")
+    check_obligatorios_consistency(result)
     return result
 
 def call_llm_json_to_nl(json_obj: dict, llm_client=None) -> str:
@@ -80,11 +103,13 @@ def merge_contexts(old: dict, new: dict, model=Criterios) -> dict:
             full_key = f"{parent_key}.{key}" if parent_key else key
             is_not_empty = value is not None and value != '' and value != [] and value != {}
 
+            print(f"key: {key}, full_key: {full_key}")
             if is_not_empty:
                 remove_from_missing(key, missing)  # For top-level fields
                 remove_from_missing(full_key, missing) # For nested fields like 'venue.type'
 
             if key in target and target.get(key) is not None:
+                print(f"key: {key} in {target}")
                 # Rule 2: Key exists, merge based on type
                 if isinstance(target[key], list) and isinstance(value, list):
                     # Combine lists and remove duplicates
@@ -92,12 +117,26 @@ def merge_contexts(old: dict, new: dict, model=Criterios) -> dict:
                 elif isinstance(target[key], dict) and isinstance(value, dict):
                     # Recurse for nested dictionaries
                     merge_recursive(target[key], value, missing, full_key)
+                    # After recursion, remove missing for all nested keys that are set
+                    for sub_k, sub_v in value.items():
+                        sub_full_key = f"{full_key}.{sub_k}"
+                        if sub_v is not None and sub_v != '' and sub_v != [] and sub_v != {}:
+                            remove_from_missing(sub_full_key, missing)
                 elif is_not_empty:
                     # Replace single value if the new value is not empty
                     target[key] = value
+                    remove_from_missing(full_key, missing)
             elif is_not_empty:
                 # Rule 1: Key doesn't exist, add if not null/empty
                 target[key] = value
+                if isinstance(value, dict):
+                    # Remove missing for all nested keys that are set
+                    for sub_k, sub_v in value.items():
+                        sub_full_key = f"{full_key}.{sub_k}"
+                        if sub_v is not None and sub_v != '' and sub_v != [] and sub_v != {}:
+                            remove_from_missing(sub_full_key, missing)
+                else:
+                    remove_from_missing(full_key, missing)
         return target
 
     merged = merge_recursive((old or {}).copy(), new or {}, missing_fields)
@@ -127,6 +166,15 @@ def process_user_input(
     print("aqui2")
     # 2. Merge with previous context, updating missing_fields
     merged_json = merge_contexts(prev_context or {}, new_json)
+
+    print(f"new_json: {new_json}")
+    print(f"merged_json: {merged_json}")
+    print(f"missing_fields: {st.session_state.missing_fields}")
+    # import sys; sys.exit(0)
+
+    checking = f"new_json: {new_json} \n\n merged_json: {merged_json} \n\n missing_fields: {st.session_state.missing_fields}"
+    return checking
+
     # 3. Pass to backend (send_query expects merged_json)
     from main import Comunication  # Import here to avoid circular import
     response_json = Comunication.send_query(merged_json, session_id, user_id)
