@@ -167,10 +167,11 @@ def process_user_input(
     print(f"new_json: {new_json}")
     print(f"merged_json: {merged_json}")
     print(f"missing_fields: {st.session_state.missing_fields}")
+    print(f"prev_context: {prev_context}")
     # import sys; sys.exit(0)
 
-    checking = f"new_json: {new_json} \n\n merged_json: {merged_json} \n\n missing_fields: {st.session_state.missing_fields}"
-    return checking
+    checking = f"new_json: {new_json} \n\n prev_context: {prev_context} \n\n merged_json: {merged_json} \n\n missing_fields: {st.session_state.missing_fields}"
+    return checking, merged_json
 
     # 3. Pass to backend (send_query expects merged_json)
     from main import Comunication  # Import here to avoid circular import
@@ -180,4 +181,4 @@ def process_user_input(
     response_json = st.session_state.response_planner
     # 4. JSON -> NL
     nl_message = call_llm_json_to_nl(response_json, llm_client)
-    return nl_message
+    return nl_message, merged_json

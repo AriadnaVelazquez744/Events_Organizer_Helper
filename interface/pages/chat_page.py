@@ -112,16 +112,15 @@ def chat_page():
                     # Get previous context for this session (or use {})
                     prev_context = st.session_state.get("session_json", {})
                     # Call the orchestrator function
-                    response_text = process_user_input(
+                    response_text, merged_context = process_user_input(
                         user_input=prompt,
                         prev_context=prev_context,
                         session_id=st.session_state.session_id,
                         user_id=st.session_state.user_id,
                         llm_client=llm_client
                     )
-                    # Update session context for next turn
-                    # (merge_contexts is called inside process_user_input, so you can store the merged context if you want)
-                    st.session_state["session_json"] = prev_context  # Optionally update if you want to keep context
+                    # Store the merged context for the next turn
+                    st.session_state["session_json"] = merged_context
                     message_placeholder.markdown(response_text)
                     st.session_state.messages.append({"role": "assistant", "content": response_text})
             except Exception as e:
