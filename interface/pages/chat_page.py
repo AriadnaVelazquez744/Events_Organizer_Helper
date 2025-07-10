@@ -72,7 +72,9 @@ def chat_page():
                 st.session_state.memory_manager.archive_session(st.session_state.session_id)
             st.session_state.session_id = st.session_state.planner.create_session(st.session_state.user_id)
             st.session_state.messages = []
+            st.session_state.session_json = {}
             instance_missing_fields()
+            print("\n\n new session created \n\n")
             st.rerun()
         if st.button("👤 New User"):
             # Archive the current session if it exists
@@ -81,12 +83,14 @@ def chat_page():
             st.session_state.user_id = st.session_state.memory_manager.generate_unique_user_id()
             st.session_state.session_id = st.session_state.planner.create_session(st.session_state.user_id)
             st.session_state.messages = []
+            st.session_state.session_json = {}
             instance_missing_fields()
+            print("\n\n new user created \n\n")
             st.rerun()
-        if st.button("🚫 Set All Sessions Inactive"):
-            # Set all sessions to inactive before any further processing
-            st.session_state.memory_manager.set_all_sessions_inactive()
-            st.success("All sessions have been set to inactive.")
+        # if st.button("🚫 Set All Sessions Inactive"):
+        #     # Set all sessions to inactive before any further processing
+        #     st.session_state.memory_manager.set_all_sessions_inactive()
+        #     st.success("All sessions have been set to inactive.")
         st.markdown("---")
     
     # Display chat messages
