@@ -192,8 +192,8 @@ def process_user_input(
         )
         return requirements_message, merged_json
 
-    checking = f"new_json: {new_json} \n\n prev_context: {prev_context} \n\n merged_json: {merged_json} \n\n missing_fields: {st.session_state.missing_fields}"
-    return checking, merged_json
+    # checking = f"new_json: {new_json} \n\n prev_context: {prev_context} \n\n merged_json: {merged_json} \n\n missing_fields: {st.session_state.missing_fields}"
+    # return checking, merged_json
 
     # 3. Pass to backend (send_query expects merged_json)
     from main import Comunication  # Import here to avoid circular import
