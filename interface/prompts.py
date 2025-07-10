@@ -78,10 +78,10 @@ def ASK_FOR_MORE_DATA_EN(missing_fields, context):
     To continue with your event organization and provide you with the best experience, I need you to help me complete the following information:
 
     - **Essential fields (required to proceed):**
-    {', '.join(missing_fields.get("obligatorios", []))}
+    {', '.join(missing_fields.get("necessary", []))}
 
     - **Recommended fields (optional, but useful for personalizing your experience):**
-    {', '.join(missing_fields.get("utiles", []))}
+    {', '.join(missing_fields.get("useful", []))}
 
     Current Context:
     {context if context else 'N/A'}
@@ -98,10 +98,10 @@ def ASK_FOR_MORE_DATA(missing_fields, context):
     Para continuar con la organización de tu evento y ofrecerte la mejor experiencia, necesito que me ayudes completando la siguiente información:
 
     - **Campos imprescindibles (necesarios para avanzar):**
-    {', '.join(missing_fields.get("obligatorios", []))}
+    {', '.join(missing_fields.get("necessary", []))}
 
     - **Campos recomendados (opcionales, pero útiles para personalizar tu experiencia):**
-    {', '.join(missing_fields.get("utiles", []))}
+    {', '.join(missing_fields.get("useful", []))}
 
     Contexto actual:
     {context if context else 'N/A'}

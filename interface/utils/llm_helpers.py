@@ -2,7 +2,7 @@ import json
 import streamlit as st
 from typing import Any, Dict, Optional
 from difflib import get_close_matches
-from interface.prompts import TRANSFORM_INITIAL_QUERY_EN, TRANSFORM_FROM_JSON_TO_NL_EN
+from interface.prompts import TRANSFORM_INITIAL_QUERY_EN, TRANSFORM_FROM_JSON_TO_NL_EN, ASK_FOR_MORE_DATA_EN
 from interface.models import Criterios
 from pydantic import ValidationError
 # from interface.api.openrouter_client import ChatMessage
@@ -146,6 +146,17 @@ def merge_contexts(old: dict, new: dict, model=Criterios) -> dict:
     # to preserve the original string format and structure
     return merged
 
+def get_more_requirements_message(missing_fields, context, llm_client=None):
+    """
+    Generates a requirements message for the user if there are missing necessary fields.
+    Uses the ASK_FOR_MORE_DATA_EN prompt and calls the LLM.
+    """
+    prompt = ASK_FOR_MORE_DATA_EN(missing_fields, context)
+    if llm_client:
+        return call_llm(prompt, llm_client)
+    else:
+        return "Please provide more details for the required fields."
+
 def process_user_input(
     user_input: str,
     prev_context: Optional[dict],
@@ -169,6 +180,17 @@ def process_user_input(
     print(f"missing_fields: {st.session_state.missing_fields}")
     print(f"prev_context: {prev_context}")
     # import sys; sys.exit(0)
+
+    # Check for missing necessary fields ---
+    missing_fields = st.session_state.missing_fields
+    if missing_fields.get("necessary"):  # If there are required fields missing
+        # Generate a requirements message using the LLM and return it directly
+        requirements_message = get_more_requirements_message(
+            missing_fields,
+            merged_json,  # Pass the merged context for more accurate prompt
+            llm_client
+        )
+        return requirements_message, merged_json
 
     checking = f"new_json: {new_json} \n\n prev_context: {prev_context} \n\n merged_json: {merged_json} \n\n missing_fields: {st.session_state.missing_fields}"
     return checking, merged_json
