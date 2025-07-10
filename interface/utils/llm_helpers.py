@@ -142,12 +142,9 @@ def merge_contexts(old: dict, new: dict, model=Criterios) -> dict:
     merged = merge_recursive((old or {}).copy(), new or {}, missing_fields)
     st.session_state.missing_fields = missing_fields
 
-    try:
-        # Validate with Pydantic V2, will coerce types and check enums
-        validated = model.model_validate(merged)
-        return validated.model_dump(exclude_unset=True, by_alias=True)
-    except ValidationError:
-        return merged  # Return best effort on validation failure
+    # Return the merged dictionary directly without Pydantic validation
+    # to preserve the original string format and structure
+    return merged
 
 def process_user_input(
     user_input: str,
