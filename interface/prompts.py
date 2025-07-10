@@ -20,6 +20,9 @@ def TRANSFORM_INITIAL_QUERY_EN(schema, user_input, context):
        - Atmosphere: only "Indoor", "Outdoor", "Rustic Chic", or what is infer from what the user ask.
     3. If a user mentions dietary preferences like "vegan", put it in "dietary_options", not "cuisines"
     4. If a user mentions location type like "outside", put it in "venue.atmosphere" as ["Outdoor"]
+    5. In the Venue object, fill the "obligatorios" array with the names of the Venue fields that have been filled from the user input, but ONLY using the exact values from the ObligatoriesVenue enum (do not invent or use any other strings).
+    6. In the Catering object, fill the "obligatorios" array with the names of the Catering fields that have been filled from the user input, but ONLY using the exact values from the ObligatoriesCatering enum (do not invent or use any other strings).
+    7. In the Decor object, fill the "obligatorios" array with the names of the Decor fields that have been filled from the user input, but ONLY using the exact values from the ObligatoriesDecor enum (do not invent or use any other strings).
 
     JSON Schema:
     {json.dumps(schema, indent=2)}
@@ -52,6 +55,9 @@ def TRANSFORM_INITIAL_QUERY(schema, user_input, context):
        - Atmosphere: solo "Indoor", "Outdoor", "Rustic Chic"
     3. Si un usuario menciona preferencias dietéticas como "vegan", ponlo en "dietary_options", no en "cuisines"
     4. Si un usuario menciona tipo de ubicación como "outside", ponlo en "venue.atmosphere" como ["Outdoor"]
+    5. En el objeto Venue, llena el array "obligatorios" solo con los valores exactos definidos en el enum ObligatoriesVenue, correspondientes a los campos de Venue que hayan sido completados a partir de la entrada del usuario (no inventes ni uses otros strings).
+    6. En el objeto Catering, llena el array "obligatorios" solo con los valores exactos definidos en el enum ObligatoriesCatering, correspondientes a los campos de Catering que hayan sido completados a partir de la entrada del usuario (no inventes ni uses otros strings).
+    7. En el objeto Decor, llena el array "obligatorios" solo con los valores exactos definidos en el enum ObligatoriesDecor, correspondientes a los campos de Decor que hayan sido completados a partir de la entrada del usuario (no inventes ni uses otros strings).
 
     Esquema JSON:
     {json.dumps(schema, indent=2)}

@@ -124,6 +124,40 @@ class FloralArrangement(str, Enum):
     centerpieces = "Centerpieces"
     ceremony_decor = "Ceremony decor"
 
+class ObligatoriesVenue(str, Enum):
+    venue_type = "venue_type"
+    location = "location"
+    price = "price"
+    atmosphere = "atmosphere"
+    services = "services"
+    restrictions = "restrictions"
+    supported_events = "supported_events"
+    other = "other_venue"
+
+class ObligatoriesCatering(str, Enum):
+    services = "services"
+    ubication = "ubication"
+    price = "price"
+    cuisines = "cuisines"
+    dietary_options = "dietary_options"
+    meal_types = "meal_types"
+    beverage_services = "beverage_services"
+    drink_types = "drink_types"
+    restrictions = "restrictions"
+    other = "other_catering"
+
+class ObligatoriesDecor(str, Enum):
+    service_levels = "service_levels"
+    pre_wedding_services = "pre_wedding_services"
+    post_wedding_services = "post_wedding_services"
+    day_of_services = "day_of_services"
+    arrangement_styles = "arrangement_styles"
+    floral_arrangements = "floral_arrangements"
+    restrictions = "restrictions"
+    price = "price"
+    ubication = "ubication"
+    other = "other_decor"
+
 # --- Pydantic Models ---
 
 class VenuePrice(BaseModel):
@@ -132,10 +166,10 @@ class VenuePrice(BaseModel):
     other: List[Any] = []
 
 class Venue(BaseModel):
-    budget: Optional[str] = Field(None, alias="venue_budget", description="Part of the general budget destined to the venue")
-    type: Optional[VenueType] = Field(None, alias="venue_type", description="Type of venue")
+    obligatorios: Optional[List[ObligatoriesVenue]] = Field(None, exclude=True)
+    venue_type: Optional[VenueType] = Field(None, alias="venue_type", description="Type of venue")
     location: Optional[str] = None
-    price: Optional[VenuePrice] = Field(None, alias="venue_price")
+    price: Optional[VenuePrice] = Field(None, alias="venue_price", description="Part of the general budget destined to the venue")
     atmosphere: Optional[List[Atmosphere]] = None
     services: Optional[List[VenueService]] = Field(None, alias="venue_services")
     restrictions: Optional[Union[str, List[str]]] = Field(None, alias="venue_restrictions")
@@ -147,8 +181,7 @@ class CateringPrice(BaseModel):
     bar_services: Optional[str] = None
 
 class Catering(BaseModel):
-    obligatorios_catering: Optional[List[str]] = Field(None, exclude=True)
-    budget: Optional[str] = Field(None, alias="catering_budget")
+    obligatorios: Optional[List[ObligatoriesCatering]] = Field(None, exclude=True)
     services: Optional[List[CateringService]] = Field(None, alias="catering_services")
     ubication: Optional[str] = Field(None, alias="catering_ubication")
     price: Optional[CateringPrice] = Field(None, alias="catering_price")
@@ -166,8 +199,7 @@ class DecorPrice(BaseModel):
     minimum_spend: Optional[str] = None
 
 class Decor(BaseModel):
-    obligatorios_decor: Optional[List[str]] = Field(None, exclude=True)
-    budget: Optional[str] = Field(None, alias="decor_budget")
+    obligatorios: Optional[List[ObligatoriesDecor]] = Field(None, exclude=True)
     service_levels: Optional[List[DecorServiceLevel]] = Field(None, alias="decor_service_levels")
     pre_wedding_services: Optional[List[str]] = None
     post_wedding_services: Optional[List[str]] = None
