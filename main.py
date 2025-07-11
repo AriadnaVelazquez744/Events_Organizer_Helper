@@ -192,6 +192,7 @@ class Comunication:
         
         # Normalizar el request usando el normalizador
         normalized_request = normalize_request(request)
+        # normalized_request = request
         
         print(f"[Comunication] Request normalizado: {normalized_request}")
         
@@ -226,9 +227,17 @@ class Comunication:
             time.sleep(1)
             retries += 1
             
-        print("❌ Timeout esperando respuesta final del sistema")
-        st.session_state.response_planner = None
-        return None
+        # Timeout alcanzado - devolver respuesta parcial
+        print("⚠️ Timeout alcanzado - devolviendo respuesta parcial")
+        partial_response = planner._get_partial_response(session_id)
+        if partial_response:
+            print("[Comunication] Respuesta parcial devuelta")
+            st.session_state.response_planner = partial_response
+            return partial_response
+        else:
+            print("❌ No se pudo obtener respuesta parcial")
+            st.session_state.response_planner = None
+            return None
 
 def main():
     # Inicializar el sistema

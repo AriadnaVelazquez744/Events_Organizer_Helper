@@ -12,6 +12,7 @@ import time
 import requests
 import re
 from src.crawler.extraction.llm_extract_openrouter import llm_extract_openrouter
+# from src.crawler.extraction.llm_extract_firework import llm_extract_firework
 
 def setup_driver():
     options = Options()
@@ -58,42 +59,15 @@ def scrape_page(url: str, context: dict = None) -> dict:
         response = requests.get(url, timeout=10)
         if response.status_code == 200:
             html = response.text
+            print(f"[SCRAPER] ✅ Requests exitoso: {len(html)} caracteres")
         else:
-            print(f"[SCRAPER] Código no 200: {response.status_code}")
+            print(f"[SCRAPER] ❌ Código no 200: {response.status_code}")
     except Exception as e:
-        print(f"[SCRAPER] Requests falló: {e}")
+        print(f"[SCRAPER] ❌ Requests falló: {e}")
 
     if not html or len(html.strip()) < 1000:
-        print("[SCRAPER] Usando Selenium...")
-        try:
-            driver = setup_driver()
-            driver.get(url)
-            
-            # Espera inicial para carga de página
-            time.sleep(5)
-            
-            # Para páginas de The Knot
-            if "theknot.com" in url:
-                # Espera a que el contenido principal esté cargado
-                if "/marketplace/" in url and "?sort=featured" in url:
-                    # Es una página de búsqueda
-                    wait_for_element(driver, By.CLASS_NAME, "marketplace-search-results", timeout=15)
-                else:
-                    # Es una página de vendedor
-                    wait_for_element(driver, By.CLASS_NAME, "vendor-profile", timeout=15)
-                    # Scroll para cargar contenido dinámico
-                    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                    time.sleep(2)
-                    driver.execute_script("window.scrollTo(0, 0);")
-                    time.sleep(1)
-            
-            html = driver.page_source
-            with open("debug_last_scrape.html", "w", encoding="utf-8") as f:
-                f.write(html)
-            driver.quit()
-        except Exception as e:
-            print(f"[SCRAPER] Selenium falló: {e}")
-            return {"url": url, "title": "ERROR", "outlinks": []}
+        print(f"[SCRAPER] ⚠️ Contenido insuficiente o vacío: {len(html) if html else 0} caracteres")
+        return {"url": url, "title": "ERROR - Contenido insuficiente", "outlinks": []}
     
     # Si es página de búsqueda
     if "/search/" in url or "?sort=featured" in url:
@@ -124,26 +98,35 @@ def scrape_page(url: str, context: dict = None) -> dict:
     }
 
     # Determinar el tipo de página y usar el prompt correspondiente
+    # PROVEEDOR LLM ACTIVO: OpenRouter (comentado: Firework)
     if "zola" in url and "wedding-venues" in url:
         result = llm_extract_openrouter(html, url=url, prompt_template=venue_prompt)
+        # result = llm_extract_firework(html, url=url, prompt_template=venue_prompt)  # Alternativa Firework
         if result:
             structured.update(result)
             structured["tipo"] = "venue"
+            print(f"[SCRAPER] ✅ Datos de venue extraídos y estructurados: {structured.get('title', 'Sin título')}")
     elif "zola" in url and "wedding-catering" in url:
         result = llm_extract_openrouter(html, url=url, prompt_template=catering_prompt)
+        # result = llm_extract_firework(html, url=url, prompt_template=catering_prompt)  # Alternativa Firework
         if result:
             structured.update(result)
             structured["tipo"] = "catering"
+            print(f"[SCRAPER] ✅ Datos de catering extraídos y estructurados: {structured.get('title', 'Sin título')}")
     elif "zola" in url and "wedding-florists" in url:
         result = llm_extract_openrouter(html, url=url, prompt_template=decor_prompt)
+        # result = llm_extract_firework(html, url=url, prompt_template=decor_prompt)  # Alternativa Firework
         if result:
             structured.update(result)
             structured["tipo"] = "decor"
+            print(f"[SCRAPER] ✅ Datos de decor extraídos y estructurados: {structured.get('title', 'Sin título')}")
     elif "theknot" in url:
         result = llm_extract_openrouter(html, url=url, prompt_template=decor_prompt)
+        # result = llm_extract_firework(html, url=url, prompt_template=decor_prompt)  # Alternativa Firework
         if result:
             structured.update(result)
             structured["tipo"] = "decor"
+            print(f"[SCRAPER] ✅ Datos de decor extraídos y estructurados: {structured.get('title', 'Sin título')}")
 
     # Extraer outlinks si no se han extraído antes
     if not structured.get("outlinks"):

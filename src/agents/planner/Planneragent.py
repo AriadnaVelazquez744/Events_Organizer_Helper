@@ -748,6 +748,79 @@ class PlannerAgentBDI:
             print(f"[PlannerAgent] Sesión {session_id} aún no completada. Estado: {completado}")
             return None
 
+    def _get_partial_response(self, session_id: str):
+        """Genera una respuesta parcial con los resultados disponibles hasta el momento."""
+        print(f"[PlannerAgent] Generando respuesta parcial para sesión {session_id}")
+        
+        # Obtener beliefs actualizados del SessionMemoryManager
+        beliefs = self.memory_manager.get_beliefs(session_id)
+        
+        # Verificar qué categorías están completadas
+        completado = beliefs.get("completado", {})
+        print(f"[PlannerAgent] Estado de completado: {completado}")
+        
+        # Calcular presupuesto usado y resultados disponibles
+        presupuesto_usado = 0.0
+        resultados = {}
+        categorias_completadas = []
+        categorias_pendientes = []
+        
+        for categoria in ["venue", "catering", "decor"]:
+            if completado.get(categoria, False):
+                categorias_completadas.append(categoria)
+                resultados_categoria = beliefs.get(categoria)
+                if resultados_categoria and isinstance(resultados_categoria, list) and len(resultados_categoria) > 0:
+                    # Tomar solo el primer resultado
+                    primer_resultado = resultados_categoria[0]
+                    resultados[categoria] = primer_resultado
+                    
+                    # Calcular presupuesto usado
+                    precio = self._extract_price_value(primer_resultado.get("original_data", {}).get("price", 0))
+                    presupuesto_usado += precio
+            else:
+                categorias_pendientes.append(categoria)
+        
+        # Generar resumen parcial
+        resumen_parcial = {
+            "estado": "parcial",
+            "categorias_completadas": categorias_completadas,
+            "categorias_pendientes": categorias_pendientes,
+            "presupuesto_usado": presupuesto_usado,
+            "presupuesto_total": beliefs.get("criterios", {}).get("presupuesto_total", 0),
+            "ultima_actualizacion": datetime.now().isoformat()
+        }
+        
+        # Agregar información de progreso
+        progreso = {
+            "total_categorias": 3,
+            "completadas": len(categorias_completadas),
+            "pendientes": len(categorias_pendientes),
+            "porcentaje_completado": (len(categorias_completadas) / 3) * 100
+        }
+        
+        print(f"[PlannerAgent] Respuesta parcial generada:")
+        print(f"  - Categorías completadas: {categorias_completadas}")
+        print(f"  - Categorías pendientes: {categorias_pendientes}")
+        print(f"  - Progreso: {progreso['porcentaje_completado']:.1f}%")
+        
+        # Enviar respuesta parcial al usuario
+        response = {
+            "origen": self.name,
+            "destino": "user",
+            "tipo": "partial_response",
+            "contenido": {
+                "resumen": resumen_parcial,
+                "resultados": resultados,
+                "progreso": progreso,
+                "session_id": session_id,
+                "is_correction": self.active_sessions[session_id]["is_correction"],
+                "timeout_reached": True
+            },
+            "session_id": session_id
+        }
+        
+        return response
+
     def _identify_affected_elements(self, correction: Dict[str, Any]) -> List[str]:
         """Identifica qué elementos necesitan ser recalculados basado en la corrección."""
         affected = []

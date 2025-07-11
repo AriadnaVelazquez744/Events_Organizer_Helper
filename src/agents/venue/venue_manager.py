@@ -8,6 +8,7 @@ from typing import List, Dict, Any, Union, Optional
 from src.crawler.extraction.expert import ExpertSystemInterface
 from src.crawler.extraction.graph import KnowledgeGraphInterface
 from src.agents.venue.venue_rag import VenueRAG
+from src.utils.location_matcher import location_matches, expand_location_variants
 import json
 
 class VenueAgent:
@@ -97,6 +98,13 @@ class VenueAgent:
 
                 # --- STRING ---
                 elif isinstance(valor_esperado, str):
+                    # Caso especial: Ubicación
+                    if campo == "location":
+                        matches = location_matches(valor_esperado, str(valor))
+                        if matches:
+                            print(f"[VenueAgent] ✅ Ubicación coincide: '{valor_esperado}' con '{valor}'")
+                        return matches
+                    # Caso general para otros campos string
                     if valor_esperado.lower() not in str(valor).lower():
                         # print(f"[RULE] {data.get('title')} - {campo}='{valor}' no contiene '{valor_esperado}'")
                         return False
@@ -104,6 +112,14 @@ class VenueAgent:
 
                 # --- LISTA ---
                 elif isinstance(valor_esperado, list):
+                    # Caso especial: Ubicación
+                    if campo == "location":
+                        if isinstance(valor, list):
+                            return any(location_matches(loc, str(v)) for loc in valor_esperado for v in valor)
+                        elif isinstance(valor, str):
+                            return any(location_matches(loc, valor) for loc in valor_esperado)
+                        return False
+                    # Caso general para otros campos lista
                     if isinstance(valor, list):
                         inter = set(v.lower() for v in valor) & set(e.lower() for e in valor_esperado)
                         if not inter:
@@ -523,24 +539,50 @@ class VenueAgent:
                 # --- Búsqueda relajada como último recurso ---
                 relaxed_query = query_base
                 web_urls = []
+                zola_urls = []
+                other_urls = []
+                
                 for subq in subqueries:
                     print(f"[VenueAgent] Query enviada a DuckDuckGo: {subq}")
-                    with DDGS() as ddgs:
-                        search_results = list(ddgs.text(subq, max_results=15))
-                    urls = [r['href'] for r in search_results if 'href' in r]
-                    print(f"[VenueAgent] Resultados encontrados: {len(urls)}")
-                    web_urls.extend(urls)
+                    try:
+                        with DDGS() as ddgs:
+                            search_results = list(ddgs.text(subq, max_results=15))
+                        urls = [r['href'] for r in search_results if 'href' in r]
+                        print(f"[VenueAgent] Resultados encontrados: {len(urls)}")
+                        
+                        # Separar URLs de zola.com de las demás
+                        for url in urls:
+                            if 'zola.com' in url:
+                                zola_urls.append(url)
+                            elif 'theknot.com' not in url:  # Excluir theknot.com
+                                other_urls.append(url)
+                    except Exception as e:
+                        print(f"[VenueAgent] Error en búsqueda '{subq}': {e}")
+                        continue
+                
                 # Si no hay resultados, búsqueda relajada
-                if not web_urls:
+                if not zola_urls and not other_urls:
                     print(f"[VenueAgent] Query enviada a DuckDuckGo (relajada): {relaxed_query}")
-                    with DDGS() as ddgs:
-                        search_results = list(ddgs.text(relaxed_query, max_results=15))
-                    urls = [r['href'] for r in search_results if 'href' in r]
-                    print(f"[VenueAgent] Resultados encontrados (relajada): {len(urls)}")
-                    web_urls.extend(urls)
+                    try:
+                        with DDGS() as ddgs:
+                            search_results = list(ddgs.text(relaxed_query, max_results=15))
+                        urls = [r['href'] for r in search_results if 'href' in r]
+                        print(f"[VenueAgent] Resultados encontrados (relajada): {len(urls)}")
+                        
+                        # Separar URLs de zola.com de las demás en búsqueda relajada
+                        for url in urls:
+                            if 'zola.com' in url:
+                                zola_urls.append(url)
+                            elif 'theknot.com' not in url:  # Excluir theknot.com
+                                other_urls.append(url)
+                    except Exception as e:
+                        print(f"[VenueAgent] Error en búsqueda relajada: {e}")
+                
+                # Combinar URLs priorizando zola.com
+                web_urls = zola_urls + other_urls
                 if not web_urls:
                     print('[VenueAgent] No se encontraron URLs relevantes. No se hará crawling.')
-                    return []
+                    # No retornar aquí, continuar con el proceso
                 print(f"[VenueAgent] URLs encontradas en la web: {web_urls}")
                 for url in web_urls:
                     self.crawler.enqueue_url(url)
@@ -550,8 +592,22 @@ class VenueAgent:
                         print(f"[VenueAgent] robots.txt bloquea: {next_url}. No se hará crawling.")
                         continue
                     self.crawler.crawl(next_url, context=criteria)
+                
+                # Guardar el grafo después del crawling web y verificar que se guardó correctamente
                 print("[VenueAgent] Guardando grafo después del crawling web...")
-                self.graph.save_to_file("venues_graph.json")
+                try:
+                    self.graph.save_to_file("venues_graph.json")
+                    print(f"[VenueAgent] ✅ Grafo guardado exitosamente en venues_graph.json")
+                    # Verificar que el archivo se creó/actualizó
+                    import os
+                    if os.path.exists("venues_graph.json"):
+                        file_size = os.path.getsize("venues_graph.json")
+                        print(f"[VenueAgent] ✅ Archivo de grafo existe con tamaño: {file_size} bytes")
+                    else:
+                        print("[VenueAgent] ⚠️ Archivo de grafo no encontrado después de guardar")
+                except Exception as save_error:
+                    print(f"[VenueAgent] ❌ Error al guardar grafo: {save_error}")
+                
                 self.graph.clean_errors()
                 venue_nodes = self.graph.query("venue")
                 print(f"[VenueAgent] Nodos tipo 'venue' encontrados después del crawling web: {len(venue_nodes)}")
@@ -572,16 +628,20 @@ class VenueAgent:
                 print(f"[VenueAgent] {len(valid)} venues válidos tras búsqueda web")
                 if not valid:
                     print("[VenueAgent] No se encontraron venues válidos ni tras búsqueda web")
-                    return []
+                    # Continuar con el proceso aunque no haya resultados válidos
             except Exception as e:
                 print(f"[VenueAgent] Error en búsqueda web automática: {e}")
-                return []
+                # Continuar con el proceso aunque haya errores
 
-        scored = [(v[0], self.score_optional(v[1], criteria)) for v in valid]
-        scored.sort(key=lambda x: x[1], reverse=True)
+        if not valid:
+            print("[VenueAgent] No se encontraron venues válidos después de todo el proceso")
+            results = []
+        else:
+            scored = [(v[0], self.score_optional(v[1], criteria)) for v in valid]
+            scored.sort(key=lambda x: x[1], reverse=True)
 
-        # Limitar a los 50 mejores resultados
-        results = [v for v, _ in scored[:50]]
+            # Limitar a los 50 mejores resultados
+            results = [v for v, _ in scored[:50]]
         
         # Actualizar patrones de éxito en RAG
         if results:

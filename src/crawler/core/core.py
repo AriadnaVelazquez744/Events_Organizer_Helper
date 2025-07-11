@@ -71,8 +71,17 @@ class AdvancedCrawlerAgent:
             # Asegura campos mínimos
             content.setdefault("url", url)
             content.setdefault("timestamp", datetime.now(timezone.utc).isoformat())
+            
             # Guardar directamente en el grafo, sin validación ni enriquecimiento
+            print(f"[CRAWLER] Guardando datos en el grafo: {content.get('tipo', 'unknown')} - {content.get('title', 'Sin título')}")
             self.graph_interface.insert_knowledge(content)
+            
+            # Guardar inmediatamente después de cada inserción para asegurar persistencia
+            try:
+                self.graph_interface.save_to_file(self.graph_interface.filename)
+                print(f"[CRAWLER] ✅ Datos guardados en {self.graph_interface.filename}")
+            except Exception as save_error:
+                print(f"[CRAWLER] ⚠️ Error al guardar grafo: {save_error}")
 
             # Evaluar con el sistema experto si existe
             if self.expert_system:

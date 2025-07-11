@@ -326,12 +326,12 @@ normalizer = RequestNormalizer()
 
 def normalize_request(request: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Función de conveniencia para normalizar requests.
-    
-    Args:
-        request: Request en cualquier formato
-        
-    Returns:
-        Request normalizado con estructura estándar
+    Envuelve el request original en un campo 'criterios' sin modificar su contenido.
     """
-    return normalizer.normalize_request(request) 
+    print(f"[RequestNormalizer] Normalizando request: {request}")
+    if 'criterios' in request and isinstance(request['criterios'], dict):
+        print("[RequestNormalizer] Request ya tiene estructura correcta, no se modifica.")
+        return request
+    wrapped = {'criterios': request}
+    print(f"[RequestNormalizer] Request normalizado: {wrapped}")
+    return wrapped 
