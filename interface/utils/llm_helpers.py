@@ -24,6 +24,7 @@ def check_obligatorios_consistency(result):
     """
     Ensures all filled fields in venue, catering, and decor are present in their respective 'obligatorios' arrays.
     Adds any missing fields and prints a warning if any were missing.
+    Excludes 'other_venue', 'other_catering', and 'other_decor' fields from being added to obligatorios.
     """
     from interface.models import ObligatoriesVenue, ObligatoriesCatering, ObligatoriesDecor
     for section, enum_cls in [
@@ -34,7 +35,11 @@ def check_obligatorios_consistency(result):
         if section in result and isinstance(result[section], dict):
             obj = result[section]
             allowed = set(e.value for e in enum_cls)
-            filled = set(k for k, v in obj.items() if k in allowed and v not in (None, [], ""))
+            # Exclude 'other_*' fields from being added to obligatorios
+            other_fields = {"other_venue", "other_catering", "other_decor"}
+            allowed_for_obligatorios = allowed - other_fields
+            
+            filled = set(k for k, v in obj.items() if k in allowed_for_obligatorios and v not in (None, [], ""))
             obligatorios = set(obj.get("obligatorios", []))
             missing = filled - obligatorios
             if missing:
