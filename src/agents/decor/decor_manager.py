@@ -9,6 +9,7 @@ from typing import List, Dict, Any, Union, Optional
 from src.crawler.extraction.expert import ExpertSystemInterface
 from src.crawler.extraction.graph import KnowledgeGraphInterface
 from src.agents.decor.decor_rag import DecorRAG
+from src.utils.location_matcher import location_matches
 
 class DecorAgent:
     def __init__(self, name: str, crawler: AdvancedCrawlerAgent, graph: KnowledgeGraphInterface, expert: ExpertSystemInterface):
@@ -125,6 +126,10 @@ class DecorAgent:
 
                 # Caso por defecto: comparación directa
                 else:
+                    # Caso especial: Ubicación
+                    if campo == "location":
+                        return location_matches(valor_esperado, str(valor))
+                    # Caso general para otros campos string
                     if isinstance(valor_esperado, str):
                         return valor_esperado.lower() in str(valor).lower()
                     return valor == valor_esperado
@@ -473,23 +478,49 @@ class DecorAgent:
                 ]
                 relaxed_query = query_base
                 web_urls = []
+                zola_urls = []
+                other_urls = []
+                
                 for subq in subqueries:
                     print(f"[DecorAgent] Query enviada a DuckDuckGo: {subq}")
-                    with DDGS() as ddgs:
-                        search_results = list(ddgs.text(subq, max_results=15))
-                    urls = [r['href'] for r in search_results if 'href' in r]
-                    print(f"[DecorAgent] Resultados encontrados: {len(urls)}")
-                    web_urls.extend(urls)
-                if not web_urls:
+                    try:
+                        with DDGS() as ddgs:
+                            search_results = list(ddgs.text(subq, max_results=15))
+                        urls = [r['href'] for r in search_results if 'href' in r]
+                        print(f"[DecorAgent] Resultados encontrados: {len(urls)}")
+                        
+                        # Separar URLs de zola.com de las demás
+                        for url in urls:
+                            if 'zola.com' in url:
+                                zola_urls.append(url)
+                            elif 'theknot.com' not in url:  # Excluir theknot.com
+                                other_urls.append(url)
+                    except Exception as e:
+                        print(f"[DecorAgent] Error en búsqueda '{subq}': {e}")
+                        continue
+                
+                if not zola_urls and not other_urls:
                     print(f"[DecorAgent] Query enviada a DuckDuckGo (relajada): {relaxed_query}")
-                    with DDGS() as ddgs:
-                        search_results = list(ddgs.text(relaxed_query, max_results=15))
-                    urls = [r['href'] for r in search_results if 'href' in r]
-                    print(f"[DecorAgent] Resultados encontrados (relajada): {len(urls)}")
-                    web_urls.extend(urls)
+                    try:
+                        with DDGS() as ddgs:
+                            search_results = list(ddgs.text(relaxed_query, max_results=15))
+                        urls = [r['href'] for r in search_results if 'href' in r]
+                        print(f"[DecorAgent] Resultados encontrados (relajada): {len(urls)}")
+                        
+                        # Separar URLs de zola.com de las demás en búsqueda relajada
+                        for url in urls:
+                            if 'zola.com' in url:
+                                zola_urls.append(url)
+                            elif 'theknot.com' not in url:  # Excluir theknot.com
+                                other_urls.append(url)
+                    except Exception as e:
+                        print(f"[DecorAgent] Error en búsqueda relajada: {e}")
+                
+                # Combinar URLs priorizando zola.com
+                web_urls = zola_urls + other_urls
                 if not web_urls:
                     print('[DecorAgent] No se encontraron URLs relevantes. No se hará crawling.')
-                    return []
+                    # No retornar aquí, continuar con el proceso
                 print(f"[DecorAgent] URLs encontradas en la web: {web_urls}")
                 for url in web_urls:
                     self.crawler.enqueue_url(url)
@@ -499,8 +530,22 @@ class DecorAgent:
                         print(f"[DecorAgent] robots.txt bloquea: {next_url}. No se hará crawling.")
                         continue
                     self.crawler.crawl(next_url, context=criteria)
+                
+                # Guardar el grafo después del crawling web y verificar que se guardó correctamente
                 print("[DecorAgent] Guardando grafo después del crawling web...")
-                self.graph.save_to_file("decor_graph.json")
+                try:
+                    self.graph.save_to_file("decor_graph.json")
+                    print(f"[DecorAgent] ✅ Grafo guardado exitosamente en decor_graph.json")
+                    # Verificar que el archivo se creó/actualizó
+                    import os
+                    if os.path.exists("decor_graph.json"):
+                        file_size = os.path.getsize("decor_graph.json")
+                        print(f"[DecorAgent] ✅ Archivo de grafo existe con tamaño: {file_size} bytes")
+                    else:
+                        print("[DecorAgent] ⚠️ Archivo de grafo no encontrado después de guardar")
+                except Exception as save_error:
+                    print(f"[DecorAgent] ❌ Error al guardar grafo: {save_error}")
+                
                 self.graph.clean_errors()
                 candidates = self.graph.query("decor")
                 print(f"[DecorAgent] Nodos tipo 'decor' encontrados después del crawling web: {len(candidates)}")
@@ -514,16 +559,20 @@ class DecorAgent:
                 print(f"[DecorAgent] {len(valid)} decoradores válidos tras búsqueda web")
                 if not valid:
                     print("[DecorAgent] No se encontraron decoradores válidos ni tras búsqueda web")
-                    return []
+                    # Continuar con el proceso aunque no haya resultados válidos
             except Exception as e:
                 print(f"[DecorAgent] Error en búsqueda web automática: {e}")
-                return []
+                # Continuar con el proceso aunque haya errores
 
-        scored = [(v[0], self.score_optional(v[1], criteria)) for v in valid]
-        scored.sort(key=lambda x: x[1], reverse=True)
+        if not valid:
+            print("[DecorAgent] No se encontraron decoradores válidos después de todo el proceso")
+            results = []
+        else:
+            scored = [(v[0], self.score_optional(v[1], criteria)) for v in valid]
+            scored.sort(key=lambda x: x[1], reverse=True)
 
-        # Limitar a los 50 mejores resultados
-        results = [v for v, _ in scored[:50]]
+            # Limitar a los 50 mejores resultados
+            results = [v for v, _ in scored[:50]]
         
         # Actualizar patrones de éxito en RAG
         if results:

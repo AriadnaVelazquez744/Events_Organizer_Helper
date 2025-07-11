@@ -1,4 +1,4 @@
-# agents/venue_manager.py
+# agents/catering_manager.py
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -8,6 +8,7 @@ from typing import List, Dict, Any, Union, Optional
 from src.crawler.extraction.expert import ExpertSystemInterface
 from src.crawler.extraction.graph import KnowledgeGraphInterface
 from src.agents.catering.catering_rag import CateringRAG
+from src.utils.location_matcher import location_matches
 import json
 
 class CateringAgent:
@@ -250,8 +251,8 @@ class CateringAgent:
                 # Caso especial: Ubicación
                 elif campo == "ubication":
                     if isinstance(valor, list):
-                        return any(valor_esperado.lower() in loc.lower() for loc in valor)
-                    return valor_esperado.lower() in str(valor).lower()
+                        return any(location_matches(valor_esperado, loc) for loc in valor)
+                    return location_matches(valor_esperado, str(valor))
 
                 # Caso especial: Servicios
                 elif campo == "services":
@@ -520,23 +521,49 @@ class CateringAgent:
                 ]
                 relaxed_query = query_base
                 web_urls = []
+                zola_urls = []
+                other_urls = []
+                
                 for subq in subqueries:
                     print(f"[CateringAgent] Query enviada a DuckDuckGo: {subq}")
-                    with DDGS() as ddgs:
-                        search_results = list(ddgs.text(subq, max_results=15))
-                    urls = [r['href'] for r in search_results if 'href' in r]
-                    print(f"[CateringAgent] Resultados encontrados: {len(urls)}")
-                    web_urls.extend(urls)
-                if not web_urls:
+                    try:
+                        with DDGS() as ddgs:
+                            search_results = list(ddgs.text(subq, max_results=15))
+                        urls = [r['href'] for r in search_results if 'href' in r]
+                        print(f"[CateringAgent] Resultados encontrados: {len(urls)}")
+                        
+                        # Separar URLs de zola.com de las demás
+                        for url in urls:
+                            if 'zola.com' in url:
+                                zola_urls.append(url)
+                            elif 'theknot.com' not in url:  # Excluir theknot.com
+                                other_urls.append(url)
+                    except Exception as e:
+                        print(f"[CateringAgent] Error en búsqueda '{subq}': {e}")
+                        continue
+                
+                if not zola_urls and not other_urls:
                     print(f"[CateringAgent] Query enviada a DuckDuckGo (relajada): {relaxed_query}")
-                    with DDGS() as ddgs:
-                        search_results = list(ddgs.text(relaxed_query, max_results=15))
-                    urls = [r['href'] for r in search_results if 'href' in r]
-                    print(f"[CateringAgent] Resultados encontrados (relajada): {len(urls)}")
-                    web_urls.extend(urls)
+                    try:
+                        with DDGS() as ddgs:
+                            search_results = list(ddgs.text(relaxed_query, max_results=15))
+                        urls = [r['href'] for r in search_results if 'href' in r]
+                        print(f"[CateringAgent] Resultados encontrados (relajada): {len(urls)}")
+                        
+                        # Separar URLs de zola.com de las demás en búsqueda relajada
+                        for url in urls:
+                            if 'zola.com' in url:
+                                zola_urls.append(url)
+                            elif 'theknot.com' not in url:  # Excluir theknot.com
+                                other_urls.append(url)
+                    except Exception as e:
+                        print(f"[CateringAgent] Error en búsqueda relajada: {e}")
+                
+                # Combinar URLs priorizando zola.com
+                web_urls = zola_urls + other_urls
                 if not web_urls:
                     print('[CateringAgent] No se encontraron URLs relevantes. No se hará crawling.')
-                    return []
+                    # No retornar aquí, continuar con el proceso
                 print(f"[CateringAgent] URLs encontradas en la web: {web_urls}")
                 for url in web_urls:
                     self.crawler.enqueue_url(url)
@@ -546,8 +573,22 @@ class CateringAgent:
                         print(f"[CateringAgent] robots.txt bloquea: {next_url}. No se hará crawling.")
                         continue
                     self.crawler.crawl(next_url, context=criteria)
+                
+                # Guardar el grafo después del crawling web y verificar que se guardó correctamente
                 print("[CateringAgent] Guardando grafo después del crawling web...")
-                self.graph.save_to_file("catering_graph.json")
+                try:
+                    self.graph.save_to_file("catering_graph.json")
+                    print(f"[CateringAgent] ✅ Grafo guardado exitosamente en catering_graph.json")
+                    # Verificar que el archivo se creó/actualizó
+                    import os
+                    if os.path.exists("catering_graph.json"):
+                        file_size = os.path.getsize("catering_graph.json")
+                        print(f"[CateringAgent] ✅ Archivo de grafo existe con tamaño: {file_size} bytes")
+                    else:
+                        print("[CateringAgent] ⚠️ Archivo de grafo no encontrado después de guardar")
+                except Exception as save_error:
+                    print(f"[CateringAgent] ❌ Error al guardar grafo: {save_error}")
+                
                 self.graph.clean_errors()
                 candidates = self.graph.query("catering")
                 print(f"[CateringAgent] Nodos tipo 'catering' encontrados después del crawling web: {len(candidates)}")
@@ -561,16 +602,20 @@ class CateringAgent:
                 print(f"[CateringAgent] {len(valid)} caterings válidos tras búsqueda web")
                 if not valid:
                     print("[CateringAgent] No se encontraron caterings válidos ni tras búsqueda web")
-                    return []
+                    # Continuar con el proceso aunque no haya resultados válidos
             except Exception as e:
                 print(f"[CateringAgent] Error en búsqueda web automática: {e}")
-                return []
+                # Continuar con el proceso aunque haya errores
 
-        scored = [(v[0], self.score_optional(v[1], criteria)) for v in valid]
-        scored.sort(key=lambda x: x[1], reverse=True)
+        if not valid:
+            print("[CateringAgent] No se encontraron caterings válidos después de todo el proceso")
+            results = []
+        else:
+            scored = [(v[0], self.score_optional(v[1], criteria)) for v in valid]
+            scored.sort(key=lambda x: x[1], reverse=True)
 
-        # Limitar a los 50 mejores resultados
-        results = [v for v, _ in scored[:50]]
+            # Limitar a los 50 mejores resultados
+            results = [v for v, _ in scored[:50]]
         
         # Actualizar patrones de éxito en RAG
         if results:

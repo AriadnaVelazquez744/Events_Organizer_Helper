@@ -15,7 +15,6 @@ from .core.manager import CrawlerManager
 from .core.policy import CrawlPolicy
 
 # Extraction imports
-from .extraction.scrapper import scrape_page, setup_driver
 from .extraction.llm_extract_openrouter import llm_extract_openrouter
 from .extraction.expert import ExpertSystemInterface
 from .extraction.graph import KnowledgeGraphInterface
@@ -35,8 +34,6 @@ __all__ = [
     "CrawlPolicy",
     
     # Extraction
-    "scrape_page",
-    "setup_driver",
     "llm_extract_openrouter",
     "ExpertSystemInterface",
     "KnowledgeGraphInterface",
